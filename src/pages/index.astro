@@ -5,10 +5,167 @@ import Filter from "../components/Filter.astro";
 
 <Layout title="Portada Inmobiliaria - Profesionales en Vivir Mejor">
   <div>
-    <img
-      src="../../public/banner1.webp"
-      alt=""
-    />
+    <img src="/img/banner1.webp" alt="" />
   </div>
-  <Filter></Filter>
+  <Filter />
+  <div class="flex justify-center items-center mt-28 mb-28">
+    <div class="line w-20 bg-red-600 h-1"></div>
+    <span class="text-4xl font-bold ml-5 mr-5">Inmuebles Destacados</span>
+    <div class="line w-20 bg-red-600 h-1"></div>
+  </div>
+  <!-- CARDS DESTACADOS -->
+  <div class="flex mx-4">
+    <div>
+      <img src="/img/destacados/destacado1.webp" alt="" />
+    </div>
+    <div>
+      <img src="/img/destacados/destacado2.webp" alt="" />
+    </div>
+    <div>
+      <img src="/img/destacados/destacado3.webp" alt="" />
+    </div>
+  </div>
+  <div class="flex justify-center items-center mt-28 mb-28">
+    <div class="line w-20 bg-red-600 h-1"></div>
+    <span class="text-4xl font-bold ml-5 mr-5">Blog</span>
+    <div class="line w-20 bg-red-600 h-1"></div>
+  </div>
+
+  <!-- CARDS BLOG -->
+  <div class="flex mx-4 space-x-2 max-w-full">
+    <div class="flex flex-col">
+      <div class="relative flex-grow">
+        <img
+          src="/img/blog/blog1.webp"
+          alt=""
+          class="w-full h-full object-cover hover:brightness-50 cursor-pointer rounded-t-md"
+        />
+      </div>
+      <div class="bg-red-600 p-5 text-center rounded-b-md">
+        <span class="font-bold text-white uppercase">
+          ¿Por qué elegirnos como tu agente inmobiliario de confianza?
+        </span>
+      </div>
+    </div>
+
+    <div class="flex flex-col">
+      <div class="relative flex-grow image-blur">
+        <img
+          src="/img/blog/blog2.webp"
+          alt=""
+          class="w-full h-full object-cover hover:brightness-50 cursor-pointer rounded-t-md"
+        />
+      </div>
+      <div class="bg-red-600 p-5 text-center rounded-b-md">
+        <span class="font-bold text-white uppercase">
+          Conoce todas las ventajas de contratar una agencia inmobiliaria
+          integral y segura
+        </span>
+      </div>
+    </div>
+
+    <div class="flex flex-col">
+      <div class="relative flex-grow image-blur">
+        <img
+          src="/img/blog/blog3.webp"
+          alt=""
+          class="w-full h-full object-cover hover:brightness-50 cursor-pointer rounded-t-md"
+        />
+      </div>
+      <div class="bg-red-600 p-5 text-center rounded-b-md">
+        <span class="font-bold text-white uppercase">
+          Los beneficios de contar con una solución integral en el mercado
+          inmobiliario
+        </span>
+      </div>
+    </div>
+
+    <div class="flex flex-col">
+      <div class="relative flex-grow image-blur">
+        <img
+          src="/img/blog/blog4.webp"
+          alt=""
+          class="w-full h-full object-cover hover:brightness-50 cursor-pointer rounded-t-md"
+        />
+      </div>
+      <div class="bg-red-600 p-5 text-center rounded-b-md">
+        <span class="font-bold text-white uppercase">
+          Encuentra tu hogar ideal con nuestras soluciones inmobiliarias
+          integrales
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NUESTRAS SEDES -->
+  <div class="flex justify-center items-center mt-28 mb-20">
+    <div class="line w-20 bg-red-600 h-1"></div>
+    <span class="text-4xl font-bold ml-5 mr-5">NUESTRAS SEDES</span>
+    <div class="line w-20 bg-red-600 h-1"></div>
+  </div>
+
+  <div class="grid grid-cols-6 gap-4 mx-4">
+    <div class="col-span-4">
+      <div class="flex-col flex-1 text-center">
+        <span class="font-bold text-3xl">ANTIOQUIA</span>
+        <!-- Sedes de Antioquia -->
+        <div class="grid grid-cols-4 gap-4 mt-2">
+          <div class="p-2">
+            <img src="/img/sedes/laureles.webp" alt="" />
+          </div>
+          <div class="p-2">
+            <img src="/img/sedes/bello.webp" alt="" />
+          </div>
+          <div class="p-2">
+            <img src="/img/sedes/colores.webp" alt="" />
+          </div>
+          <div class="p-2">
+            <img src="/img/sedes/poblado.webp" alt="" />
+          </div>
+          <div class="p-2">
+            <img src="/img/sedes/envigado.webp" alt="" />
+          </div>
+          <div class="p-2">
+            <img src="/img/sedes/sabaneta.webp" alt="" />
+          </div>
+          <div class="p-2">
+            <img src="/img/sedes/estrella.webp" alt="" />
+          </div>
+          <div class="p-2">
+            <img src="/img/sedes/rionegro.webp" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-2">
+      <!-- Fila para CUNDINAMARCA -->
+      <div class="flex-col text-center">
+        <span class="font-bold text-3xl">CUNDINAMARCA</span>
+        <!-- Sedes de Cundinamarca -->
+        <div class="grid grid-cols-2 gap-4 mt-2">
+          <div class="p-2">
+            <img src="/img/sedes/bogota.webp" alt="" />
+          </div>
+          <div class="p-2">
+            <img src="/img/sedes/mosquera.webp" alt="" />
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-center p-4">
+        <img src="/img/logo-horizontal-portada.webp" alt="Logo" />
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="flex flex-col bg-gray-900 text-white justify-center items-center p-5 space-y-4 mt-24 sm:mt-8">
+    <div class="space-x-12">
+      <span class="border-b-2 border-transparent cursor-pointer hover:border-white transition duration-300 ease-in-out">Política Tratamiento Datos Personales</span>
+      <span class="border-b-2 border-transparent cursor-pointer hover:border-white transition duration-300 ease-in-out">Política Sagrilaft</span>
+      <span class="border-b-2 border-transparent cursor-pointer hover:border-white transition duration-300 ease-in-out">Política SST</span>
+    </div>
+    <div>
+      <span class="text-sm">© Copyright 2023 - Portada Inmobiliaria. Todos los derechos reservados</span>
+    </div>
+  </div>
 </Layout>
