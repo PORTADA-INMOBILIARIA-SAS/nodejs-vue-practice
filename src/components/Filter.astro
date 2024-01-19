@@ -1,0 +1,194 @@
+<div class="flex justify-center items-center m-16">
+    <div
+      class="elementor-element elementor-element-95cdcff elementor-widget elementor-widget-Inmuebles barra busqueda"
+      data-id="95cdcff"
+      data-element_type="widget"
+      data-widget_type="Inmuebles barra busqueda.default"
+    >
+      <div class="elementor-widget-container">
+        <section class="search-bar">
+          <form class="search-bar-form" action="busqueda" method="GET">
+            <div
+              class="search-options-container search-bar-form-container-options search-options"
+            >
+              <div class="section_form_opts_btns__container button_arre">
+                <input
+                  class="search_input_tab_hidden"
+                  type="radio"
+                  name="gestion"
+                  id="arrendar"
+                  value="Arriendo"
+                  checked=""
+                />
+                <label
+                  for="arrendar"
+                  class="section_form_opts_btns_container section_form_opts_arrendar_btn section_form_opts_btns button_arre"
+                >
+                  <svg class="svg_icons_tabs svg_icons_tab_arrendar">
+                    <use href="#arrendar_icon_svg"></use>
+                  </svg>
+                  Arrendar
+                </label>
+              </div>
+              <div class="section_form_opts_btns__container button_comp">
+                <input
+                  class="search_input_tab_hidden"
+                  type="radio"
+                  name="gestion"
+                  id="comprar"
+                  value="Venta"
+                />
+                <label
+                  for="comprar"
+                  class="section_form_opts_btns_container section_form_opts_comprar_btn section_form_opts_btns button_comp"
+                >
+                  <svg class="svg_icons_tabs svg_icons_tab_comprar">
+                    <use href="#comprar_casa_svg"></use>
+                  </svg>
+                  Comprar
+                </label>
+              </div>
+            </div>
+            <div class="search-bar-container">
+              <div class="search-bar-input-group-container">
+                <div class="input-with-icon">
+                  <i class="fas fa-home"></i>
+                  <select
+                    class="search-bar-select search_bar_body_input"
+                    id="tipo-inmu-select-input"
+                    name="tipoPropiedad"
+                  >
+                    <option value="0" selected="">Tipo de inmueble</option>
+                    <option value="Apartamento">Apartamento</option>
+                    <option value="Casa">Casa</option>
+                    <option value="Consultorio">Consultorio</option>
+                    <option value="Oficina">Oficina</option>
+                    <option value="Local">Local</option>
+                    <option value="Bodega">Bodega</option>
+                    <option value="Lote">Lote</option>
+                    <option value="Finca">Finca</option>
+                    <option value="Edificio">Edificio</option>
+                    <option value="Apartaestudio">Apartaestudio</option>
+                  </select>
+                </div>
+
+                <div class="input-with-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <select
+                    class="search-bar-select search_bar_body_input"
+                    name="ubicacion"
+                    id="ciudad-select-input"
+                  >
+                    <option value="0" selected="">Ubicación</option>
+                    <option value="Amaga">Amaga</option>
+                    <option value="Bello">Bello</option>
+                    <option value="Bogota">Bogota</option>
+                    <option value="Caldas">Caldas</option>
+                    <option value="Caldas">Caldas</option>
+                    <option value="Carmen de viboral">Carmen de viboral</option>
+                    <option value="Copacabana">Copacabana</option>
+                    <option value="Cota">Cota</option>
+                    <option value="Don matias">Don matias</option>
+                    <option value="El peÑol">El peÑol</option>
+                    <option value="El retiro">El retiro</option>
+                    <option value="Envigado">Envigado</option>
+                    <option value="Facatativa">Facatativa</option>
+                    <option value="Funza">Funza</option>
+                    <option value="Girardota">Girardota</option>
+                    <option value="Guarne">Guarne</option>
+                    <option value="Guatape">Guatape</option>
+                    <option value="Itagui">Itagui</option>
+                    <option value="La ceja">La ceja</option>
+                    <option value="La estrella">La estrella</option>
+                    <option value="Madrid">Madrid</option>
+                    <option value="Marinilla">Marinilla</option>
+                    <option value="Medellin">Medellin</option>
+                    <option value="Mosquera">Mosquera</option>
+                    <option value="Municipio barbosa">Municipio barbosa</option>
+                    <option value="Puerto lopez">Puerto lopez</option>
+                    <option value="Rionegro">Rionegro</option>
+                    <option value="Sabaneta">Sabaneta</option>
+                    <option value="San antonio de prado"
+                      >San antonio de prado</option
+                    >
+                    <option value="San carlos">San carlos</option>
+                    <option value="San jeronimo">San jeronimo</option>
+                    <option value="San luis">San luis</option>
+                    <option value="Santa elena">Santa elena</option>
+                    <option value="Santa helena">Santa helena</option>
+                    <option value="Santafe de antioquia"
+                      >Santafe de antioquia</option
+                    >
+                    <option value="Santuario">Santuario</option>
+                    <option value="Soacha">Soacha</option>
+                    <option value="Sopetran">Sopetran</option>
+                  </select>
+                </div>
+              </div>
+              <div
+                class="search-bar-input-group-container search-codigo_input-container"
+              >
+                <div class="input-with-icon search-codigo_input">
+                  <i class="fas fa-search"></i>
+                  <input
+                    class="codigo-inmu-input-search search_bar_body_input"
+                    type="text"
+                    name="codigo"
+                    id="codigo-input"
+                    placeholder="Buscar por Código"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="search-bar-input-group-container">
+              <button class="search-bar-button" type="submit"> Buscar</button>
+            </div>
+          </form>
+          <div v-show="false" style="display: none;">
+            <svg
+              class="arrendar_style"
+              id="arrendar_icon_svg"
+              data-name="Capa 2"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 232.37 228.55"
+            >
+              <defs> </defs>
+              <g id="Capa_1-2" data-name="Capa 1">
+                <g>
+                  <path
+                    class="cls-1"
+                    d="m67.32,182.44c-1.51-5.58-2.94-10.92-4.39-16.25-3.34-12.33-6.64-24.67-10.06-36.97-.5-1.79-.27-2.62,1.48-3.44,8.21-3.87,16.25-8.11,24.53-11.79,6.01-2.67,12.52-3.71,19.1-3.74,17.74-.09,35.48-.09,53.22-.03,7.27.03,12.98,5.57,13.17,12.51.19,7.17-5.12,12.83-12.53,13.41-5.45.43-10.9.89-16.35,1.43-5.4.53-8.6,4.19-8.09,9.11.56,5.37,4.35,8.24,10,7.69,6.23-.61,12.54-.74,18.7-1.77,12.48-2.11,20.48-9.61,24.14-21.68.52-1.71,1.2-2.58,3.01-3.05,10.31-2.7,20.57-5.63,30.87-8.36,5.12-1.36,10.34.9,12.99,5.35,2.62,4.4,2.17,9.94-1.3,13.76-1.04,1.15-2.38,2.12-3.75,2.87-23.08,12.55-46.2,25.01-69.27,37.56-9,4.9-18.29,5.82-28.12,2.93-11.07-3.26-22.2-6.33-33.34-9.33-1.37-.37-3.16-.21-4.45.38-6.47,2.97-12.84,6.16-19.55,9.42Z"
+                  ></path>
+                  <path
+                    class="cls-1"
+                    d="m87.56,0c14.24.69,27.01,8.26,35,23.41.84,1.59,1.75,2.02,3.44,2.02,27.8-.05,55.6-.06,83.4.03,1.51,0,3.26.66,4.47,1.58,5.68,4.33,11.22,8.85,16.79,13.32,2.25,1.8,2.26,2.15.05,3.92-5.78,4.63-11.57,9.26-17.37,13.88-2.15,1.72-9.27,1.65-11.44-.09-3.93-3.14-7.83-6.31-11.78-9.42-2.72-2.14-4.16-1.83-5.87,1.22-1.38,2.46-2.69,4.96-4.1,7.4-1.35,2.34-2.56,2.55-4.65.79-3.71-3.12-7.37-6.31-11.08-9.44-2.43-2.05-3.91-1.84-5.61.79-1.58,2.44-3.16,4.89-4.62,7.41-1.04,1.8-2.41,2.55-4.52,2.52-7.85-.09-15.71.02-23.56-.08-1.81-.02-2.76.49-3.61,2.17-7.83,15.58-24.83,24.99-41.56,23.13-18.26-2.03-32.68-14.32-37.21-31.73C36.8,26.13,57.25-.19,87.56,0Zm-2.77,42.28c-.03-6.92-5.71-12.59-12.64-12.63-7.03-.03-12.79,5.73-12.76,12.76.03,6.92,5.72,12.6,12.63,12.63,7.03.03,12.8-5.74,12.76-12.77Z"
+                  ></path>
+                  <path
+                    class="cls-1"
+                    d="m.05,228.55v-2.81C.05,197.95.07,170.15,0,142.35c0-2.01.67-2.9,2.44-3.68,8.64-3.77,17.22-7.68,25.83-11.54,4.14-1.85,6.23-.88,7.43,3.54,5.87,21.59,11.73,43.19,17.58,64.79.91,3.38.38,4.93-2.43,6.42-16.42,8.73-32.87,17.41-49.31,26.11-.37.2-.78.3-1.49.57Z"
+                  ></path>
+                </g>
+              </g>
+            </svg>
+            <svg
+              class="comprar_style"
+              id="comprar_casa_svg"
+              data-name="Capa 2"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 240.41 223.07"
+            >
+              <defs> </defs>
+              <g id="Capa_1-2" data-name="Capa 1">
+                <g id="uoZBGL.tif">
+                  <path
+                    class="cls-1"
+                    d="m206.04,128.72v3.48c0,28.23,0,56.45,0,84.68,0,4.93-1.25,6.19-6.15,6.19-53.09,0-106.19,0-159.28,0-4.95,0-6.21-1.24-6.21-6.13,0-28.23,0-56.45,0-84.68v-3.53c-5.4,0-10.64.11-15.87-.02-8.03-.2-13.73-4.11-16.9-11.45-3.25-7.54-1.55-15.41,4.45-21.08,8.83-8.35,17.68-16.68,26.58-24.95,1.29-1.2,1.78-2.42,1.77-4.16-.06-21.26-.04-42.52-.04-63.78V.23h34.17v37.01c1.14-1.02,1.77-1.55,2.36-2.11,9.37-8.81,18.72-17.66,28.12-26.45,12.26-11.47,29.9-11.64,42.14-.17,31.17,29.2,62.25,58.49,93.32,87.8,7.89,7.44,7.83,19.72.04,27.27-3.49,3.39-7.71,5.09-12.57,5.13-5.18.04-10.35,0-15.93,0Zm-77.29,25.73c-1.21,0-2.17,0-3.13,0-7.42,0-14.84-.04-22.25.01-5.07.04-8.82,3.68-8.87,8.46-.05,4.87,3.77,8.59,8.96,8.66,2.65.04,5.31,0,8.25,0v8.36h17.2v-8.36c1.25,0,2.31,0,3.36,0,8.22-.05,13.65-5.4,13.69-13.55.03-5.36.04-10.72,0-16.08-.07-7.7-5.51-13.17-13.18-13.24-5.54-.05-11.08-.01-16.62-.01-1.47,0-2.95,0-4.36,0v-8.59c1.11,0,2.07,0,3.04,0,7.42,0,14.84.04,22.25-.02,5.05-.04,8.83-3.71,8.88-8.47.05-4.87-3.78-8.58-8.97-8.65-2.65-.04-5.31,0-8.25,0v-8.58c-3.05,0-5.81,0-8.57,0s-5.63,0-8.63,0v8.58c-1.25,0-2.31,0-3.36,0-8.22.05-13.64,5.4-13.68,13.55-.03,5.36-.04,10.72,0,16.08.06,7.68,5.52,13.16,13.19,13.23,5.63.05,11.26.01,16.89.01,1.38,0,2.77,0,4.18,0v8.59Z"
+                  ></path>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>

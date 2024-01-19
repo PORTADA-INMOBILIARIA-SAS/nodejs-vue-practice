@@ -1,0 +1,27 @@
+---
+const {submenu} = Astro.props
+---
+<div class="h-full menu">
+  <li class="mr-5 cursor-pointer hover:bg-red-100 p-2 rounded-lg transition-colors duration-500 ease-in-out relative">
+      <div class="flex items-center">
+          <slot name="text">
+          </slot>
+          {submenu ? (
+              <img src="../../../public/down-arrow-svgrepo-com.svg" alt="" width="10" class="ml-2" />
+          ) : null}
+      </div>
+    </div>
+    {submenu ? (
+        <div class="absolute pt-5 hidden submenu-options bg-white">
+          <ul>
+            <slot name="submenu" />
+          </ul>
+        </div>
+      ) : null}
+</li>
+
+<style>
+  .menu:hover .submenu-options {
+    display: block;
+  }
+</style>
