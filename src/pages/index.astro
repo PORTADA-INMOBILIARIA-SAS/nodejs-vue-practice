@@ -4,59 +4,63 @@ import Filter from "../components/Filter.astro";
 ---
 
 <Layout title="Portada Inmobiliaria - Profesionales en Vivir Mejor">
-  <div>
+  <div class="pt-24">
     <img src="/img/banner1.webp" alt="" />
   </div>
-  <Filter />
-  <div class="flex justify-center items-center mt-28 mb-28">
+  <Filter></Filter>
+
+  <!-- CARDS DESTACADOS -->
+  <div class="flex justify-center items-center text-center mt-28 mb-28">
     <div class="line w-20 bg-red-600 h-1"></div>
     <span class="text-4xl font-bold ml-5 mr-5">Inmuebles Destacados</span>
     <div class="line w-20 bg-red-600 h-1"></div>
   </div>
-  <!-- CARDS DESTACADOS -->
-  <div class="flex mx-4">
+
+  <!-- DESTACADOS -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mx-4">
     <div>
-      <img src="/img/destacados/destacado1.webp" alt="" />
+      <img src="/img/destacados/destacado1.webp" class="hover:brightness-75 cursor-pointer" alt="" />
     </div>
     <div>
-      <img src="/img/destacados/destacado2.webp" alt="" />
+      <img src="/img/destacados/destacado2.webp" class="hover:brightness-75 cursor-pointer" alt="" />
     </div>
     <div>
-      <img src="/img/destacados/destacado3.webp" alt="" />
+      <img src="/img/destacados/destacado3.webp" class="hover:brightness-75 cursor-pointer" alt="" />
     </div>
   </div>
+
+  <!-- CARDS BLOG -->
   <div class="flex justify-center items-center mt-28 mb-28">
     <div class="line w-20 bg-red-600 h-1"></div>
     <span class="text-4xl font-bold ml-5 mr-5">Blog</span>
     <div class="line w-20 bg-red-600 h-1"></div>
   </div>
 
-  <!-- CARDS BLOG -->
-  <div class="flex mx-4 space-x-2 max-w-full">
-    <div class="flex flex-col">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-4 max-w-full">
+    <div class="flex flex-col cursor-pointer card-blog">
       <div class="relative flex-grow">
         <img
           src="/img/blog/blog1.webp"
           alt=""
-          class="w-full h-full object-cover hover:brightness-50 cursor-pointer rounded-t-md"
+          class="w-full h-full object-cover rounded-t-md"
         />
       </div>
-      <div class="bg-red-600 p-5 text-center rounded-b-md">
+      <div class="bg-red-600 p-5 text-center rounded-b-md card-blog-text">
         <span class="font-bold text-white uppercase">
           ¿Por qué elegirnos como tu agente inmobiliario de confianza?
         </span>
       </div>
     </div>
 
-    <div class="flex flex-col">
+    <div class="flex flex-col cursor-pointer card-blog">
       <div class="relative flex-grow image-blur">
         <img
           src="/img/blog/blog2.webp"
           alt=""
-          class="w-full h-full object-cover hover:brightness-50 cursor-pointer rounded-t-md"
+          class="w-full h-full object-cover rounded-t-md"
         />
       </div>
-      <div class="bg-red-600 p-5 text-center rounded-b-md">
+      <div class="bg-red-600 p-5 text-center rounded-b-md card-blog-text">
         <span class="font-bold text-white uppercase">
           Conoce todas las ventajas de contratar una agencia inmobiliaria
           integral y segura
@@ -64,15 +68,15 @@ import Filter from "../components/Filter.astro";
       </div>
     </div>
 
-    <div class="flex flex-col">
-      <div class="relative flex-grow image-blur">
+    <div class="flex flex-col cursor-pointer card-blog">
+      <div class="relative flex-grow">
         <img
           src="/img/blog/blog3.webp"
           alt=""
-          class="w-full h-full object-cover hover:brightness-50 cursor-pointer rounded-t-md"
+          class="w-full h-full object-cover rounded-t-md"
         />
       </div>
-      <div class="bg-red-600 p-5 text-center rounded-b-md">
+      <div class="bg-red-600 p-5 text-center rounded-b-md card-blog-text">
         <span class="font-bold text-white uppercase">
           Los beneficios de contar con una solución integral en el mercado
           inmobiliario
@@ -80,15 +84,15 @@ import Filter from "../components/Filter.astro";
       </div>
     </div>
 
-    <div class="flex flex-col">
-      <div class="relative flex-grow image-blur">
+    <div class="flex flex-col cursor-pointer card-blog">
+      <div class="relative flex-grow">
         <img
           src="/img/blog/blog4.webp"
           alt=""
-          class="w-full h-full object-cover hover:brightness-50 cursor-pointer rounded-t-md"
+          class="w-full h-full object-cover rounded-t-md"
         />
       </div>
-      <div class="bg-red-600 p-5 text-center rounded-b-md">
+      <div class="bg-red-600 p-5 text-center rounded-b-md card-blog-text">
         <span class="font-bold text-white uppercase">
           Encuentra tu hogar ideal con nuestras soluciones inmobiliarias
           integrales
@@ -100,15 +104,75 @@ import Filter from "../components/Filter.astro";
   <!-- NUESTRAS SEDES -->
   <div class="flex justify-center items-center mt-28 mb-20">
     <div class="line w-20 bg-red-600 h-1"></div>
-    <span class="text-4xl font-bold ml-5 mr-5">NUESTRAS SEDES</span>
+    <span class="text-4xl font-bold ml-5 mr-5 text-center">NUESTRAS SEDES</span>
     <div class="line w-20 bg-red-600 h-1"></div>
   </div>
 
-  <div class="grid grid-cols-6 gap-4 mx-4">
+  <div class="grid grid-cols-2 mx-4 text-sm md:text-lg">
+    <div class="col-start-1 col-end-2">
+      <div class="w-[100%] bg-gray-900 text-white uppercase px-2 py-1">
+        <span class="tracking-widest font-bold">ANTIOQUIA</span>
+      </div>
+      <div class="w-[95%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[97%]">
+        <span class="tracking-widest">Laureles</span>
+      </div>
+      <div class="w-[90%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[92%]">
+        <span class="tracking-widest">Bello</span>
+      </div>
+      <div class="w-[85%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[87%]">
+        <span class="tracking-widest">Los Colores</span>
+      </div>
+      <div class="w-[80%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[82%]">
+        <span class="tracking-widest">El Poblado</span>
+      </div>
+      <div class="w-[75%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[77%]">
+        <span class="tracking-widest">Envigado</span>
+      </div>
+      <div class="w-[70%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[72%]">
+        <span class="tracking-widest">Sabaneta</span>
+      </div>
+      <div class="w-[65%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[67%]">
+        <span class="tracking-widest">La Estrella</span>
+      </div>
+      <div class="w-[60%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[62%]">
+        <span class="tracking-widest">Rionegro</span>
+      </div>
+      <div class="w-[55%] bg-gray-900 text-white uppercase px-2 py-1 mt-1">
+        <span class="tracking-widest font-bold">Cundinamarca</span>
+      </div>
+      <div class="w-[65%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[67%]">
+        <span class="tracking-widest">Bogotá</span>
+      </div>
+      <div class="w-[70%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[72%]">
+        <span class="tracking-widest">Mosquera</span>
+      </div>
+    </div>
+    <div class="col-start-2 col-end-3 text-right">
+      <div class="flex flex-col h-[100%] justify-center items-end container-sede">
+        <div class="bg-gradient-to-r from-red-600 to-red-800 text-white px-2 py-1 w-auto">
+          <span class="text-xl font-bold">SEDE</span>
+        </div>
+        <div class="mt-2">
+          <span class="text-4xl md:text-7xl font-bold">LAURELES</span>
+        </div>
+        <div class="mt-5 text-lg">
+          <span>(604) 4487771 Opción 1, 1, 1</span>
+          <br>
+          <span>Carrera 81 # 35 - 96</span>
+          <br>
+          <span class="border-b-2 hover:border-b-red-600 cursor-pointer">Ver Asesores</span>
+        </div>
+        <div>
+          <img src="/img/logo-horizontal-portada.webp" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="grid grid-cols-6 gap-4 mx-4">
     <div class="col-span-4">
       <div class="flex-col flex-1 text-center">
         <span class="font-bold text-3xl">ANTIOQUIA</span>
-        <!-- Sedes de Antioquia -->
         <div class="grid grid-cols-4 gap-4 mt-2">
           <div class="p-2">
             <img src="/img/sedes/laureles.webp" alt="" />
@@ -138,10 +202,8 @@ import Filter from "../components/Filter.astro";
       </div>
     </div>
     <div class="col-span-2">
-      <!-- Fila para CUNDINAMARCA -->
       <div class="flex-col text-center">
         <span class="font-bold text-3xl">CUNDINAMARCA</span>
-        <!-- Sedes de Cundinamarca -->
         <div class="grid grid-cols-2 gap-4 mt-2">
           <div class="p-2">
             <img src="/img/sedes/bogota.webp" alt="" />
@@ -155,17 +217,15 @@ import Filter from "../components/Filter.astro";
         <img src="/img/logo-horizontal-portada.webp" alt="Logo" />
       </div>
     </div>
-  </div>
-
-  <!-- FOOTER -->
-  <div class="flex flex-col bg-gray-900 text-white justify-center items-center p-5 space-y-4 mt-24 sm:mt-8">
-    <div class="space-x-12">
-      <span class="border-b-2 border-transparent cursor-pointer hover:border-white transition duration-300 ease-in-out">Política Tratamiento Datos Personales</span>
-      <span class="border-b-2 border-transparent cursor-pointer hover:border-white transition duration-300 ease-in-out">Política Sagrilaft</span>
-      <span class="border-b-2 border-transparent cursor-pointer hover:border-white transition duration-300 ease-in-out">Política SST</span>
-    </div>
-    <div>
-      <span class="text-sm">© Copyright 2023 - Portada Inmobiliaria. Todos los derechos reservados</span>
-    </div>
-  </div>
+  </div> -->
 </Layout>
+
+<style>
+  .card-blog:hover img {
+    filter: brightness(.75);
+  }
+
+  .card-blog:hover .card-blog-text {
+    background-color: rgb(153 27 27);
+  }
+</style>
