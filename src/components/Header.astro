@@ -19,9 +19,9 @@ import Icon from "./Icon.astro";
       </svg>
     </label>
     <div class="hidden bg-white w-full md:block md:h-full md:w-auto" id="navbar-dropdown">
-      <ul class="flex flex-col shadow-[rgba(0,0,15,0.5)_5px_10px_8px_0px] md:shadow-none md:items-center text-black font-bold p-4 md:p-0 mt-6 md:space-x-7 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:h-full">
-        <li class="submenu">
-          <button class="flex items-center justify-between w-full py-2 px-3 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-red-600 md:p-0 md:w-auto md:relative">Arrendamientos
+      <ul class="flex flex-col md:shadow-none md:items-center text-black font-bold p-4 md:p-0 mt-6 md:space-x-7 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:h-full">
+        <li class="submenu flex h-[40px] md:h-auto relative justify-center">
+          <button class="flex items-center justify-between w-full py-2 px-3 text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-red-600 md:p-0 md:w-auto md:relative">Arrendamientos
             <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
               <path
                 stroke="currentColor"
@@ -30,20 +30,20 @@ import Icon from "./Icon.astro";
                 stroke-width="2"
                 d="m1 1 4 4 4-4"></path>
             </svg>
-            <div class="z-10 md:absolute md:top-6 md:items-center hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-auto md:w-44 ml-5 md:ml-0">
-              <ul class="py-2 text-sm text-black text-left">
-                <li class="md:pt-7">
-                  <a href="#" class="block px-4 py-2 hover:bg-gray-200">Promocionar para Arriendo</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 hover:bg-gray-200">Arrendar</a>
-                </li>
-              </ul>
-            </div>
           </button>
+          <div class="z-10 absolute top-12 shadow md:top-8 md:items-center invisible font-normal bg-gray-100  md:bg-white divide-y divide-gray-100 rounded-lg w-auto md:w-44">
+            <ul class="py-2 text-sm text-black text-left">
+              <li class="md:pt-7">
+                <a href="#" class="block px-4 py-2 hover:bg-gray-200">Promocionar para Arriendo</a>
+              </li>
+              <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-200">Arrendar</a>
+              </li>
+            </ul>
+          </div>
         </li>
-        <li class="submenu">
-          <button class="flex items-center justify-between w-full py-2 px-3 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-red-600 md:p-0 md:w-auto md:relative">Ventas
+        <li class="submenu flex h-[40px] md:h-auto relative justify-center">
+          <button class="flex items-center justify-between w-full py-2 px-3 text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-red-600 md:p-0 md:w-auto md:relative">Ventas
             <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
               <path
                 stroke="currentColor"
@@ -52,20 +52,20 @@ import Icon from "./Icon.astro";
                 stroke-width="2"
                 d="m1 1 4 4 4-4"></path>
             </svg>
-            <div class="z-10 ml-5 md:ml-0 w-auto hidden md:absolute md:top-6 font-normal bg-white divide-y divide-gray-100 rounded-lg shadow md:w-44">
-              <ul class="py-2 text-sm text-black text-left">
-                <li class="md:pt-7">
-                  <a href="#" class="block px-4 py-2 hover:bg-gray-200">Promocionar para Venta</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 hover:bg-gray-200">Comprar</a>
-                </li>
-              </ul>
-            </div>
           </button>
+          <div class="z-10 absolute top-12 shadow md:top-8 md:items-center invisible font-normal bg-gray-100 md:bg-white divide-y divide-gray-100 rounded-lg w-auto md:w-44">
+            <ul class="py-2 text-sm text-black text-left">
+              <li class="md:pt-7">
+                <a href="#" class="block px-4 py-2 hover:bg-gray-200">Promocionar para Venta</a>
+              </li>
+              <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-200">Comprar</a>
+              </li>
+            </ul>
+          </div>
         </li>
-        <li class="submenu">
-          <button class="flex items-center justify-between w-full py-2 px-3 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-red-600 md:p-0 md:w-auto md:relative">Clientes
+        <li class="submenu flex h-[40px] md:h-auto relative justify-center">
+          <button class="flex items-center justify-between w-full py-2 px-3 text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-red-600 md:p-0 md:w-auto md:relative">Clientes
             <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
               <path
                 stroke="currentColor"
@@ -74,20 +74,20 @@ import Icon from "./Icon.astro";
                 stroke-width="2"
                 d="m1 1 4 4 4-4"></path>
             </svg>
-            <div class="z-10 ml-5 md:ml-0 hidden md:absolute md:top-6 font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-full md:w-44">
-              <ul class="py-2 text-sm text-black text-left">
-                <li class="md:pt-7">
-                  <a href="#" class="block px-4 py-2 hover:bg-gray-200">Propietario</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 hover:bg-gray-200">Arrendatario</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 hover:bg-gray-200">Actualización de Datos</a>
-                </li>
-              </ul>
-            </div>
           </button>
+          <div class="z-10 absolute top-12 shadow md:top-8 md:items-center invisible font-normal bg-gray-100 md:bg-white divide-y divide-gray-100 rounded-lg w-auto md:w-44">
+            <ul class="py-2 text-sm text-black text-left">
+              <li class="md:pt-7">
+                <a href="#" class="block px-4 py-2 hover:bg-gray-200">Propietario</a>
+              </li>
+              <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-200">Arrendatario</a>
+              </li>
+              <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-200">Actualización de Datos</a>
+              </li>
+            </ul>
+          </div>
         </li>
         <li>
           <a href="#" class="block py-2 px-3 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-red-600 md:p-0">Nosotros</a>
@@ -159,8 +159,15 @@ import Icon from "./Icon.astro";
 </nav>
 
 <style>
-  .submenu:hover div{
-    display: block;
+  .submenu div {
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  .submenu:hover div {
+      opacity: 1;
+      visibility: visible;
+      transition: all 0.3s ease;
   }
 
   #menu-toggle:checked + label + .bg-white {

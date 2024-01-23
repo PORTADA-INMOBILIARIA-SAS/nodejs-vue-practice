@@ -18,16 +18,17 @@ import Filter from "../components/Filter.astro";
 
   <!-- DESTACADOS -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mx-4">
-    <div>
-      <img src="/img/destacados/destacado1.webp" class="hover:brightness-75 cursor-pointer" alt="" />
+    <div class="relative overflow-hidden">
+        <img src="/img/destacados/destacado1.webp" class="hover:scale-105 hover:brightness-75 transition-transform duration-300 ease-in-out cursor-pointer" alt="" />
     </div>
-    <div>
-      <img src="/img/destacados/destacado2.webp" class="hover:brightness-75 cursor-pointer" alt="" />
+    <div class="relative overflow-hidden">
+        <img src="/img/destacados/destacado2.webp" class="hover:scale-105 hover:brightness-75 transition-transform duration-300 ease-in-out cursor-pointer" alt="" />
     </div>
-    <div>
-      <img src="/img/destacados/destacado3.webp" class="hover:brightness-75 cursor-pointer" alt="" />
+    <div class="relative overflow-hidden">
+        <img src="/img/destacados/destacado3.webp" class="hover:scale-105 hover:brightness-75 transition-transform duration-300 ease-in-out cursor-pointer" alt="" />
     </div>
-  </div>
+</div>
+
 
   <!-- CARDS BLOG -->
   <div class="flex justify-center items-center mt-28 mb-28">
@@ -137,7 +138,7 @@ import Filter from "../components/Filter.astro";
       <div class="w-[60%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[62%]">
         <span class="tracking-widest">Rionegro</span>
       </div>
-      <div class="w-[55%] bg-gray-900 text-white uppercase px-2 py-1 mt-1">
+      <div class="min-w-fit w-[55%] bg-gray-900 text-white uppercase px-2 py-1 mt-1">
         <span class="tracking-widest font-bold">Cundinamarca</span>
       </div>
       <div class="w-[65%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[67%]">
@@ -150,7 +151,7 @@ import Filter from "../components/Filter.astro";
     <div class="col-start-2 col-end-3 text-right">
       <div class="flex flex-col h-[100%] justify-center items-end container-sede">
         <div class="bg-gradient-to-r from-red-600 to-red-800 text-white px-2 py-1 w-auto">
-          <span class="text-xl font-bold">SEDE</span>
+          <span class="text-xl font-bold">SEDE PRINCIPAL</span>
         </div>
         <div class="mt-2">
           <span class="text-4xl md:text-7xl font-bold">LAURELES</span>
