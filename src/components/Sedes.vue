@@ -63,7 +63,7 @@
             <span class="border-b-2 hover:border-b-red-600 cursor-pointer">Ver Asesores</span>
           </div>
           <div>
-            <img src="../../public/img/logo/logo-horizontal-portada.webp" alt="">
+            <img src="/img/logo/logo-horizontal-portada.webp?url" alt="">
           </div>
         </div>
       </transition>
