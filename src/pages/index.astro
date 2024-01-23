@@ -1,11 +1,14 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from "../layouts/Layout.astro";
 import Filter from "../components/Filter.astro";
+import Sedes from "../components/Sedes.vue";
+import bannerPrincipal from "../../public/img/banner1.webp"
 ---
 
 <Layout title="Portada Inmobiliaria - Profesionales en Vivir Mejor">
   <div class="pt-24">
-    <img src="/img/banner1.webp" alt="" />
+    <Image src={bannerPrincipal} alt="" />
   </div>
   <Filter></Filter>
 
@@ -103,72 +106,7 @@ import Filter from "../components/Filter.astro";
   </div>
 
   <!-- NUESTRAS SEDES -->
-  <div class="flex justify-center items-center mt-28 mb-20">
-    <div class="line w-20 bg-red-600 h-1"></div>
-    <span class="text-4xl font-bold ml-5 mr-5 text-center">NUESTRAS SEDES</span>
-    <div class="line w-20 bg-red-600 h-1"></div>
-  </div>
-
-  <div class="grid grid-cols-2 mx-4 text-sm md:text-lg">
-    <div class="col-start-1 col-end-2">
-      <div class="w-[100%] bg-gray-900 text-white uppercase px-2 py-1">
-        <span class="tracking-widest font-bold">ANTIOQUIA</span>
-      </div>
-      <div class="w-[95%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[97%]">
-        <span class="tracking-widest">Laureles</span>
-      </div>
-      <div class="w-[90%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[92%]">
-        <span class="tracking-widest">Bello</span>
-      </div>
-      <div class="w-[85%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[87%]">
-        <span class="tracking-widest">Los Colores</span>
-      </div>
-      <div class="w-[80%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[82%]">
-        <span class="tracking-widest">El Poblado</span>
-      </div>
-      <div class="w-[75%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[77%]">
-        <span class="tracking-widest">Envigado</span>
-      </div>
-      <div class="w-[70%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[72%]">
-        <span class="tracking-widest">Sabaneta</span>
-      </div>
-      <div class="w-[65%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[67%]">
-        <span class="tracking-widest">La Estrella</span>
-      </div>
-      <div class="w-[60%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[62%]">
-        <span class="tracking-widest">Rionegro</span>
-      </div>
-      <div class="min-w-fit w-[55%] bg-gray-900 text-white uppercase px-2 py-1 mt-1">
-        <span class="tracking-widest font-bold">Cundinamarca</span>
-      </div>
-      <div class="w-[65%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[67%]">
-        <span class="tracking-widest">Bogotá</span>
-      </div>
-      <div class="w-[70%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[72%]">
-        <span class="tracking-widest">Mosquera</span>
-      </div>
-    </div>
-    <div class="col-start-2 col-end-3 text-right">
-      <div class="flex flex-col h-[100%] justify-center items-end container-sede">
-        <div class="bg-gradient-to-r from-red-600 to-red-800 text-white px-2 py-1 w-auto">
-          <span class="text-xl font-bold">SEDE PRINCIPAL</span>
-        </div>
-        <div class="mt-2">
-          <span class="text-4xl md:text-7xl font-bold">LAURELES</span>
-        </div>
-        <div class="mt-5 text-lg">
-          <span>(604) 4487771 Opción 1, 1, 1</span>
-          <br>
-          <span>Carrera 81 # 35 - 96</span>
-          <br>
-          <span class="border-b-2 hover:border-b-red-600 cursor-pointer">Ver Asesores</span>
-        </div>
-        <div>
-          <img src="/img/logo-horizontal-portada.webp" alt="">
-        </div>
-      </div>
-    </div>
-  </div>
+  <Sedes client:visible></Sedes>
 
   <!-- <div class="grid grid-cols-6 gap-4 mx-4">
     <div class="col-span-4">
