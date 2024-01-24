@@ -1,0 +1,42 @@
+[
+    {
+      "title": "Asesoría Continua y Personalizada",
+      "icon" : "<svg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-users-group' width='28' height='28' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0' /><path d='M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1' /><path d='M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0' /><path d='M17 10h2a2 2 0 0 1 2 2v1' /><path d='M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0' /><path d='M3 13v-1a2 2 0 0 1 2 -2h2' /></svg>",
+      "description": "Nuestro equipo ejecutivo de servicio está aquí para proporcionarte una comunicación de calidad, asesoramiento continuo y una fuente centralizada de información."
+    },
+    {
+      "title": "Revisión y Perfilamiento de Clientes",
+      "icon" : "<svg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-checklist' width='28' height='28' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M9.615 20h-2.615a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8' /><path d='M14 19l2 2l4 -4' /><path d='M9 8h4' /><path d='M9 12h2' /></svg>",
+      "description": "Realizamos un exhaustivo análisis de cada cliente para asegurar su capacidad de pago y la autenticidad de la información, garantizando así la protección de su patrimonio y sus ingresos."
+    },
+    {
+      "title": "Firmas Digitales y Seguras",
+      "icon" : "<svg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-signature' width='28' height='28' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M3 17c3.333 -3.333 5 -6 5 -8c0 -3 -1 -3 -2 -3s-2.032 1.085 -2 3c.034 2.048 1.658 4.877 2.5 6c1.5 2 2.5 2.5 3.5 1l2 -3c.333 2.667 1.333 4 3 4c.53 0 2.639 -2 3 -2c.517 0 1.517 .667 3 2' /></svg>",
+      "description": "Con nuestro sistema de firma electrónica, puedes firmar el contrato desde cualquier lugar, en cualquier momento y con total seguridad."
+    },
+    {
+      "title": "Inventarios y Actas de Entrega Digitales",
+      "icon" : "<svg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-building-warehouse' width='28' height='28' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M3 21v-13l9 -4l9 4v13' /><path d='M13 13h4v8h-10v-6h6' /><path d='M13 21v-9a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v3' /></svg>",
+      "description": "Realizamos un inventario digital, registrando de forma escrita y fotográfica el estado de cada uno de los espacios y elementos de la propiedad."
+    },
+    {
+      "title" : "Asesoría Legal",
+      "icon" : "<svg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-gavel' width='28' height='28' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M13 10l7.383 7.418c.823 .82 .823 2.148 0 2.967a2.11 2.11 0 0 1 -2.976 0l-7.407 -7.385' /><path d='M6 9l4 4' /><path d='M13 10l-4 -4' /><path d='M3 21h7' /><path d='M6.793 15.793l-3.586 -3.586a1 1 0 0 1 0 -1.414l2.293 -2.293l.5 .5l3 -3l-.5 -.5l2.293 -2.293a1 1 0 0 1 1.414 0l3.586 3.586a1 1 0 0 1 0 1.414l-2.293 2.293l-.5 -.5l-3 3l.5 .5l-2.293 2.293a1 1 0 0 1 -1.414 0z' /></svg>",
+      "description": "Contamos con un equipo de abogados especialistas en arrendamientos, que te guiarán y asesorarán en todo lo que necesites."
+    },
+    {
+      "title" : "Pago de Canon Oportuno",
+      "icon" : "<svg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-paywall' width='28' height='28' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M13 21h-6a2 2 0 0 1 -2 -2v-6a2 2 0 0 1 2 -2h10' /><path d='M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0' /><path d='M8 11v-4a4 4 0 1 1 8 0v4' /><path d='M21 15h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5' /><path d='M19 21v1' /><path d='M19 14v1' /></svg>",
+      "description": "Te garantizamos el pago de tu canon de arrendamiento en la fecha acordada, sin importar si el arrendatario paga o no paga a tiempo."
+    },
+    {
+      "title" : "Facturación Electrónica",
+      "icon" : "<svg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-world-check' width='28' height='28' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M20.946 12.99a9 9 0 1 0 -9.46 7.995' /><path d='M3.6 9h16.8' /><path d='M3.6 15h13.9' /><path d='M11.5 3a17 17 0 0 0 0 18' /><path d='M12.5 3a16.997 16.997 0 0 1 2.311 12.001' /><path d='M15 19l2 2l4 -4' /></svg>",
+      "description": "Nuestra facturación es legal y 100% electrónica, podrás consultar tus facturas en línea donde quiera que estes."
+    },
+    {
+      "title" : "Pago de Administraciones",
+      "icon" : "<svg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-cash' width='28' height='28' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'><path stroke='none' d='M0 0h24v24H0z' fill='none'/><path d='M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z' /><path d='M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0' /><path d='M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2' /></svg>",
+      "description": "Te ofrecemos un servicio de administración integral de tus inmuebles, que incluye el pago de todos los gastos mensuales relacionados con la copropiedad. "
+    }
+]

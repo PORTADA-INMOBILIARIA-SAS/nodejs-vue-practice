@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Title from "../components/Title.astro";
+import Services from "../components/Services.astro";
 ---
 
 <Layout title="Promocionar mi Inmueble - Portada Inmobiliaria">
@@ -17,7 +18,7 @@ import Title from "../components/Title.astro";
                 <!-- Segunda Columna -->
                 <div class="w-1/2 flex flex-col justify-center items-center h-full bg-gradient-to-r from-red-500 to-red-900 shadow-custom text-sm">
                     <p class="text-white text-center text-balance md:text-2xl px-4">Nuestro equipo de asesores comerciales altamente capacitados se encargará de promocionar tu propiedad y gestionar eficientemente los trámites de arrendamiento. Confía en nuestra experiencia y arrienda tu inmueble con nosotros.</p>
-                    <button class="text-xs p-2 mt-5 md:text-xl uppercase text-black font-bold md:mt-10 bg-gradient-to-b from-white to-gray-200 md:p-4 rounded-full hover:from-white hover:to-gray-300 shadow-custom">Dejanos tus datos</button>
+                    <a onclick=scrollToForm() class="text-xs p-2 mt-5 md:text-xl uppercase text-black font-bold md:mt-10 bg-gradient-to-b from-white to-gray-200 md:p-4 rounded-full hover:from-white hover:to-gray-300 shadow-custom cursor-pointer">Dejanos tus datos</a>
                 </div>
                 </div>
             </div>
@@ -66,4 +67,98 @@ import Title from "../components/Title.astro";
             </div>
         </div>
     </div>
+
+    <Title>Nuestro Servicio Incluye</Title>
+
+    <div class="mx-4 flex justify-center">
+        <Services></Services>
+    </div>
+
+    <div class="isolate relative px-6 pt-24 sm:py-32 lg:px-8" id="form-datos">
+        <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]" aria-hidden="true">
+          <div class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-red-200 to-red-600 opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"></div>
+        </div>
+        <div class="mx-auto max-w-2xl text-center">
+          <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Déjanos tus Datos</h2>
+          <p class="mt-2 text-lg leading-8">Promocionamos tu inmueble con el mejor servicio y agilidad.</p>
+        </div>
+        <form action="#" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-20">
+          <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+            <div>
+              <label for="first-name" class="block text-base font-semibold leading-6 text-gray-900">Nombres y Apellidos</label>
+              <div class="mt-2.5">
+                <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none">
+              </div>
+            </div>
+            <div>
+              <label for="email" class="block text-base font-semibold leading-6 text-gray-900">Email</label>
+              <div class="mt-2.5">
+                <input type="email" name="email" id="email" autocomplete="email" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none">
+              </div>
+            </div>
+            <div>
+              <label for="phone-number" class="block text-base font-semibold leading-6 text-gray-900">Celular</label>
+              <div class="relative mt-2.5">
+                <input type="tel" name="phone-number" id="phone-number" autocomplete="tel" class="block w-full rounded-md border-0 px-3.5 py-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none">
+              </div>
+            </div>
+            <div>
+                <label for="sector" class="block text-base font-semibold leading-6 text-gray-900">Sector</label>
+                <div class="relative mt-2.5">
+                  <select name="phone-number" id="sector" autocomplete="tel" class="block w-full rounded-md border-0 px-3.5 py-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600  sm:leading-6 outline-none">
+                    <option value="">Bello</option>
+                    <option value="">Colores</option>
+                    <option value="">Laureles</option>
+                    <option value="">Poblado</option>
+                    <option value="">Envigado</option>
+                    <option value="">Sabaneta</option>
+                    <option value="">La Estrella</option>
+                    <option value="">Rionegro</option>
+                    <option value="">Guarne</option>
+                    <option value="">Fontibón</option>
+                    <option value="">Zona Norte - Bogotá</option>
+                    <option value="">Mosquera - Cundinamarca</option>
+                  </select>
+                </div>
+            </div>
+            <div>
+                <label for="tipo-inmueble" class="block text-base font-semibold leading-6 text-gray-900">Tipo de Inmueble</label>
+                <div class="relative mt-2.5">
+                  <select name="phone-number" id="tipo-inmueble" autocomplete="tel" class="block w-full rounded-md border-0 px-3.5 py-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none">
+                    <option value="">Casa</option>
+                    <option value="">Apartamento</option>
+                    <option value="">Local</option>
+                    <option value="">Oficina</option>
+                    <option value="">Bodega</option>
+                  </select>
+                </div>
+            </div>
+            <div>
+                <label for="value" class="block font-semibold leading-6 text-gray-900">Valor Estimado de Arriendo</label>
+                <div class="relative mt-2.5">
+                  <div class="absolute inset-y-0 right-3 flex items-center">
+                    <span class="text-gray-400">COP</span>
+                  </div>
+                  <input type="number" name="value" id="phone-number" autocomplete="tel" class="block w-full rounded-md border-0 px-3.5 py-2 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none">
+                </div>
+            </div>
+            <div class="sm:col-span-2">
+              <label for="message" class="block text-base font-semibold leading-6 text-gray-900">Mensaje</label>
+              <div class="mt-2.5">
+                <textarea name="message" id="message" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="mt-10">
+            <button type="submit" class="block w-full rounded-md bg-red-600 px-3.5 py-2.5 text-center text-base font-semibold text-white shadow-2xl hover:bg-red-700">Enviar Mensaje</button>
+          </div>
+        </form>
+      </div>
 </Layout>
+
+<script is:inline>
+    function scrollToForm() {
+      const formulario = document.getElementById('form-datos');
+      formulario.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
