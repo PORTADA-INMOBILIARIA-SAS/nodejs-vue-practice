@@ -1,10 +1,4 @@
 <template>
-  <div class="flex justify-center items-center mt-28 mb-20">
-    <div class="line w-20 bg-red-600 h-1"></div>
-    <span class="text-4xl font-bold ml-5 mr-5 text-center">Nuestras Sedes</span>
-    <div class="line w-20 bg-red-600 h-1"></div>
-  </div>
-
   <div class="grid grid-cols-2 mx-4 text-sm md:text-lg">
     <div class="col-start-1 col-end-2">
       <div class="w-[100%] bg-gray-900 text-white uppercase px-2 py-1">

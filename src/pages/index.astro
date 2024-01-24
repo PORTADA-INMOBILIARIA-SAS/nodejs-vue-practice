@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Layout from "../layouts/Layout.astro";
 import Filter from "../components/Filter.astro";
 import Sedes from "../components/Sedes.vue";
+import Title from '../components/Title.astro';
 import bannerPrincipal from "../../public/img/banner1.webp"
 ---
 
@@ -13,11 +14,7 @@ import bannerPrincipal from "../../public/img/banner1.webp"
   <Filter></Filter>
 
   <!-- CARDS DESTACADOS -->
-  <div class="flex justify-center items-center text-center mt-28 mb-28">
-    <div class="line w-20 bg-red-600 h-1"></div>
-    <span class="text-4xl font-bold ml-5 mr-5">Inmuebles Destacados</span>
-    <div class="line w-20 bg-red-600 h-1"></div>
-  </div>
+  <Title>Inmuebles Destacados</Title>
 
   <!-- DESTACADOS -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mx-4">
@@ -34,11 +31,7 @@ import bannerPrincipal from "../../public/img/banner1.webp"
 
 
   <!-- CARDS BLOG -->
-  <div class="flex justify-center items-center mt-28 mb-28">
-    <div class="line w-20 bg-red-600 h-1"></div>
-    <span class="text-4xl font-bold ml-5 mr-5">Blog</span>
-    <div class="line w-20 bg-red-600 h-1"></div>
-  </div>
+  <Title>Blog</Title>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-4 max-w-full">
     <div class="flex flex-col cursor-pointer card-blog">
@@ -106,6 +99,7 @@ import bannerPrincipal from "../../public/img/banner1.webp"
   </div>
 
   <!-- NUESTRAS SEDES -->
+  <Title>Nuestras Sedes</Title>
   <Sedes client:visible></Sedes>
 
   <!-- <div class="grid grid-cols-6 gap-4 mx-4">
