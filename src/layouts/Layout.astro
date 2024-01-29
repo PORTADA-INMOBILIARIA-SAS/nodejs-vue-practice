@@ -26,7 +26,7 @@ const { title } = Astro.props;
 	</body>
 </html>
 
-<style>
+<style is:global>
 	@font-face {
 		font-family: 'RobotoCondensed-Regular';
 		src: url('/font/RobotoCondensed-Regular.woff2') format('woff2');
@@ -40,4 +40,20 @@ const { title } = Astro.props;
 		background: url("/img/Background_2024.webp");
 		background-size: cover;
 	}
+
+	select {
+		-moz-appearance: none;
+		-webkit-appearance:none;
+		-ms-appearance:none;
+		-o-appearance:none;
+		appearance:none;
+ 	}
+
+	 input[type='range']::-webkit-slider-thumb {
+      width: 18px;
+      -webkit-appearance: none;
+      height: 18px;
+      background: rgb(220 38 38);
+      border-radius: 100%;
+    }
 </style>

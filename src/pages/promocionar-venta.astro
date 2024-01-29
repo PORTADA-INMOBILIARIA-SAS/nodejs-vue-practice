@@ -1,23 +1,22 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Title from "../components/Title.astro";
-import Services from "../components/Services.astro";
 ---
 
 <Layout title="Promocionar mi Inmueble - Portada Inmobiliaria">
     <div class="h-fit md:h-screen pt-28 w-full flex items-center justify-center">
         <div class="h-fit relative w-full md:h-full flex flex-col">
-            <img class="w-full h-96 md:h-full object-cover object-center brightness-[30%]" src="/img/personal.webp" alt="">
+            <img class="w-full h-96 md:h-full object-cover object-center brightness-[30%]" src="/img/personal2.webp" alt="">
             <div class="absolute h-full flex justify-center">
                 <div class="flex md:space-x-10 justify-center items-center md:mx-5">
                 <!-- Primera Columna -->
                 <div class="w-1/2 flex justify-center">
-                    <p class="text-white uppercase font-extrabold md:text-5xl text-center text-balance tracking-wide">¿Qué esperas para arrendar tu inmueble con nosotros?</p>
+                    <p class="text-white uppercase font-extrabold md:text-5xl text-center text-balance tracking-wide">¿Qué esperas para vender tu inmueble con nosotros?</p>
                 </div>
 
                 <!-- Segunda Columna -->
                 <div class="w-1/2 flex flex-col justify-center items-center h-full bg-gradient-to-r from-red-500 to-red-900 shadow-custom text-sm">
-                    <p class="text-white text-center text-balance md:text-2xl px-4">Nuestro equipo de asesores comerciales altamente capacitados se encargará de promocionar tu propiedad y gestionar eficientemente los trámites de arrendamiento. Confía en nuestra experiencia y arrienda tu inmueble con nosotros.</p>
+                    <p class="text-white text-center text-balance md:text-2xl px-4">Contamos con una amplia experiencia en el mercado inmobiliario y conocemos los mejores métodos para promocionar tus propiedades y encontrar a los compradores ideales.</p>
                     <button onclick=scrollToForm() class="text-xs p-2 mt-5 md:text-xl uppercase text-black font-bold md:mt-10 bg-gradient-to-b from-white to-gray-200 md:p-4 rounded-full hover:from-white hover:to-gray-300 shadow-custom cursor-pointer">Dejanos tus datos</button>
                 </div>
                 </div>
@@ -68,12 +67,6 @@ import Services from "../components/Services.astro";
         </div>
     </div>
 
-    <Title>Nuestro Servicio Incluye</Title>
-
-    <div class="mx-4 flex justify-center">
-        <Services></Services>
-    </div>
-
     <div class="isolate relative px-6 pt-24 sm:py-32 lg:px-8" id="form-datos">
         <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]" aria-hidden="true">
           <div class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-red-200 to-red-600 opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"></div>
@@ -96,30 +89,11 @@ import Services from "../components/Services.astro";
                 <input type="email" name="email" id="email" autocomplete="email" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none">
               </div>
             </div>
-            <div>
+            <div class="sm:col-span-2">
               <label for="phone-number" class="block text-base font-semibold leading-6 text-gray-900">Celular</label>
               <div class="relative mt-2.5">
                 <input type="tel" name="phone-number" id="phone-number" autocomplete="tel" class="block w-full rounded-md border-0 px-3.5 py-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none">
               </div>
-            </div>
-            <div>
-                <label for="sector" class="block text-base font-semibold leading-6 text-gray-900">Sector</label>
-                <div class="relative mt-2.5">
-                  <select name="phone-number" id="sector" autocomplete="tel" class="block w-full rounded-md border-0 px-3.5 py-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600  sm:leading-6 outline-none">
-                    <option value="">Bello</option>
-                    <option value="">Colores</option>
-                    <option value="">Laureles</option>
-                    <option value="">Poblado</option>
-                    <option value="">Envigado</option>
-                    <option value="">Sabaneta</option>
-                    <option value="">La Estrella</option>
-                    <option value="">Rionegro</option>
-                    <option value="">Guarne</option>
-                    <option value="">Fontibón</option>
-                    <option value="">Zona Norte - Bogotá</option>
-                    <option value="">Mosquera - Cundinamarca</option>
-                  </select>
-                </div>
             </div>
             <div>
                 <label for="tipo-inmueble" class="block text-base font-semibold leading-6 text-gray-900">Tipo de Inmueble</label>

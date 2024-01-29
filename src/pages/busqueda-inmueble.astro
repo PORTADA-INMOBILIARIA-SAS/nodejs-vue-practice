@@ -1,0 +1,430 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Búsqueda Inmuebles - Portada Inmobiliaria">
+    <div class="isolate relative px-6 pt-32 lg:px-8" id="form-datos">
+        <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]" aria-hidden="true">
+            <div class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-red-200 to-red-600 opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"></div>
+        </div>
+        <div class="mx-auto max-w-2xl text-center mt-8">
+            <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Búsqueda de Inmueble</h2>
+        </div>
+        <form action="#" method="POST" class="mx-auto mt-8 max-w-3xl">
+          <div class="grid grid-cols-1 gap-x-8 gap-y-3 md:gap-y-6 sm:grid-cols-2">
+            <div class="col-span-2 md:col-span-1">
+              <div>
+                <div class="relative flex items-center w-full">
+                    <div class="absolute pl-2">
+                        <svg class="icon icon-tabler icon-tabler-home" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="#DC2626" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                        </svg>
+                    </div>
+                    <select class="bg-white min-w-full shadow-custom rounded-md border-0 py-2 px-8 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-red-700 outline-none">
+                        <option value="arrendar" selected>Arrendar</option>
+                        <option value="comprar">Comprar</option>
+                    </select>
+                    <div class="absolute text-red-600 right-0 pr-3">
+                        <svg class="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-span-2 md:col-span-1">
+                <div>
+                  <div class="relative flex items-center w-full">
+                      <div class="absolute pl-2 text-red-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-key" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1 -4.069 0l-.301 -.301l-6.558 6.558a2 2 0 0 1 -1.239 .578l-.175 .008h-1.172a1 1 0 0 1 -.993 -.883l-.007 -.117v-1.172a2 2 0 0 1 .467 -1.284l.119 -.13l.414 -.414h2v-2h2v-2l2.144 -2.144l-.301 -.301a2.877 2.877 0 0 1 0 -4.069l2.643 -2.643a2.877 2.877 0 0 1 4.069 0z" />
+                            <path d="M15 9h.01" />
+                        </svg>
+                      </div>
+                      <select class="bg-white min-w-full shadow-custom rounded-md border-0 py-2 px-8 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-red-700 outline-none">
+                          <option value="" selected>Tipo de Inmueble</option>
+                          <option value="">Apartamento</option>
+                          <option value="">Casa</option>
+                          <option value="">Consultorio</option>
+                          <option value="">Oficina</option>
+                          <option value="">Local</option>
+                          <option value="">Bodega</option>
+                          <option value="">Lote</option>
+                          <option value="">Finca</option>
+                          <option value="">Edificio</option>
+                          <option value="">Apartaestudio</option>
+                      </select>
+                      <div class="absolute text-red-600 right-0 pr-3">
+                          <svg class="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                          </svg>
+                      </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-span-2 md:col-span-1">
+                <div>
+                  <div class="relative flex items-center w-full">
+                      <div class="absolute pl-2 text-red-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-pin" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                            <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
+                        </svg>
+                      </div>
+                      <select class="bg-white min-w-full shadow-custom rounded-md border-0 py-2 px-8 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-red-700 outline-none">
+                          <option value="" selected>Ubicación</option>
+                      </select>
+                      <div class="absolute text-red-600 right-0 pr-3">
+                          <svg class="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                          </svg>
+                      </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-span-2 md:col-span-1">
+                <div>
+                  <div class="relative flex items-center w-full">
+                      <div class="absolute pl-2 text-red-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-2" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5" />
+                            <path d="M9 4v13" /><path d="M15 7v5.5" />
+                            <path d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z" />
+                            <path d="M19 18v.01" />
+                        </svg>
+                      </div>
+                      <select class="bg-white min-w-full shadow-custom rounded-md border-0 py-2 px-8 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-red-700 outline-none">
+                          <option value="" selected>Sector</option>
+                      </select>
+                      <div class="absolute text-red-600 right-0 pr-3">
+                          <svg class="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                          </svg>
+                      </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="relative mb-6 col-span-2">
+                <label for="labels-range-input" class="sr-only">Labels range</label>
+                <input id="labels-range-input" type="range" value="100" min="100" max="1500" class="w-full h-2 bg-red-400 rounded-lg appearance-none cursor-pointer">
+                <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">Min</span>
+                <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">Max</span>
+            </div>
+
+            <div class="col-span-2">
+                <div class="grid grid-cols-1 md:grid-cols-3 md:gap-3 gap-y-3 w-full">
+                    <div class="flex justify-center">
+                        <div class="flex bg-white shadow-custom items-center rounded-md w-full justify-between">
+                            <div class="flex items-center ml-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bed" width="30" height="30" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                    <path d="M22 17v-3h-20" /><path d="M2 8v9" /><path d="M12 14h10v-2a3 3 0 0 0 -3 -3h-7v5z" />
+                                </svg>
+                                <span class="pl-2">Habitaciones</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="h-[50px] w-[1px] bg-gray-300"></div>
+                                <div class="px-4">
+                                    <span>1</span>
+                                </div>
+                                <div class="h-[50px] w-[1px] bg-gray-300"></div>
+                                <div class="flex flex-col text-center">
+                                    <div class="hover:text-red-600">
+                                        <button class="px-2 text-xl">+</button>
+                                    </div>
+                                    <div class="hover:text-red-600">
+                                        <button class="px-2 font-bold">—</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <div class="flex bg-white shadow-custom items-center rounded-md w-full justify-between">
+                            <div class="flex items-center ml-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toilet-paper" width="30" height="30" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M6 10m-3 0a3 7 0 1 0 6 0a3 7 0 1 0 -6 0" /><path d="M21 10c0 -3.866 -1.343 -7 -3 -7" />
+                                    <path d="M6 3h12" />
+                                    <path d="M21 10v10l-3 -1l-3 2l-3 -3l-3 2v-10" />
+                                    <path d="M6 10h.01" />
+                                </svg>
+                                <span class="pl-2">Baños</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="h-[50px] w-[1px] bg-gray-300"></div>
+                                <div class="px-4">
+                                    <span>1</span>
+                                </div>
+                                <div class="h-[50px] w-[1px] bg-gray-300"></div>
+                                <div class="flex flex-col text-center">
+                                    <div class="hover:text-red-600">
+                                        <button class="px-2 text-xl">+</button>
+                                    </div>
+                                    <div class="hover:text-red-600">
+                                        <button class="px-2 font-bold">—</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <div class="flex bg-white shadow-custom items-center rounded-md w-full justify-between">
+                            <div class="flex items-center ml-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-parking-circle" width="30" height="30" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M10 16v-8h2.667c.736 0 1.333 .895 1.333 2s-.597 2 -1.333 2h-2.667" />
+                                    <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                                </svg>
+                                <span class="pl-2">Parqueaderos</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="h-[50px] w-[1px] bg-gray-300"></div>
+                                <div class="px-4">
+                                    <span>1</span>
+                                </div>
+                                <div class="h-[50px] w-[1px] bg-gray-300"></div>
+                                <div class="flex flex-col text-center">
+                                    <div class="hover:text-red-600">
+                                        <button class="px-2 text-xl">+</button>
+                                    </div>
+                                    <div class="hover:text-red-600">
+                                        <button class="px-2 font-bold">—</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 my-14">
+        <div class="h-[550px] w-full rounded-md overflow-hidden shadow-custom bg-white apt-card cursor-pointer">
+            <div class="h-[70%] w-full relative text-center overflow-hidden">
+                <div class="absolute bg-red-600 text-white px-2 py-2 text-xl rounded-br-md z-10">
+                    <span>679-19720</span>
+                </div>
+                <div class="absolute right-0 bg-red-600 text-white px-2 py-2 text-xl rounded-bl-md heart-container cursor-pointer z-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart heart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="hidden icon icon-tabler icon-tabler-heart-filled heart-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z" stroke-width="0" fill="currentColor" /></svg>
+                </div>
+                <div class="absolute bottom-0 w-full bg-red-600 text-white px-2 py-2 text-xl rounded-bl-md z-10">
+                    <span>$2.700.000</span>
+                </div>
+                <img src="/img/aptos/apt.webp" class="h-full w-full object-cover z-0" alt="">
+            </div>
+            <div class="p-3 font-bold text-center">
+                <div class="mb-4 md:text-xl">
+                    <span>Apartamento en Medellín Antioquia, Barrio Belen</span>
+                </div>
+                <div class="flex text-base font-light h-20 w-full justify-center items-center text-center gap-4 pb-3">
+                    <div class="flex flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-dimensions" width="40" height="40" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 5h11" />
+                            <path d="M12 7l2 -2l-2 -2" /><path d="M5 3l-2 2l2 2" /><path d="M19 10v11" />
+                            <path d="M17 19l2 2l2 -2" /><path d="M21 12l-2 -2l-2 2" />
+                            <path d="M3 10m0 2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v7a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2z" />
+                        </svg>
+                        <span>74m²</span>
+                    </div>
+
+                    <div class="flex flex-col h-full w-[2px] bg-gray-200"></div>
+
+                    <div class="flex flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bed" width="40" height="40" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M22 17v-3h-20" /><path d="M2 8v9" /><path d="M12 14h10v-2a3 3 0 0 0 -3 -3h-7v5z" />
+                        </svg>
+                        <span>3</span>
+                    </div>
+
+                    <div class="flex flex-col h-full w-[2px] bg-gray-200"></div>
+
+                    <div class="flex flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toilet-paper" width="40" height="40" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M6 10m-3 0a3 7 0 1 0 6 0a3 7 0 1 0 -6 0" /><path d="M21 10c0 -3.866 -1.343 -7 -3 -7" />
+                            <path d="M6 3h12" />
+                            <path d="M21 10v10l-3 -1l-3 2l-3 -3l-3 2v-10" />
+                            <path d="M6 10h.01" />
+                        </svg>
+                        <span>2</span>
+                    </div>
+
+                    <div class="flex flex-col h-full w-[2px] bg-gray-200"></div>
+
+                    <div class="flex flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-parking-circle" width="40" height="40" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M10 16v-8h2.667c.736 0 1.333 .895 1.333 2s-.597 2 -1.333 2h-2.667" />
+                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                        </svg>
+                        <span>1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="h-[550px] w-full rounded-md overflow-hidden shadow-custom bg-white apt-card cursor-pointer">
+            <div class="h-[70%] w-full relative text-center overflow-hidden">
+                <div class="absolute bg-red-600 text-white px-2 py-2 text-xl rounded-br-md z-10">
+                    <span>679-19720</span>
+                </div>
+                <div class="absolute right-0 bg-red-600 text-white px-2 py-2 text-xl rounded-bl-md heart-container cursor-pointer z-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart heart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="hidden icon icon-tabler icon-tabler-heart-filled heart-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z" stroke-width="0" fill="currentColor" /></svg>
+                </div>
+                <div class="absolute bottom-0 w-full bg-red-600 text-white px-2 py-2 text-xl rounded-bl-md z-10">
+                    <span>$2.700.000</span>
+                </div>
+                <img src="/img/aptos/apt.webp" class="h-full w-full object-cover z-0" alt="">
+            </div>
+            <div class="p-3 font-bold text-center">
+                <div class="mb-4 md:text-xl">
+                    <span>Apartamento en Medellín Antioquia, Barrio Belen</span>
+                </div>
+                <div class="flex text-base font-light h-20 w-full justify-center items-center text-center gap-4 pb-3">
+                    <div class="flex flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-dimensions" width="40" height="40" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 5h11" />
+                            <path d="M12 7l2 -2l-2 -2" /><path d="M5 3l-2 2l2 2" /><path d="M19 10v11" />
+                            <path d="M17 19l2 2l2 -2" /><path d="M21 12l-2 -2l-2 2" />
+                            <path d="M3 10m0 2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v7a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2z" />
+                        </svg>
+                        <span>74m²</span>
+                    </div>
+
+                    <div class="flex flex-col h-full w-[2px] bg-gray-200"></div>
+
+                    <div class="flex flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bed" width="40" height="40" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M22 17v-3h-20" /><path d="M2 8v9" /><path d="M12 14h10v-2a3 3 0 0 0 -3 -3h-7v5z" />
+                        </svg>
+                        <span>3</span>
+                    </div>
+
+                    <div class="flex flex-col h-full w-[2px] bg-gray-200"></div>
+
+                    <div class="flex flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toilet-paper" width="40" height="40" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M6 10m-3 0a3 7 0 1 0 6 0a3 7 0 1 0 -6 0" /><path d="M21 10c0 -3.866 -1.343 -7 -3 -7" />
+                            <path d="M6 3h12" />
+                            <path d="M21 10v10l-3 -1l-3 2l-3 -3l-3 2v-10" />
+                            <path d="M6 10h.01" />
+                        </svg>
+                        <span>2</span>
+                    </div>
+
+                    <div class="flex flex-col h-full w-[2px] bg-gray-200"></div>
+
+                    <div class="flex flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-parking-circle" width="40" height="40" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M10 16v-8h2.667c.736 0 1.333 .895 1.333 2s-.597 2 -1.333 2h-2.667" />
+                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                        </svg>
+                        <span>1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="h-[550px] w-full rounded-md overflow-hidden shadow-custom bg-white apt-card cursor-pointer">
+            <div class="h-[70%] w-full relative text-center overflow-hidden">
+                <div class="absolute bg-red-600 text-white px-2 py-2 text-xl rounded-br-md z-10">
+                    <span>679-19720</span>
+                </div>
+                <div class="absolute right-0 bg-red-600 text-white px-2 py-2 text-xl rounded-bl-md heart-container cursor-pointer z-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart heart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="hidden icon icon-tabler icon-tabler-heart-filled heart-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z" stroke-width="0" fill="currentColor" /></svg>
+                </div>
+                <div class="absolute bottom-0 w-full bg-red-600 text-white px-2 py-2 text-xl rounded-bl-md z-10">
+                    <span>$2.700.000</span>
+                </div>
+                <img src="/img/aptos/apt.webp" class="h-full w-full object-cover z-0" alt="">
+            </div>
+            <div class="p-3 font-bold text-center">
+                <div class="mb-4 md:text-xl">
+                    <span>Apartamento en Medellín Antioquia, Barrio Belen</span>
+                </div>
+                <div class="flex text-base font-light h-20 w-full justify-center items-center text-center gap-4 pb-3">
+                    <div class="flex flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-dimensions" width="40" height="40" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 5h11" />
+                            <path d="M12 7l2 -2l-2 -2" /><path d="M5 3l-2 2l2 2" /><path d="M19 10v11" />
+                            <path d="M17 19l2 2l2 -2" /><path d="M21 12l-2 -2l-2 2" />
+                            <path d="M3 10m0 2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v7a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2z" />
+                        </svg>
+                        <span>74m²</span>
+                    </div>
+
+                    <div class="flex flex-col h-full w-[2px] bg-gray-200"></div>
+
+                    <div class="flex flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bed" width="40" height="40" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M22 17v-3h-20" /><path d="M2 8v9" /><path d="M12 14h10v-2a3 3 0 0 0 -3 -3h-7v5z" />
+                        </svg>
+                        <span>3</span>
+                    </div>
+
+                    <div class="flex flex-col h-full w-[2px] bg-gray-200"></div>
+
+                    <div class="flex flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toilet-paper" width="40" height="40" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M6 10m-3 0a3 7 0 1 0 6 0a3 7 0 1 0 -6 0" /><path d="M21 10c0 -3.866 -1.343 -7 -3 -7" />
+                            <path d="M6 3h12" />
+                            <path d="M21 10v10l-3 -1l-3 2l-3 -3l-3 2v-10" />
+                            <path d="M6 10h.01" />
+                        </svg>
+                        <span>2</span>
+                    </div>
+
+                    <div class="flex flex-col h-full w-[2px] bg-gray-200"></div>
+
+                    <div class="flex flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-parking-circle" width="40" height="40" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M10 16v-8h2.667c.736 0 1.333 .895 1.333 2s-.597 2 -1.333 2h-2.667" />
+                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                        </svg>
+                        <span>1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .heart-container:hover .heart {
+        display: none;
+    }
+
+    .heart-container:hover .heart-filled {
+        display: block;
+    }
+
+    .apt-card img {
+        transition: all .3s ease;
+    }
+
+    .apt-card:hover img {
+        transition: all .3s ease;
+        scale: 110%;
+    }
+</style>
