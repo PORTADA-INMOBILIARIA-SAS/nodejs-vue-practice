@@ -1,0 +1,5 @@
+{
+    "**/*.{astro,vue,js,mjs,cjs,ts}": [
+        "prettier --write --plugin=prettier-plugin-astro"
+    ]
+}

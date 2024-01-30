@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Running pre-commit hook en donde van los tests... si es que hay tests..."
+
+pnpm dlx lint-staged
