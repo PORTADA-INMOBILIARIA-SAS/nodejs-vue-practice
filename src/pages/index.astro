@@ -1,17 +1,15 @@
 ---
-import { Image } from 'astro:assets';
-import Layout from "../layouts/Layout.astro";
-import Filter from "../components/Filter.astro";
-import Sedes from "../components/Sedes.vue";
-import Title from '../components/Title.astro';
-import bannerPrincipal from "../../public/img/banner1.webp"
+import Layout from "../layouts/Layout.astro"
+import Filter from "../components/Filter.astro"
+import Sedes from "../components/Sedes.vue"
+import Title from "../components/Title.astro"
 ---
 
 <Layout title="Portada Inmobiliaria - Profesionales en Vivir Mejor">
   <div class="pt-28">
-    <Image src={bannerPrincipal} alt="" />
+    <img src="/img/banner1.webp" alt="" />
   </div>
-  <Filter></Filter>
+  <Filter />
 
   <!-- CARDS DESTACADOS -->
   <Title>Inmuebles Destacados</Title>
@@ -19,21 +17,34 @@ import bannerPrincipal from "../../public/img/banner1.webp"
   <!-- DESTACADOS -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mx-4">
     <div class="relative overflow-hidden">
-        <img src="/img/destacados/destacado1.webp" class="hover:scale-105 hover:brightness-75 transition-transform duration-300 ease-in-out cursor-pointer" alt="" />
+      <img
+        src="/img/destacados/destacado1.webp"
+        class="hover:scale-105 hover:brightness-75 transition-transform duration-300 ease-in-out cursor-pointer"
+        alt=""
+      />
     </div>
     <div class="relative overflow-hidden">
-        <img src="/img/destacados/destacado2.webp" class="hover:scale-105 hover:brightness-75 transition-transform duration-300 ease-in-out cursor-pointer" alt="" />
+      <img
+        src="/img/destacados/destacado2.webp"
+        class="hover:scale-105 hover:brightness-75 transition-transform duration-300 ease-in-out cursor-pointer"
+        alt=""
+      />
     </div>
     <div class="relative overflow-hidden">
-        <img src="/img/destacados/destacado3.webp" class="hover:scale-105 hover:brightness-75 transition-transform duration-300 ease-in-out cursor-pointer" alt="" />
+      <img
+        src="/img/destacados/destacado3.webp"
+        class="hover:scale-105 hover:brightness-75 transition-transform duration-300 ease-in-out cursor-pointer"
+        alt=""
+      />
     </div>
   </div>
-
 
   <!-- CARDS BLOG -->
   <Title>Blog</Title>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-4 max-w-full">
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-4 max-w-full"
+  >
     <div class="flex flex-col cursor-pointer card-blog">
       <div class="relative flex-grow">
         <img
@@ -100,7 +111,7 @@ import bannerPrincipal from "../../public/img/banner1.webp"
 
   <!-- NUESTRAS SEDES -->
   <Title>Nuestras Sedes</Title>
-  <Sedes client:visible></Sedes>
+  <Sedes client:visible />
 
   <!-- <div class="grid grid-cols-6 gap-4 mx-4">
     <div class="col-span-4">
@@ -155,7 +166,7 @@ import bannerPrincipal from "../../public/img/banner1.webp"
 
 <style>
   .card-blog:hover img {
-    filter: brightness(.75);
+    filter: brightness(0.75);
   }
 
   .card-blog:hover .card-blog-text {
