@@ -1,0 +1,404 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Title from "../components/Title.astro"
+---
+
+<Layout title="Clientes - Portada Inmobiliaria">
+  <div class="pt-28 mx-4">
+    <Title>Propietario</Title>
+    <div class="flex flex-wrap gap-10 justify-center min-h-60">
+      <div class="flex flex-col justify-center items-center">
+        <div
+          class="h-[180px] w-[180px] bg-gradient-to-r p-5 from-red-600 to-red-800 hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.8)] cursor-pointer rounded-full flex justify-center items-center text-white font-bold text-center"
+        >
+          <div class="flex-col flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-home-x"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              stroke-width="1"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                d="M19 13.4v-1.4h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h5.5"
+              ></path><path
+                d="M9 21v-6a2 2 0 0 1 2 -2h2c.402 0 .777 .119 1.091 .323"
+              ></path><path d="M21.5 21.5l-5 -5"></path><path
+                d="M16.5 21.5l5 -5"></path></svg
+            >
+            <span>Solicitar Terminación de Contrato</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col justify-center items-center">
+        <div
+          class="h-[180px] w-[180px] bg-gradient-to-r p-5 from-red-600 to-red-800 rounded-full hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.8)] cursor-pointer flex justify-center items-center text-white font-bold text-center"
+        >
+          <div class="flex-col flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-wallet"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              stroke-width="1"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"
+              ></path><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"></path></svg
+            >
+            <span>Consultar Estado de Cuenta</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col justify-center items-center">
+        <div
+          class="h-[180px] w-[180px] bg-gradient-to-r p-5 from-red-600 to-red-800 rounded-full hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.8)] cursor-pointer flex justify-center items-center text-white font-bold text-center"
+        >
+          <div class="flex-col flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-file-invoice"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              stroke-width="1"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                d="M14 3v4a1 1 0 0 0 1 1h4"></path><path
+                d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"
+              ></path><path d="M9 7l1 0"></path><path d="M9 13l6 0"></path><path
+                d="M13 17l2 0"></path></svg
+            >
+            <span>Generar Certificado Declaración de Renta</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col justify-center items-center">
+        <div
+          class="h-[180px] w-[180px] bg-gradient-to-r p-5 from-red-600 to-red-800 rounded-full hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.8)] cursor-pointer flex justify-center items-center text-white font-bold text-center"
+        >
+          <div class="flex-col flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-businessplan"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              stroke-width="1"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                d="M16 6m-5 0a5 3 0 1 0 10 0a5 3 0 1 0 -10 0"></path><path
+                d="M11 6v4c0 1.657 2.239 3 5 3s5 -1.343 5 -3v-4"></path><path
+                d="M11 10v4c0 1.657 2.239 3 5 3s5 -1.343 5 -3v-4"></path><path
+                d="M11 14v4c0 1.657 2.239 3 5 3s5 -1.343 5 -3v-4"></path><path
+                d="M7 9h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5"
+              ></path><path d="M5 15v1m0 -8v1"></path></svg
+            >
+            <span>Solicitar Certificado de Ingresos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <Title>Arrendatario</Title>
+
+    <div class="flex flex-wrap gap-10 justify-center min-h-60">
+      <div class="flex flex-col justify-center items-center">
+        <div
+          class="h-[180px] w-[180px] bg-gradient-to-r p-5 from-red-600 to-red-800 hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.8)] cursor-pointer rounded-full flex justify-center items-center text-white font-bold text-center"
+        >
+          <div class="flex-col flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-hammer"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              stroke-width="1"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                d="M11.414 10l-7.383 7.418a2.091 2.091 0 0 0 0 2.967a2.11 2.11 0 0 0 2.976 0l7.407 -7.385"
+              ></path><path
+                d="M18.121 15.293l2.586 -2.586a1 1 0 0 0 0 -1.414l-7.586 -7.586a1 1 0 0 0 -1.414 0l-2.586 2.586a1 1 0 0 0 0 1.414l7.586 7.586a1 1 0 0 0 1.414 0z"
+              ></path></svg
+            >
+            <span>Solicitar Mantenimientos y Reparaciones</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col justify-center items-center">
+        <div
+          class="h-[180px] w-[180px] bg-gradient-to-r p-5 from-red-600 to-red-800 rounded-full hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.8)] cursor-pointer flex justify-center items-center text-white font-bold text-center"
+        >
+          <div class="flex-col flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-home-x"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              stroke-width="1"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                d="M19 13.4v-1.4h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h5.5"
+              ></path><path
+                d="M9 21v-6a2 2 0 0 1 2 -2h2c.402 0 .777 .119 1.091 .323"
+              ></path><path d="M21.5 21.5l-5 -5"></path><path
+                d="M16.5 21.5l5 -5"></path></svg
+            >
+            <span>Solicitar Terminación de Contrato</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col justify-center items-center">
+        <div
+          class="h-[180px] w-[180px] bg-gradient-to-r p-5 from-red-600 to-red-800 rounded-full hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.8)] cursor-pointer flex justify-center items-center text-white font-bold text-center"
+        >
+          <div class="flex-col flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-receipt-refund"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              stroke-width="1"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2"
+              ></path><path d="M15 14v-2a2 2 0 0 0 -2 -2h-4l2 -2m0 4l-2 -2"
+              ></path></svg
+            >
+            <span>Solicitar Recibimiento de Inmueble</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col justify-center items-center">
+        <div
+          class="h-[180px] w-[180px] bg-gradient-to-r p-5 from-red-600 to-red-800 rounded-full hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.8)] cursor-pointer flex justify-center items-center text-white font-bold text-center"
+        >
+          <div class="flex-col flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-file-dollar"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              stroke-width="1"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                d="M14 3v4a1 1 0 0 0 1 1h4"></path><path
+                d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"
+              ></path><path
+                d="M14 11h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5"
+              ></path><path d="M12 17v1m0 -8v1"></path></svg
+            >
+            <span>Servicios Públicos</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col justify-center items-center">
+        <div
+          class="h-[180px] w-[180px] bg-gradient-to-r p-5 from-red-600 to-red-800 rounded-full hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.8)] cursor-pointer flex justify-center items-center text-white font-bold text-center"
+        >
+          <div class="flex-col flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-brand-hipchat"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              stroke-width="1"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                d="M17.802 17.292s.077 -.055 .2 -.149c1.843 -1.425 3 -3.49 3 -5.789c0 -4.286 -4.03 -7.764 -9 -7.764c-4.97 0 -9 3.478 -9 7.764c0 4.288 4.03 7.646 9 7.646c.424 0 1.12 -.028 2.088 -.084c1.262 .82 3.104 1.493 4.716 1.493c.499 0 .734 -.41 .414 -.828c-.486 -.596 -1.156 -1.551 -1.416 -2.29z"
+              ></path><path d="M7.5 13.5c2.5 2.5 6.5 2.5 9 0"></path></svg
+            >
+            <span>Manifestar FPQRS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <Title>Actualización de Datos</Title>
+
+    <div class="isolate relative px-6 lg:px-8" id="form-datos">
+      <div
+        class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
+        aria-hidden="true"
+      >
+        <div
+          class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-red-200 to-red-600 opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
+        >
+        </div>
+      </div>
+      <form action="#" method="POST" class="mx-auto max-w-xl">
+        <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+          <div>
+            <label
+              for="tipo-documento"
+              class="block text-base font-semibold leading-6 text-gray-900"
+              >Tipo de Documento</label
+            >
+            <div class="relative mt-2.5">
+              <select
+                id="tipo-documento"
+                autocomplete="tel"
+                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+              >
+                <option value="">Cédula de Ciudadanía - CC</option>
+                <option value="">Cédula de Extranjería - CE</option>
+                <option value="">Pasaporte - PA</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="id-number"
+              class="block text-base font-semibold leading-6 text-gray-900"
+              >Número de Identificación</label
+            >
+            <div class="relative mt-2.5">
+              <input
+                type="number"
+                name="id-number"
+                id="id-number"
+                autocomplete="tel"
+                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="tipo-documento"
+              class="block text-base font-semibold leading-6 text-gray-900"
+              >Tipo de Cliente</label
+            >
+            <div class="relative mt-2.5">
+              <select
+                id="tipo-documento"
+                autocomplete="tel"
+                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+              >
+                <option value="">Propietario</option>
+                <option value="">Arrendatario</option>
+                <option value="">Deudor</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="first-name"
+              class="block text-base font-semibold leading-6 text-gray-900"
+              >Nombres y Apellidos</label
+            >
+            <div class="mt-2.5">
+              <input
+                type="text"
+                name="first-name"
+                id="first-name"
+                autocomplete="given-name"
+                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="email"
+              class="block text-base font-semibold leading-6 text-gray-900"
+              >Email</label
+            >
+            <div class="mt-2.5">
+              <input
+                type="email"
+                name="email"
+                id="email"
+                autocomplete="email"
+                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="phone-number"
+              class="block text-base font-semibold leading-6 text-gray-900"
+              >Celular</label
+            >
+            <div class="relative mt-2.5">
+              <input
+                type="tel"
+                name="phone-number"
+                id="phone-number"
+                autocomplete="tel"
+                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+              />
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label
+              for="message"
+              class="block text-base font-semibold leading-6 text-gray-900"
+              >Mensaje</label
+            >
+            <div class="mt-2.5">
+              <textarea
+                name="message"
+                id="message"
+                rows="4"
+                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="mt-10">
+          <button
+            type="submit"
+            class="block w-full rounded-md bg-red-600 px-3.5 py-2.5 text-center text-base font-semibold text-white shadow-2xl hover:bg-red-700"
+            >Enviar</button
+          >
+        </div>
+      </form>
+    </div>
+  </div>
+</Layout>

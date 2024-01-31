@@ -1,0 +1,155 @@
+---
+import Layout from "../layouts/Layout.astro"
+---
+
+<Layout title="PQR'S - Portada Inmobiliaria">
+  <div class="pt-28">
+    <img class="z-20" src="/img/banner_pqrs.webp" alt="" />
+  </div>
+
+  <div class="isolate relative px-6 pt-24 sm:pt-32 lg:px-8" id="form-datos">
+    <div
+      class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
+      aria-hidden="true"
+    >
+      <div
+        class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-red-200 to-red-600 opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
+      >
+      </div>
+    </div>
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
+        Peticiones, Quejas y Reclamos
+      </h2>
+    </div>
+    <form action="#" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-20">
+      <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+        <div>
+          <label
+            for="tipo-documento"
+            class="block text-base font-semibold leading-6 text-gray-900"
+            >Tipo de Documento</label
+          >
+          <div class="relative mt-2.5">
+            <select
+              id="tipo-documento"
+              autocomplete="tel"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+            >
+              <option value="">Cédula de Ciudadanía - CC</option>
+              <option value="">Cédula de Extranjería - CE</option>
+              <option value="">Pasaporte - PA</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="id-number"
+            class="block text-base font-semibold leading-6 text-gray-900"
+            >Número de Identificación</label
+          >
+          <div class="relative mt-2.5">
+            <input
+              type="number"
+              name="id-number"
+              id="id-number"
+              autocomplete="tel"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+            />
+          </div>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label
+            for="first-name"
+            class="block text-base font-semibold leading-6 text-gray-900"
+            >Nombres y Apellidos</label
+          >
+          <div class="mt-2.5">
+            <input
+              type="text"
+              name="first-name"
+              id="first-name"
+              autocomplete="given-name"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="email"
+            class="block text-base font-semibold leading-6 text-gray-900"
+            >Email</label
+          >
+          <div class="mt-2.5">
+            <input
+              type="email"
+              name="email"
+              id="email"
+              autocomplete="email"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="phone-number"
+            class="block text-base font-semibold leading-6 text-gray-900"
+            >Celular</label
+          >
+          <div class="relative mt-2.5">
+            <input
+              type="tel"
+              name="phone-number"
+              id="phone-number"
+              autocomplete="tel"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+            />
+          </div>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label
+            for="message"
+            class="block text-base font-semibold leading-6 text-gray-900"
+            >Mensaje</label
+          >
+          <div class="mt-2.5">
+            <textarea
+              name="message"
+              id="message"
+              rows="4"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:leading-6 outline-none"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="flex sm:col-span-2 items-center">
+          <div class="flex items-center h-5">
+            <input
+              id="gdpr"
+              type="checkbox"
+              value=""
+              class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+              required
+            />
+          </div>
+          <label for="gdpr" class="ms-3 text-base"
+            >Acepto el consentimiento para tratamiento de datos personales.
+            Acepto el manual de políticas y procedimientos.</label
+          >
+        </div>
+      </div>
+      <div class="mt-10">
+        <button
+          type="submit"
+          class="block w-full rounded-md bg-red-600 px-3.5 py-2.5 text-center text-base font-semibold text-white shadow-2xl hover:bg-red-700"
+          >Enviar PQR</button
+        >
+      </div>
+    </form>
+  </div>
+</Layout>

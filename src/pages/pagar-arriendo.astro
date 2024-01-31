@@ -1,0 +1,67 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Title from "../components/Title.astro"
+---
+
+<Layout title="Pagar Arriendo - Portada Inmobiliaria">
+  <div class="pt-28 mx-4">
+    <Title>Pagar Arriendo</Title>
+    <div class="w-full h-full mt-10">
+      <div class="grid grid-cols-1 sm:grid-cols-2">
+        <div>
+          <video class="w-full h-auto max-w-full" controls>
+            <source src="/video/video-canon.webm" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="flex justify-center items-center">
+          <div class="flex-col flex text-3xl text-center gap-5">
+            <button
+              class="flex items-center bg-gradient-to-r from-red-600 to-red-800 text-white text-lg p-2 rounded-md hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.8)]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon icon-tabler icon-tabler-pdf"
+                width="40"
+                height="40"
+                viewBox="0 0 24 24"
+                stroke-width="1"
+                stroke="currentColor"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                  d="M10 8v8h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-2z"
+                ></path><path d="M3 12h2a2 2 0 1 0 0 -4h-2v8"></path><path
+                  d="M17 12h3"></path><path d="M21 8h-4v8"></path></svg
+              >
+              <span class="ml-5">Descargar Instructivo en PDF</span>
+            </button>
+            <button
+              class="flex items-center bg-gradient-to-r from-red-600 to-red-800 text-white text-lg p-2 rounded-md hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.8)]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon icon-tabler icon-tabler-click"
+                width="40"
+                height="40"
+                viewBox="0 0 24 24"
+                stroke-width="1"
+                stroke="currentColor"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                  d="M3 12l3 0"></path><path d="M12 3l0 3"></path><path
+                  d="M7.8 7.8l-2.2 -2.2"></path><path d="M16.2 7.8l2.2 -2.2"
+                ></path><path d="M7.8 16.2l-2.2 2.2"></path><path
+                  d="M12 12l9 3l-4 2l-2 4l-3 -9"></path></svg
+              >
+              <span class="ml-5">Paga Aquí</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
