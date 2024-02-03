@@ -33,6 +33,23 @@ const { title } = Astro.props
     src: url("/font/RobotoCondensed-Regular.woff2") format("woff2");
   }
 
+  :root {
+    --primary-color: rgba(209, 17, 22);
+    --primary-color-75: rgba(209, 17, 22, 0.75);
+    --primary-color-50: rgba(209, 17, 22, 0.5);
+    --primary-color-25: rgba(209, 17, 22, 0.25);
+
+    --cyan-color: rgba(0, 159, 227);
+    --cyan-color-75: rgba(0, 159, 227, 0.75);
+    --cyan-color-50: rgba(0, 159, 227, 0.5);
+    --cyan-color-25: rgba(0, 159, 227, 0.25);
+
+    --yellow-color: rgba(255, 237, 0);
+    --yellow-color-75: rgba(255, 237, 0.75);
+    --yellow-color-50: rgba(255, 237, 0.5);
+    --yellow-color-25: rgba(255, 237, 0.25);
+  }
+
   * {
     font-family: "RobotoCondensed-Regular", sans-serif;
   }
@@ -54,7 +71,7 @@ const { title } = Astro.props
     width: 18px;
     -webkit-appearance: none;
     height: 18px;
-    background: rgb(220 38 38);
+    background: var(--primary-color);
     border-radius: 100%;
   }
 </style>

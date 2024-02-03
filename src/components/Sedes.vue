@@ -6,49 +6,49 @@
         <span class="tracking-widest font-bold">ANTIOQUIA</span>
       </div>
       <div
-        class="min-w-fit w-[95%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[97%]"
+        class="min-w-fit w-[95%] bg-gradient-to-r from-[--primary-color] to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[97%]"
         v-on:click="sedeSeleccionada = 'laureles'"
       >
         <span class="tracking-widest">Laureles</span>
       </div>
       <div
-        class="min-w-fit w-[90%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[92%]"
+        class="min-w-fit w-[90%] bg-gradient-to-r from-[--primary-color] to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[92%]"
         v-on:click="sedeSeleccionada = 'bello'"
       >
         <span class="tracking-widest">Bello</span>
       </div>
       <div
-        class="min-w-fit w-[85%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[87%]"
+        class="min-w-fit w-[85%] bg-gradient-to-r from-[--primary-color] to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[87%]"
         v-on:click="sedeSeleccionada = 'colores'"
       >
         <span class="tracking-widest">Los Colores</span>
       </div>
       <div
-        class="min-w-fit w-[80%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[82%]"
+        class="min-w-fit w-[80%] bg-gradient-to-r from-[--primary-color] to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[82%]"
         v-on:click="sedeSeleccionada = 'poblado'"
       >
         <span class="tracking-widest">El Poblado</span>
       </div>
       <div
-        class="min-w-fit w-[75%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[77%]"
+        class="min-w-fit w-[75%] bg-gradient-to-r from-[--primary-color] to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[77%]"
         v-on:click="sedeSeleccionada = 'envigado'"
       >
         <span class="tracking-widest">Envigado</span>
       </div>
       <div
-        class="min-w-fit w-[70%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[72%]"
+        class="min-w-fit w-[70%] bg-gradient-to-r from-[--primary-color] to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[72%]"
         v-on:click="sedeSeleccionada = 'sabaneta'"
       >
         <span class="tracking-widest">Sabaneta</span>
       </div>
       <div
-        class="min-w-fit w-[65%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[67%]"
+        class="min-w-fit w-[65%] bg-gradient-to-r from-[--primary-color] to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[67%]"
         v-on:click="sedeSeleccionada = 'estrella'"
       >
         <span class="tracking-widest">La Estrella</span>
       </div>
       <div
-        class="min-w-fit w-[60%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[62%]"
+        class="min-w-fit w-[60%] bg-gradient-to-r from-[--primary-color] to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[62%]"
         v-on:click="sedeSeleccionada = 'rionegro'"
       >
         <span class="tracking-widest">Rionegro</span>
@@ -59,13 +59,13 @@
         <span class="tracking-widest font-bold">Cundinamarca</span>
       </div>
       <div
-        class="min-w-fit w-[65%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[67%]"
+        class="min-w-fit w-[65%] bg-gradient-to-r from-[--primary-color] to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[67%]"
         v-on:click="sedeSeleccionada = 'bogota'"
       >
         <span class="tracking-widest">Bogotá</span>
       </div>
       <div
-        class="min-w-fit w-[70%] bg-gradient-to-r from-red-600 to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[72%]"
+        class="min-w-fit w-[70%] bg-gradient-to-r from-[--primary-color] to-red-800 text-white uppercase px-2 py-1 mt-1 cursor-pointer transition-all duration-500 hover:shadow-custom hover:bg-red-800 hover:w-[72%]"
         v-on:click="sedeSeleccionada = 'mosquera'"
       >
         <span class="tracking-widest">Mosquera</span>
@@ -78,7 +78,7 @@
           v-bind:key="sedeSeleccionada"
         >
           <div
-            class="bg-gradient-to-r from-red-600 to-red-800 text-white px-2 py-1 w-auto"
+            class="bg-gradient-to-r from-[--primary-color] to-red-800 text-white px-2 py-1 w-auto"
           >
             <span class="text-xl font-bold">
               {{ sedeSeleccionada == "laureles" ? "SEDE PRINCIPAL" : "SEDE" }}
@@ -94,7 +94,8 @@
             <br />
             <span>{{ infoSedes[sedeSeleccionada].direccion }}</span>
             <br />
-            <span class="border-b-2 hover:border-b-red-600 cursor-pointer"
+            <span
+              class="border-b-2 hover:border-b-[--primary-color] cursor-pointer"
               >Ver Asesores</span
             >
           </div>

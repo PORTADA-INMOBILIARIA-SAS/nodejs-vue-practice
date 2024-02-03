@@ -14,12 +14,12 @@
         </div>
         <div class="h-[50px] w-[1px] bg-gray-300"></div>
         <div class="flex flex-col text-center">
-          <div class="hover:text-red-600">
+          <div class="hover:text-[--primary-color]">
             <button type="button" class="px-2 text-xl" @click="sumarCantidad">
               +
             </button>
           </div>
-          <div class="hover:text-red-600">
+          <div class="hover:text-[--primary-color]">
             <button
               type="button"
               class="px-2 font-bold"

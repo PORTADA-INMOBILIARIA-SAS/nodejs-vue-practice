@@ -1,7 +1,10 @@
 ---
 const { icon, iconSize, text, active } = Astro.props
 ---
-<div class=`flex ${active ? "bg-red-600" : "bg-gray-400"} p-2 rounded-t-md cursor-pointer`>
-    <img class="mr-2" src={icon} alt="" width={iconSize} />
-    <span class="text-lg text-white">{text}</span>
+
+<div
+  class=`flex ${active ? "bg-[--primary-color]" : "bg-gray-400"} p-2 rounded-t-md cursor-pointer`
+>
+  <img class="mr-2" src={icon} alt="" width={iconSize} />
+  <span class="text-lg text-white">{text}</span>
 </div>

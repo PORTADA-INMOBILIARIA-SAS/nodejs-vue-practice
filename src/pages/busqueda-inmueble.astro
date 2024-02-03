@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro"
 import Counter from "../components/FiltroBusqueda/Counter.vue"
 import ListaInmuebles from "../components/FiltroBusqueda/ListaInmuebles.vue"
+import RangeSlider from "../components/FiltroBusqueda/RangeSlider.vue"
 ---
 
 <Layout title="Búsqueda Inmuebles - Portada Inmobiliaria">
@@ -11,7 +12,7 @@ import ListaInmuebles from "../components/FiltroBusqueda/ListaInmuebles.vue"
       aria-hidden="true"
     >
       <div
-        class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-red-200 to-red-600 opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
+        class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-red-200 to-[--primary-color] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
       >
       </div>
     </div>
@@ -25,14 +26,14 @@ import ListaInmuebles from "../components/FiltroBusqueda/ListaInmuebles.vue"
         <div class="col-span-2 md:col-span-1">
           <div>
             <div class="relative flex items-center w-full">
-              <div class="absolute pl-2">
+              <div class="absolute pl-2 text-[--primary-color]">
                 <svg
                   class="icon icon-tabler icon-tabler-home"
                   width="20"
                   height="20"
                   viewBox="0 0 24 24"
                   stroke-width="2"
-                  stroke="#DC2626"
+                  stroke="currentColor"
                   fill="none"
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -49,7 +50,7 @@ import ListaInmuebles from "../components/FiltroBusqueda/ListaInmuebles.vue"
                 <option value="arrendar" selected>Arrendar</option>
                 <option value="comprar">Comprar</option>
               </select>
-              <div class="absolute text-red-600 right-0 pr-3">
+              <div class="absolute text-[--primary-color] right-0 pr-3">
                 <svg
                   class="w-2.5 h-2.5"
                   aria-hidden="true"
@@ -72,7 +73,7 @@ import ListaInmuebles from "../components/FiltroBusqueda/ListaInmuebles.vue"
         <div class="col-span-2 md:col-span-1">
           <div>
             <div class="relative flex items-center w-full">
-              <div class="absolute pl-2 text-red-600">
+              <div class="absolute pl-2 text-[--primary-color]">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="icon icon-tabler icon-tabler-key"
@@ -106,7 +107,7 @@ import ListaInmuebles from "../components/FiltroBusqueda/ListaInmuebles.vue"
                 <option value="">Edificio</option>
                 <option value="">Apartaestudio</option>
               </select>
-              <div class="absolute text-red-600 right-0 pr-3">
+              <div class="absolute text-[--primary-color] right-0 pr-3">
                 <svg
                   class="w-2.5 h-2.5"
                   aria-hidden="true"
@@ -129,7 +130,7 @@ import ListaInmuebles from "../components/FiltroBusqueda/ListaInmuebles.vue"
         <div class="col-span-2 md:col-span-1">
           <div>
             <div class="relative flex items-center w-full">
-              <div class="absolute pl-2 text-red-600">
+              <div class="absolute pl-2 text-[--primary-color]">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="icon icon-tabler icon-tabler-map-pin"
@@ -154,7 +155,7 @@ import ListaInmuebles from "../components/FiltroBusqueda/ListaInmuebles.vue"
               >
                 <option value="" selected>Ubicación</option>
               </select>
-              <div class="absolute text-red-600 right-0 pr-3">
+              <div class="absolute text-[--primary-color] right-0 pr-3">
                 <svg
                   class="w-2.5 h-2.5"
                   aria-hidden="true"
@@ -177,7 +178,7 @@ import ListaInmuebles from "../components/FiltroBusqueda/ListaInmuebles.vue"
         <div class="col-span-2 md:col-span-1">
           <div>
             <div class="relative flex items-center w-full">
-              <div class="absolute pl-2 text-red-600">
+              <div class="absolute pl-2 text-[--primary-color]">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="icon icon-tabler icon-tabler-map-2"
@@ -204,7 +205,7 @@ import ListaInmuebles from "../components/FiltroBusqueda/ListaInmuebles.vue"
               >
                 <option value="" selected>Sector</option>
               </select>
-              <div class="absolute text-red-600 right-0 pr-3">
+              <div class="absolute text-[--primary-color] right-0 pr-3">
                 <svg
                   class="w-2.5 h-2.5"
                   aria-hidden="true"
@@ -224,24 +225,8 @@ import ListaInmuebles from "../components/FiltroBusqueda/ListaInmuebles.vue"
           </div>
         </div>
 
-        <div class="relative mb-6 col-span-2">
-          <label for="labels-range-input" class="sr-only">Labels range</label>
-          <input
-            id="labels-range-input"
-            type="range"
-            value="100"
-            min="100"
-            max="1500"
-            class="w-full h-2 bg-red-400 rounded-lg appearance-none cursor-pointer"
-          />
-          <span
-            class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6"
-            >Min</span
-          >
-          <span
-            class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6"
-            >Max</span
-          >
+        <div class="col-span-2">
+          <RangeSlider client:only />
         </div>
 
         <div class="col-span-2">

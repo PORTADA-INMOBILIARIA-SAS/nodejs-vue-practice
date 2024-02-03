@@ -4,12 +4,12 @@
   >
     <div class="h-[70%] w-full relative text-center overflow-hidden">
       <div
-        class="absolute bg-red-600 text-white px-2 py-2 text-xl rounded-br-md z-10"
+        class="absolute bg-[--primary-color] text-white px-2 py-2 text-xl rounded-br-md z-10"
       >
         <span>{{ inmueble.Codigo_Inmueble }}</span>
       </div>
       <div
-        class="absolute right-0 bg-red-600 text-white px-2 py-2 text-xl rounded-bl-md heart-container cursor-pointer z-10"
+        class="absolute right-0 bg-[--primary-color] text-white px-2 py-2 text-xl rounded-bl-md heart-container cursor-pointer z-10"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@
         </svg>
       </div>
       <div
-        class="absolute bottom-0 w-full bg-red-600 text-white px-2 py-2 text-xl rounded-bl-md z-10"
+        class="absolute bottom-0 w-full bg-[--primary-color] text-white px-2 py-2 text-xl rounded-bl-md z-10"
       >
         <span>$ {{ inmueble.valorFiltro }}</span>
       </div>
