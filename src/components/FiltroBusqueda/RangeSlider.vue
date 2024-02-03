@@ -1,5 +1,7 @@
 <template>
-  <div class="flex w-[90%] m-auto items-center h-fit justify-center my-8">
+  <div
+    class="flex w-[70%] sm:w-[90%] m-auto items-center h-fit justify-center my-8"
+  >
     <div class="py-1 relative min-w-full" ref="containerRef">
       <div class="h-2 bg-gray-200 rounded-full">
         <div
@@ -20,14 +22,16 @@
         <div
           class="absolute h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 top-0 cursor-pointer"
           unselectable="on"
-          @mousedown="handleMouseDown('min')"
-          @mouseup="handleMouseUp"
+          @mousedown="handleStart('min')"
+          @mouseup="handleEnd"
+          @touchstart="handleStart('min')"
+          @touchend="handleEnd"
           :style="{ left: rangeLeft }"
         >
           <div class="relative -mt-2 w-fit h-fit flex">
             <div class="relative shadow-md">
               <div
-                class="bg-black -mt-8 text-white truncate text-xs rounded py-1 px-4"
+                class="bg-black -mt-8 text-white truncate text-xs rounded py-1 px-2"
               >
                 {{ formatCurrency(minPrice) }}
               </div>
@@ -60,14 +64,16 @@
         <div
           class="absolute h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 top-0 cursor-pointer"
           unselectable="on"
-          @mousedown="handleMouseDown('max')"
-          @mouseup="handleMouseUp"
+          @mousedown="handleStart('max')"
+          @mouseup="handleEnd"
+          @touchstart="handleStart('max')"
+          @touchend="handleEnd"
           :style="{ left: rangeRight }"
         >
           <div class="relative -mt-2 w-fit h-fit flex">
             <div class="relative shadow-md">
               <div
-                class="bg-black -mt-8 text-white truncate text-xs rounded py-1 px-4"
+                class="bg-black -mt-8 text-white truncate text-xs rounded py-1 px-2"
               >
                 {{ formatCurrency(maxPrice) }}
               </div>
@@ -117,11 +123,11 @@ const rangeRight = computed(
 const formatCurrency = (value) =>
   `$ ${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
 
-const handleMouseDown = (type) => {
+const handleStart = (type) => {
   isDragging.value = type
 }
 
-const handleMouseUp = () => {
+const handleEnd = () => {
   isDragging.value = false
   filtros.set({
     ...filtros.value,
@@ -130,10 +136,12 @@ const handleMouseUp = () => {
   })
 }
 
-const handleMouseMove = (event) => {
+const handleMove = (event) => {
   if (isDragging.value) {
     const rect = containerRef.value.getBoundingClientRect()
-    const percentage = (event.clientX - rect.left) / rect.width
+    const percentage =
+      (event.touches ? event.touches[0].clientX : event.clientX - rect.left) /
+      rect.width
     const price = min + Math.round(((max - min) * percentage) / 50000) * 50000
 
     if (isDragging.value === "min") {
@@ -153,12 +161,16 @@ const handleMouseMove = (event) => {
 }
 
 onMounted(() => {
-  window.addEventListener("mousemove", handleMouseMove)
-  window.addEventListener("mouseup", handleMouseUp)
+  window.addEventListener("mousemove", handleMove)
+  window.addEventListener("mouseup", handleEnd)
+  window.addEventListener("touchmove", handleMove)
+  window.addEventListener("touchend", handleEnd)
 })
 
 onUnmounted(() => {
-  window.removeEventListener("mousemove", handleMouseMove)
-  window.removeEventListener("mouseup", handleMouseUp)
+  window.removeEventListener("mousemove", handleMove)
+  window.removeEventListener("mouseup", handleEnd)
+  window.removeEventListener("touchmove", handleMove)
+  window.removeEventListener("touchend", handleEnd)
 })
 </script>

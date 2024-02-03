@@ -30,6 +30,23 @@
         :inmueble="inmueble"
       />
     </div>
+    <div v-if="!isLoading" class="flex justify-center items-center my-4">
+      <button
+        :disabled="currentPage === 1"
+        @click="changePage(currentPage - 1)"
+        class="px-4 py-2 mx-2 bg-[--primary-color] text-white rounded cursor-pointer"
+      >
+        Anterior
+      </button>
+      <span class="mx-2">Página {{ currentPage }} de {{ totalPages }}</span>
+      <button
+        :disabled="currentPage === totalPages"
+        @click="changePage(currentPage + 1)"
+        class="px-4 py-2 mx-2 bg-[--primary-color] text-white rounded cursor-pointer"
+      >
+        Siguiente
+      </button>
+    </div>
   </div>
 </template>
 
@@ -43,10 +60,12 @@ const inmuebles = ref([])
 const isLoading = ref(false)
 const $filtros = useStore(filtros)
 const lastFilter = ref({})
+const currentPage = ref(1)
+const totalPages = ref(1)
 let updateTimer = null
 let controller = null
 
-const fetchData = async () => {
+const fetchData = async (page = 1) => {
   try {
     isLoading.value = true
 
@@ -57,7 +76,7 @@ const fetchData = async () => {
     controller = new AbortController()
     const signal = controller.signal
 
-    const apiUrl = `https://www.simi-api.com/ApiSimiweb/response/v2.1.1/filtroInmueble/limite/1/total/12/ciudad/0/barrio/0/tipoInm/0/tipOper/1/valmin/${$filtros.value.valMin || 700000}/valmax/${$filtros.value.valMax || 50000000}/campo/fecha/precio/0/order/desc/banios/${$filtros.value.banos || 0}/alcobas/${$filtros.value.habitaciones || 0}/garajes/${$filtros.value.parking || 0}/sede/0/usuario/0`
+    const apiUrl = `https://www.simi-api.com/ApiSimiweb/response/v2.1.1/filtroInmueble/limite/${page}/total/12/ciudad/0/barrio/0/tipoInm/0/tipOper/1/valmin/${$filtros.value.valMin || 700000}/valmax/${$filtros.value.valMax || 50000000}/campo/fecha/precio/0/order/desc/banios/${$filtros.value.banos || 0}/alcobas/${$filtros.value.habitaciones || 0}/garajes/${$filtros.value.parking || 0}/sede/0/usuario/0`
 
     const response = await fetch(apiUrl, {
       method: "GET",
@@ -78,6 +97,9 @@ const fetchData = async () => {
 
     // Actualizar el último filtro almacenado
     lastFilter.value = { ...$filtros.value }
+
+    // Actualizar el número total de páginas
+    totalPages.value = Math.ceil(data.datosGrales.totalInmuebles / 12)
   } catch (error) {
     if (error.name !== "AbortError") {
       console.error("Error:", error.message)
@@ -88,28 +110,30 @@ const fetchData = async () => {
 }
 
 const startFetchDataTimer = () => {
-  // Limpiar el temporizador anterior si existe
   if (updateTimer) {
     clearTimeout(updateTimer)
   }
 
-  // Iniciar un nuevo temporizador para realizar la consulta después de un breve retraso (por ejemplo, 500 ms)
   updateTimer = setTimeout(() => {
-    fetchData()
+    fetchData(currentPage.value)
   }, 500)
 }
 
 onMounted(() => {
-  // Ejecutar fetchData al inicio
-  fetchData()
-  // Aplicar los valores por defecto del filtro al principio
+  fetchData(currentPage.value)
   lastFilter.value = { ...$filtros.value }
 })
 
 watchEffect(() => {
-  // Verificar si hay cambios en los filtros antes de iniciar el temporizador
   if (JSON.stringify($filtros.value) !== JSON.stringify(lastFilter.value)) {
     startFetchDataTimer()
   }
 })
+
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value && page !== currentPage.value) {
+    currentPage.value = page
+    fetchData(page)
+  }
+}
 </script>
