@@ -79,7 +79,7 @@ const $filtros = useStore(filtros)
 const sectorData = ref([])
 
 const locationsAPI = await fetch(
-  `http://simi-api.com/ApiSimiweb/response/v2/ciudad/idDepartamento/0`,
+  `https://simi-api.com/ApiSimiweb/response/v2/ciudad/idDepartamento/0`,
   {
     headers: {
       Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
@@ -88,7 +88,7 @@ const locationsAPI = await fetch(
 )
 
 const typeProperty = await fetch(
-  `http://simi-api.com/ApiSimiweb/response/v2/tipoInmuebles/unique/1`,
+  `https://simi-api.com/ApiSimiweb/response/v2/tipoInmuebles/unique/1`,
   {
     headers: {
       Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
@@ -104,7 +104,7 @@ watch(
   () => $filtros.value.ciudadSelec,
   async (newValue) => {
     const sectorAPI = await fetch(
-      `http://simi-api.com/ApiSimiweb/response/v2/barrios/idCiudad/${newValue}/`,
+      `https://simi-api.com/ApiSimiweb/response/v2/barrios/idCiudad/${newValue}/`,
       {
         headers: {
           Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
