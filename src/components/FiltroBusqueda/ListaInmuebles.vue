@@ -37,21 +37,21 @@
       v-if="!isLoading && hayInmuebles != 0"
       class="flex justify-center items-center my-4"
     >
-      <button
-        :disabled="currentPage === 1"
-        @click="changePage(currentPage - 1)"
-        class="px-4 py-2 mx-2 bg-[--primary-color] text-white rounded cursor-pointer"
-      >
-        Anterior
-      </button>
-      <span class="mx-2">Página {{ currentPage }} de {{ totalPages }}</span>
-      <button
-        :disabled="currentPage === totalPages"
-        @click="changePage(currentPage + 1)"
-        class="px-4 py-2 mx-2 bg-[--primary-color] text-white rounded cursor-pointer"
-      >
-        Siguiente
-      </button>
+      <div v-if="totalPages > 0" class="flex justify-center mt-4">
+        <button
+          v-for="pageNumber in displayedPages"
+          :key="pageNumber"
+          @click="changePage(pageNumber)"
+          :class="[
+            'mx-1 px-3 py-1 rounded cursor-pointer',
+            pageNumber === currentPage
+              ? 'bg-[--primary-color] text-white'
+              : 'bg-gray-200 hover:bg-gray-300',
+          ]"
+        >
+          {{ pageNumber }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -68,6 +68,7 @@ const $filtros = useStore(filtros)
 const currentPage = ref(1)
 const totalPages = ref(1)
 const hayInmuebles = ref(0)
+const displayedPages = ref([])
 
 let updateTimer = null
 let controller = null
@@ -107,12 +108,46 @@ const fetchData = async (page = 1) => {
     hayInmuebles.value = data.datosGrales ? 1 : 0
 
     // Actualizar el número total de páginas
-    totalPages.value = Math.ceil(data.datosGrales.totalInmuebles / 12)
+    totalPages.value = data.datosGrales.fin
+
+    displayedPages.value = calculateDisplayedPages(currentPage.value)
   } catch (error) {
     if (error.name !== "AbortError") {
       console.error("Error:", error.message)
     }
   }
+}
+
+const calculateDisplayedPages = (page) => {
+  const maxDisplayed = 10 // Número máximo de páginas mostradas antes de insertar "..."
+  const maxAdjacent = (maxDisplayed - 1) / 2
+  const firstPage = Math.max(1, Math.floor(page - maxAdjacent)) // Redondear hacia abajo
+  const lastPage = Math.min(
+    totalPages.value,
+    Math.ceil(firstPage + maxDisplayed - 1),
+  ) // Redondear hacia arriba
+
+  const pages = []
+
+  if (firstPage > 1) {
+    pages.push(1)
+    if (firstPage > 2) {
+      pages.push("...")
+    }
+  }
+
+  for (let i = firstPage; i <= lastPage; i++) {
+    pages.push(i)
+  }
+
+  if (lastPage < totalPages.value) {
+    if (lastPage < totalPages.value - 1) {
+      pages.push("...")
+    }
+    pages.push(totalPages.value)
+  }
+
+  return pages
 }
 
 const startFetchDataTimer = () => {
@@ -127,12 +162,14 @@ const startFetchDataTimer = () => {
 
 onMounted(() => {
   fetchData(currentPage.value)
+  displayedPages.value = calculateDisplayedPages(currentPage.value)
 })
 
 watch(
   () => Object.values($filtros.value),
   (newValues, oldValues) => {
     if (JSON.stringify(newValues) !== JSON.stringify(oldValues)) {
+      currentPage.value = 1
       startFetchDataTimer()
     }
   },
@@ -141,6 +178,7 @@ watch(
 const changePage = (page) => {
   if (page >= 1 && page <= totalPages.value && page !== currentPage.value) {
     currentPage.value = page
+    displayedPages.value = calculateDisplayedPages(page)
     fetchData(page)
   }
 }
