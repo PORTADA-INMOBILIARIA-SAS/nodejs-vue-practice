@@ -10,13 +10,7 @@
         ></div>
 
         <!-- Input de Rango Mínimo -->
-        <input
-          type="range"
-          v-model="minPrice"
-          min="0"
-          :max="maxPrice"
-          class="invisible"
-        />
+        <input type="range" v-model="minPrice" class="invisible" />
 
         <!-- Boton minimo -->
         <div
@@ -52,13 +46,7 @@
         </div>
 
         <!-- Input de Rango Máximo -->
-        <input
-          type="range"
-          v-model="maxPrice"
-          :min="minPrice"
-          max="1500000"
-          class="invisible"
-        />
+        <input type="range" v-model="maxPrice" class="invisible" />
 
         <!-- Boton maximo -->
         <div
@@ -100,24 +88,28 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from "vue"
-import { filtros } from "./filtroStore"
+import { ref, onMounted, onUnmounted, computed, watch } from "vue"
 
-const min = 700000
-const max = 50000000
-const minPrice = ref(min)
-const maxPrice = ref(max)
+import { useStore } from "@nanostores/vue"
+import { filtros } from "./filtroStore"
+const $filtros = useStore(filtros)
+
+const min = ref(700000)
+const max = ref(50000000)
+const minPrice = ref(min.value)
+const maxPrice = ref(max.value)
 const isDragging = ref(false)
 const containerRef = ref(null)
 
 const rangeWidth = computed(
-  () => `${((maxPrice.value - minPrice.value) / (max - min)) * 100}%`,
+  () =>
+    `${((maxPrice.value - minPrice.value) / (max.value - min.value)) * 100}%`,
 )
 const rangeLeft = computed(
-  () => `${((minPrice.value - min) / (max - min)) * 100}%`,
+  () => `${((minPrice.value - min.value) / (max.value - min.value)) * 100}%`,
 )
 const rangeRight = computed(
-  () => `${((maxPrice.value - min) / (max - min)) * 100}%`,
+  () => `${((maxPrice.value - min.value) / (max.value - min.value)) * 100}%`,
 )
 
 const formatCurrency = (value) =>
@@ -142,19 +134,21 @@ const handleMove = (event) => {
     const percentage =
       (event.touches ? event.touches[0].clientX : event.clientX - rect.left) /
       rect.width
-    const price = min + Math.round(((max - min) * percentage) / 50000) * 50000
+    const price =
+      min.value +
+      Math.round(((max.value - min.value) * percentage) / 50000) * 50000
 
     if (isDragging.value === "min") {
-      if (price >= min && price <= max) {
+      if (price >= min.value && price <= max.value) {
         minPrice.value = Math.min(price, maxPrice.value)
       } else {
-        minPrice.value = min
+        minPrice.value = min.value
       }
     } else if (isDragging.value === "max") {
-      if (price >= min && price <= max) {
+      if (price >= min.value && price <= max.value) {
         maxPrice.value = Math.max(price, minPrice.value)
       } else {
-        maxPrice.value = max
+        maxPrice.value = max.value
       }
     }
   }
@@ -173,4 +167,21 @@ onUnmounted(() => {
   window.removeEventListener("touchmove", handleMove)
   window.removeEventListener("touchend", handleEnd)
 })
+
+watch(
+  () => $filtros.value.gestion,
+  (newValue) => {
+    if (newValue === 5) {
+      min.value = 100000000
+      minPrice.value = 100000000
+      maxPrice.value = 2000000000
+      max.value = 2000000000
+    } else if (newValue === 1) {
+      min.value = 700000
+      minPrice.value = 700000
+      max.value = 50000000
+      maxPrice.value = 50000000
+    }
+  },
+)
 </script>

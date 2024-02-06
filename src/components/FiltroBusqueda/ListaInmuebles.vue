@@ -26,7 +26,7 @@
     >
       <CardInmueble
         v-for="inmueble in inmuebles"
-        :key="inmueble.id"
+        :key="inmueble.Codigo_Inmueble"
         :inmueble="inmueble"
       />
     </div>
@@ -76,7 +76,7 @@ const fetchData = async (page = 1) => {
     controller = new AbortController()
     const signal = controller.signal
 
-    const apiUrl = `https://www.simi-api.com/ApiSimiweb/response/v2.1.1/filtroInmueble/limite/${page}/total/12/ciudad/0/barrio/0/tipoInm/0/tipOper/1/valmin/${$filtros.value.valMin || 700000}/valmax/${$filtros.value.valMax || 50000000}/campo/fecha/precio/0/order/desc/banios/${$filtros.value.banos || 0}/alcobas/${$filtros.value.habitaciones || 0}/garajes/${$filtros.value.parking || 0}/sede/0/usuario/0`
+    const apiUrl = `https://www.simi-api.com/ApiSimiweb/response/v2.1.1/filtroInmueble/limite/${page}/total/12/ciudad/${$filtros.value.ciudadSelec || null}/barrio/${$filtros.value.barrioSelec || null}/tipoInm/${$filtros.value.tipoInmu || 0}/tipOper/${$filtros.value.gestion || 1}/valmin/${$filtros.value.valMin || 700000}/valmax/${$filtros.value.valMax || 50000000}/campo/fecha/precio/0/order/desc/banios/${$filtros.value.banos || 0}/alcobas/${$filtros.value.habitaciones || 0}/garajes/${$filtros.value.parking || 0}/sede/0/usuario/0`
 
     const response = await fetch(apiUrl, {
       method: "GET",
