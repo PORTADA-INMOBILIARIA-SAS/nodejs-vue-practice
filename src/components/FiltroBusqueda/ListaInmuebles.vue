@@ -20,6 +20,9 @@
         </svg>
       </div>
     </div>
+    <div v-else-if="hayInmuebles === 0" class="flex justify-center mt-8">
+      <span class="text-lg font-semibold text-gray-700">Sin Resultados</span>
+    </div>
     <div
       v-else
       class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 my-14"
@@ -30,7 +33,10 @@
         :inmueble="inmueble"
       />
     </div>
-    <div v-if="!isLoading" class="flex justify-center items-center my-4">
+    <div
+      v-if="!isLoading && hayInmuebles != 0"
+      class="flex justify-center items-center my-4"
+    >
       <button
         :disabled="currentPage === 1"
         @click="changePage(currentPage - 1)"
@@ -51,7 +57,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from "vue"
+import { ref, onMounted, watch } from "vue"
 import CardInmueble from "./CardInmueble.vue"
 import { useStore } from "@nanostores/vue"
 import { filtros } from "./filtroStore"
@@ -59,9 +65,10 @@ import { filtros } from "./filtroStore"
 const inmuebles = ref([])
 const isLoading = ref(false)
 const $filtros = useStore(filtros)
-const lastFilter = ref({})
 const currentPage = ref(1)
 const totalPages = ref(1)
+const hayInmuebles = ref(0)
+
 let updateTimer = null
 let controller = null
 
@@ -90,13 +97,14 @@ const fetchData = async (page = 1) => {
 
     if (!response.ok) {
       throw new Error(`Error al obtener los inmuebles: ${response.statusText}`)
+    } else {
+      isLoading.value = false
     }
 
     const data = await response.json()
     inmuebles.value = data.Inmuebles
 
-    // Actualizar el último filtro almacenado
-    lastFilter.value = { ...$filtros.value }
+    hayInmuebles.value = data.datosGrales ? 1 : 0
 
     // Actualizar el número total de páginas
     totalPages.value = Math.ceil(data.datosGrales.totalInmuebles / 12)
@@ -104,8 +112,6 @@ const fetchData = async (page = 1) => {
     if (error.name !== "AbortError") {
       console.error("Error:", error.message)
     }
-  } finally {
-    isLoading.value = false
   }
 }
 
@@ -121,14 +127,16 @@ const startFetchDataTimer = () => {
 
 onMounted(() => {
   fetchData(currentPage.value)
-  lastFilter.value = { ...$filtros.value }
 })
 
-watchEffect(() => {
-  if (JSON.stringify($filtros.value) !== JSON.stringify(lastFilter.value)) {
-    startFetchDataTimer()
-  }
-})
+watch(
+  () => Object.values($filtros.value),
+  (newValues, oldValues) => {
+    if (JSON.stringify(newValues) !== JSON.stringify(oldValues)) {
+      startFetchDataTimer()
+    }
+  },
+)
 
 const changePage = (page) => {
   if (page >= 1 && page <= totalPages.value && page !== currentPage.value) {
