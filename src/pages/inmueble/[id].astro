@@ -1,0 +1,10 @@
+---
+export const prerender = false
+
+import Layout from "../../layouts/Layout.astro"
+import DetalleInmueble from "../../components/FiltroBusqueda/DetalleInmueble.vue"
+---
+
+<Layout title="Inmueble - Portada Inmobiliaria">
+  <DetalleInmueble client:load />
+</Layout>
