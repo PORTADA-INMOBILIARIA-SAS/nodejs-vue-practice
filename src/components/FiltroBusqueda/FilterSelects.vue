@@ -77,6 +77,8 @@ import { filtros } from "./filtroStore"
 const $filtros = useStore(filtros)
 
 const sectorData = ref([])
+const typesData = ref([])
+const locations = ref([])
 
 const locationsAPI = await fetch(
   `https://simi-api.com/ApiSimiweb/response/v2/ciudad/idDepartamento/0`,
@@ -96,9 +98,9 @@ const typeProperty = await fetch(
   },
 )
 
-const locations = await locationsAPI.json()
+locations.value = await locationsAPI.json()
 
-const typesData = await typeProperty.json()
+typesData.value = await typeProperty.json()
 
 watch(
   () => $filtros.value.ciudadSelec,
