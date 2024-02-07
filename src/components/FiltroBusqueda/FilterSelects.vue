@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue"
+import { ref, onMounted } from "vue"
 
 import Select from "./Select.vue"
 
@@ -80,28 +80,37 @@ const sectorData = ref([])
 const typesData = ref([])
 const locations = ref([])
 
-const locationsAPI = await fetch(
-  `https://simi-api.com/ApiSimiweb/response/v2/ciudad/idDepartamento/0`,
-  {
-    headers: {
-      Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
-    },
-  },
-)
+// Función para obtener datos de la API de ciudades y tipos de inmuebles
+const fetchData = async () => {
+  try {
+    const locationsAPI = await fetch(
+      `https://simi-api.com/ApiSimiweb/response/v2/ciudad/idDepartamento/0`,
+      {
+        headers: {
+          Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
+        },
+      },
+    )
 
-const typeProperty = await fetch(
-  `https://simi-api.com/ApiSimiweb/response/v2/tipoInmuebles/unique/1`,
-  {
-    headers: {
-      Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
-    },
-  },
-)
+    const typeProperty = await fetch(
+      `https://simi-api.com/ApiSimiweb/response/v2/tipoInmuebles/unique/1`,
+      {
+        headers: {
+          Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
+        },
+      },
+    )
 
-locations.value = await locationsAPI.json()
+    locations.value = await locationsAPI.json()
+    typesData.value = await typeProperty.json()
+  } catch (error) {
+    console.error("Error fetching data:", error)
+  }
+}
 
-typesData.value = await typeProperty.json()
+onMounted(fetchData)
 
+// Manejar cambios en la selección de ciudad para obtener los sectores
 watch(
   () => $filtros.value.ciudadSelec,
   async (newValue) => {
