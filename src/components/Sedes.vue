@@ -108,69 +108,61 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      sedeSeleccionada: "laureles",
-      infoSedes: {
-        laureles: {
-          nombre: "Laureles",
-          direccion: "Carrera 81 # 35 - 96",
-          telefono: "(604) 4487771 Opción 1, 1, 1",
-        },
-        bello: {
-          nombre: "Bello",
-          direccion: "Calle 26B # 49 - 104 Of 206",
-          telefono: "(604) 4487771 Opción 1, 1, 1",
-        },
-        colores: {
-          nombre: "Los Colores",
-          direccion: "Calle 53 # 73 - 31",
-          telefono: "(604) 4487771 Opción 1, 1, 1",
-        },
-        poblado: {
-          nombre: "El Poblado",
-          direccion: "Calle 10# 43D - 68 Local 2",
-          telefono: "(604) 4487771 Opción 1, 1, 1",
-        },
-        envigado: {
-          nombre: "Envigado",
-          direccion: "Carrera 43A # 35 Sur - 15",
-          telefono: "(604) 4487771 Opción 1, 1, 1",
-        },
-        sabaneta: {
-          nombre: "Sabaneta",
-          direccion: "Calle 70 Sur - 43A - 09",
-          telefono: "(604) 4487771 Opción 1, 1, 1",
-        },
-        estrella: {
-          nombre: "La Estrella",
-          direccion: "Calle 75AA Sur # 53 - 198",
-          telefono: "(604) 4487771 Opción 1, 1, 1",
-        },
-        rionegro: {
-          nombre: "Rionegro",
-          direccion: "Calle 47 # 62 - 18",
-          telefono: "(604) 4487771 Opción 1, 1, 1",
-        },
-        bogota: {
-          nombre: "Fontibon",
-          direccion: "Calle 18 # 77 - 51 Local 212",
-          telefono: "3009127843 Opción 1, 1, 2",
-        },
-        mosquera: {
-          nombre: "Mosquera",
-          direccion: "Carrera 3A # 17 Sur - 96 Local 114",
-          telefono: "3009127843 Opción 1, 1, 2",
-        },
-      },
-    }
+<script setup>
+import { ref } from "vue"
+
+const sedeSeleccionada = ref("laureles")
+
+const infoSedes = {
+  laureles: {
+    nombre: "Laureles",
+    direccion: "Carrera 81 # 35 - 96",
+    telefono: "(604) 4487771 Opción 1, 1, 1",
   },
-  methods: {
-    handleSedeClick(sede) {
-      this.sedeSeleccionada = sede
-    },
+  bello: {
+    nombre: "Bello",
+    direccion: "Calle 26B # 49 - 104 Of 206",
+    telefono: "(604) 4487771 Opción 1, 1, 1",
+  },
+  colores: {
+    nombre: "Los Colores",
+    direccion: "Calle 53 # 73 - 31",
+    telefono: "(604) 4487771 Opción 1, 1, 1",
+  },
+  poblado: {
+    nombre: "El Poblado",
+    direccion: "Calle 10# 43D - 68 Local 2",
+    telefono: "(604) 4487771 Opción 1, 1, 1",
+  },
+  envigado: {
+    nombre: "Envigado",
+    direccion: "Carrera 43A # 35 Sur - 15",
+    telefono: "(604) 4487771 Opción 1, 1, 1",
+  },
+  sabaneta: {
+    nombre: "Sabaneta",
+    direccion: "Calle 70 Sur - 43A - 09",
+    telefono: "(604) 4487771 Opción 1, 1, 1",
+  },
+  estrella: {
+    nombre: "La Estrella",
+    direccion: "Calle 75AA Sur # 53 - 198",
+    telefono: "(604) 4487771 Opción 1, 1, 1",
+  },
+  rionegro: {
+    nombre: "Rionegro",
+    direccion: "Calle 47 # 62 - 18",
+    telefono: "(604) 4487771 Opción 1, 1, 1",
+  },
+  bogota: {
+    nombre: "Fontibon",
+    direccion: "Calle 18 # 77 - 51 Local 212",
+    telefono: "3009127843 Opción 1, 1, 2",
+  },
+  mosquera: {
+    nombre: "Mosquera",
+    direccion: "Carrera 3A # 17 Sur - 96 Local 114",
+    telefono: "3009127843 Opción 1, 1, 2",
   },
 }
 </script>
