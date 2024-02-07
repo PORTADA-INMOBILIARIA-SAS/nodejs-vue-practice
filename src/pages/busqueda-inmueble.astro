@@ -24,10 +24,10 @@ import FilterSelects from "../components/FiltroBusqueda/FilterSelects.vue"
     </div>
     <form class="mx-auto mt-8 max-w-3xl">
       <div class="grid grid-cols-1 gap-x-8 gap-y-3 md:gap-y-6 sm:grid-cols-2">
-        <FilterSelects client:only />
+        <FilterSelects client:load />
 
         <div class="col-span-2">
-          <RangeSlider client:only />
+          <RangeSlider client:load />
         </div>
 
         <div class="col-span-2">
@@ -83,6 +83,6 @@ import FilterSelects from "../components/FiltroBusqueda/FilterSelects.vue"
       </div>
     </form>
 
-    <ListaInmuebles client:only />
+    <ListaInmuebles client:load />
   </div></Layout
 >
