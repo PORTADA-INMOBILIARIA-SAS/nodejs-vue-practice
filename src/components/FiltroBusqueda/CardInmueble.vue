@@ -178,15 +178,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    inmueble: {
-      type: Object,
-      required: true,
-    },
+<script setup>
+const props = defineProps({
+  inmueble: {
+    type: Object,
+    required: true,
   },
-}
+})
 </script>
 
 <style scoped>
