@@ -382,7 +382,7 @@ onMounted(async () => {
   const pathSegments = window.location.pathname.split("/")
   inmuebleId.value = pathSegments[pathSegments.length - 1]
 
-  const apiUrl = `http://simi-api.com/ApiSimiweb/response/v2/inmueble/codInmueble/${inmuebleId.value}`
+  const apiUrl = `https://simi-api.com/ApiSimiweb/response/v2/inmueble/codInmueble/${inmuebleId.value}`
 
   const response = await fetch(apiUrl, {
     method: "GET",
