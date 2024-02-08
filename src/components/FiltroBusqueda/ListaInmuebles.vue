@@ -62,6 +62,9 @@ import CardInmueble from "./CardInmueble.vue"
 import { useStore } from "@nanostores/vue"
 import { filtros } from "./filtroStore"
 
+// IMPORTAMOS FUNCIONES DE API
+import { inmueblesFiltro } from "../../api/simi-api"
+
 const inmuebles = ref([])
 const isLoading = ref(false)
 const $filtros = useStore(filtros)
@@ -71,51 +74,47 @@ const hayInmuebles = ref(0)
 const displayedPages = ref([])
 
 let updateTimer = null
-let controller = null
+let controller = null // controlador de solicitud
 
-const fetchData = async (page = 1) => {
-  try {
-    isLoading.value = true
-
-    if (controller) {
-      controller.abort()
-    }
-
-    controller = new AbortController()
-    const signal = controller.signal
-
-    const apiUrl = `https://www.simi-api.com/ApiSimiweb/response/v2.1.1/filtroInmueble/limite/${page}/total/12/ciudad/${$filtros.value.ciudadSelec || null}/barrio/${$filtros.value.barrioSelec || null}/tipoInm/${$filtros.value.tipoInmu || 0}/tipOper/${$filtros.value.gestion || 1}/valmin/${$filtros.value.valMin || 700000}/valmax/${$filtros.value.valMax || 50000000}/campo/fecha/precio/0/order/desc/banios/${$filtros.value.banos || 0}/alcobas/${$filtros.value.habitaciones || 0}/garajes/${$filtros.value.parking || 0}/sede/0/usuario/0`
-
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        Authorization:
-          "Basic " +
-          btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`),
-      },
-      signal,
-    })
-
-    if (!response.ok) {
-      throw new Error(`Error al obtener los inmuebles: ${response.statusText}`)
-    } else {
-      isLoading.value = false
-    }
-
-    const data = await response.json()
-    inmuebles.value = data.Inmuebles
-
-    hayInmuebles.value = data.datosGrales ? 1 : 0
-
-    // Actualizar el número total de páginas
-    totalPages.value = data.datosGrales.fin
-
-    displayedPages.value = calculateDisplayedPages(currentPage.value)
-  } catch (error) {
-    if (error.name !== "AbortError") {
-      console.error("Error:", error.message)
-    }
+const startFetchDataTimer = () => {
+  if (updateTimer) {
+    clearTimeout(updateTimer)
   }
+
+  updateTimer = setTimeout(() => {
+    fetchInmuebles(currentPage.value)
+  }, 500)
+}
+
+const fetchInmuebles = (page) => {
+  isLoading.value = true
+
+  // Cancelar solicitud anterior si existe
+  if (controller) {
+    controller.abort()
+  }
+
+  // Crear nuevo controlador de solicitud
+  controller = new AbortController()
+  const signal = controller.signal
+
+  // Realizar la solicitud con el nuevo controlador de señal
+  inmueblesFiltro(page, $filtros.value, signal).then(
+    ({
+      inmuebles: newInmuebles,
+      hayInmuebles: newHayInmuebles,
+      totalPages: newTotalPages,
+    }) => {
+      inmuebles.value = newInmuebles
+      hayInmuebles.value = newHayInmuebles
+      totalPages.value = newTotalPages
+      displayedPages.value = calculateDisplayedPages(
+        currentPage.value,
+        newTotalPages,
+      )
+      isLoading.value = false
+    },
+  )
 }
 
 const calculateDisplayedPages = (page) => {
@@ -150,19 +149,8 @@ const calculateDisplayedPages = (page) => {
   return pages
 }
 
-const startFetchDataTimer = () => {
-  if (updateTimer) {
-    clearTimeout(updateTimer)
-  }
-
-  updateTimer = setTimeout(() => {
-    fetchData(currentPage.value)
-  }, 500)
-}
-
 onMounted(() => {
-  fetchData(currentPage.value)
-  displayedPages.value = calculateDisplayedPages(currentPage.value)
+  fetchInmuebles(currentPage.value)
 })
 
 watch(
@@ -178,8 +166,8 @@ watch(
 const changePage = (page) => {
   if (page >= 1 && page <= totalPages.value && page !== currentPage.value) {
     currentPage.value = page
-    displayedPages.value = calculateDisplayedPages(page)
-    fetchData(page)
+    displayedPages.value = calculateDisplayedPages(page, totalPages.value)
+    fetchInmuebles(page)
   }
 }
 </script>
