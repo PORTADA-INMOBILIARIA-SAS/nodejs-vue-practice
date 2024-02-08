@@ -37,13 +37,13 @@
       v-if="!isLoading && hayInmuebles != 0"
       class="flex justify-center items-center my-4"
     >
-      <div v-if="totalPages > 0" class="flex justify-center mt-4">
+      <div v-if="totalPages > 0" class="flex justify-center flex-wrap">
         <button
           v-for="pageNumber in displayedPages"
           :key="pageNumber"
           @click="changePage(pageNumber)"
           :class="[
-            'mx-1 px-3 py-1 rounded cursor-pointer',
+            'mx-1 px-3 py-1 rounded cursor-pointer mt-2',
             pageNumber === currentPage
               ? 'bg-[--primary-color] text-white'
               : 'bg-gray-200 hover:bg-gray-300',
