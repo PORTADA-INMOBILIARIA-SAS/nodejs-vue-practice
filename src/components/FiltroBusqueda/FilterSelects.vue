@@ -83,23 +83,9 @@ const locations = ref([])
 // Función para obtener datos de la API de ciudades y tipos de inmuebles
 const fetchData = async () => {
   try {
-    const locationsAPI = await fetch(
-      `https://simi-api.com/ApiSimiweb/response/v2/ciudad/idDepartamento/0`,
-      {
-        headers: {
-          Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
-        },
-      },
-    )
+    const locationsAPI = await fetch(`/api/locations`)
 
-    const typeProperty = await fetch(
-      `https://simi-api.com/ApiSimiweb/response/v2/tipoInmuebles/unique/1`,
-      {
-        headers: {
-          Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
-        },
-      },
-    )
+    const typeProperty = await fetch(`/api/types`)
 
     locations.value = await locationsAPI.json()
     typesData.value = await typeProperty.json()
@@ -111,19 +97,19 @@ const fetchData = async () => {
 onMounted(fetchData)
 
 // Manejar cambios en la selección de ciudad para obtener los sectores
-watch(
-  () => $filtros.value.ciudadSelec,
-  async (newValue) => {
-    const sectorAPI = await fetch(
-      `https://simi-api.com/ApiSimiweb/response/v2/barrios/idCiudad/${newValue}/`,
-      {
-        headers: {
-          Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
-        },
-      },
-    )
+// watch(
+//   () => $filtros.value.ciudadSelec,
+//   async (newValue) => {
+//     const sectorAPI = await fetch(
+//       `https://simi-api.com/ApiSimiweb/response/v2/barrios/idCiudad/${newValue}/`,
+//       {
+//         headers: {
+//           Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
+//         },
+//       },
+//     )
 
-    sectorData.value = await sectorAPI.json()
-  },
-)
+//     sectorData.value = await sectorAPI.json()
+//   },
+// )
 </script>
