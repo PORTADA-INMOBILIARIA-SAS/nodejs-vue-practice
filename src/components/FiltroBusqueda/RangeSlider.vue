@@ -123,8 +123,8 @@ const handleEnd = () => {
   isDragging.value = false
   filtros.set({
     ...filtros.value,
-    ["valMin"]: minPrice.value,
-    ["valMax"]: maxPrice.value,
+    ["valmin"]: minPrice.value,
+    ["valmax"]: maxPrice.value,
   })
 }
 

@@ -71,20 +71,30 @@ const hayInmuebles = ref(0)
 const displayedPages = ref([])
 
 let updateTimer = null
-let controller = null
 
 const fetchData = async (page = 1) => {
   try {
     isLoading.value = true
 
-    if (controller) {
-      controller.abort()
-    }
+    let url = `/api/inmueblesFiltro`
 
-    controller = new AbortController()
-    const signal = controller.signal
+    // Construir la cadena de consulta para los parámetros de filtro
+    const queryParams = new URLSearchParams()
+    queryParams.set("limite", currentPage.value)
+    queryParams.set("ciudad", $filtros.value.ciudad)
+    queryParams.set("barrio", $filtros.value.barrio)
+    queryParams.set("tipoInm", $filtros.value.tipoInm)
+    queryParams.set("tipOper", $filtros.value.tipOper)
+    queryParams.set("valmin", $filtros.value.valmin)
+    queryParams.set("valmax", $filtros.value.valmax)
+    queryParams.set("banios", $filtros.value.banios)
+    queryParams.set("alcobas", $filtros.value.alcobas)
+    queryParams.set("garajes", $filtros.value.garajes)
 
-    const response = await fetch(`/api/inmueblesFiltro?tipOper=1`)
+    // Agregar la cadena de consulta a la URL
+    url += `?${queryParams.toString()}`
+
+    const response = await fetch(url)
 
     if (!response.ok) {
       throw new Error(`Error al obtener los inmuebles: ${response.statusText}`)

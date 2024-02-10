@@ -1,7 +1,7 @@
 <template>
   <div class="col-span-2 md:col-span-1">
     <Select
-      localStorage="gestion"
+      localStorage="tipOper"
       :svg="`<svg class='icon icon-tabler icon-tabler-home' width='20' height='20'
                 viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round'
                 stroke-linejoin='round'>
@@ -19,7 +19,7 @@
 
   <div class="col-span-2 md:col-span-1">
     <Select
-      localStorage="tipoInmu"
+      localStorage="tipoInm"
       :svg="`<svg xmlns='http://www.w3.org/2000/svg'
                 class='icon icon-tabler icon-tabler-key' width='20' height='20' viewBox='0 0 24 24' stroke-width='2'
                 stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'>
@@ -35,7 +35,7 @@
 
   <div class="col-span-2 md:col-span-1">
     <Select
-      localStorage="ciudadSelec"
+      localStorage="ciudad"
       :svg="`<svg xmlns='http://www.w3.org/2000/svg'
                 class='icon icon-tabler icon-tabler-map-pin' width='20' height='20' viewBox='0 0 24 24' stroke-width='2'
                 stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'>
