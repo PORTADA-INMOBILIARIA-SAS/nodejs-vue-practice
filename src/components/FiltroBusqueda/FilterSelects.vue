@@ -1,7 +1,7 @@
 <template>
   <div class="col-span-2 md:col-span-1">
     <Select
-      localStorage="gestion"
+      localStorage="tipOper"
       :svg="`<svg class='icon icon-tabler icon-tabler-home' width='20' height='20'
                 viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round'
                 stroke-linejoin='round'>
@@ -19,7 +19,7 @@
 
   <div class="col-span-2 md:col-span-1">
     <Select
-      localStorage="tipoInmu"
+      localStorage="tipoInm"
       :svg="`<svg xmlns='http://www.w3.org/2000/svg'
                 class='icon icon-tabler icon-tabler-key' width='20' height='20' viewBox='0 0 24 24' stroke-width='2'
                 stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'>
@@ -35,7 +35,7 @@
 
   <div class="col-span-2 md:col-span-1">
     <Select
-      localStorage="ciudadSelec"
+      localStorage="ciudad"
       :svg="`<svg xmlns='http://www.w3.org/2000/svg'
                 class='icon icon-tabler icon-tabler-map-pin' width='20' height='20' viewBox='0 0 24 24' stroke-width='2'
                 stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'>
@@ -49,7 +49,7 @@
 
   <div class="col-span-2 md:col-span-1">
     <Select
-      localStorage="barrioSelec"
+      localStorage="barrio"
       :svg="`<svg xmlns='http://www.w3.org/2000/svg'
                 class='icon icon-tabler icon-tabler-map-2' width='20' height='20' viewBox='0 0 24 24' stroke-width='2'
                 stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'>
@@ -83,23 +83,9 @@ const locations = ref([])
 // Función para obtener datos de la API de ciudades y tipos de inmuebles
 const fetchData = async () => {
   try {
-    const locationsAPI = await fetch(
-      `https://simi-api.com/ApiSimiweb/response/v2/ciudad/idDepartamento/0`,
-      {
-        headers: {
-          Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
-        },
-      },
-    )
+    const locationsAPI = await fetch(`/api/locations`)
 
-    const typeProperty = await fetch(
-      `https://simi-api.com/ApiSimiweb/response/v2/tipoInmuebles/unique/1`,
-      {
-        headers: {
-          Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
-        },
-      },
-    )
+    const typeProperty = await fetch(`/api/types`)
 
     locations.value = await locationsAPI.json()
     typesData.value = await typeProperty.json()
@@ -112,18 +98,18 @@ onMounted(fetchData)
 
 // Manejar cambios en la selección de ciudad para obtener los sectores
 watch(
-  () => $filtros.value.ciudadSelec,
+  () => $filtros.value.ciudad,
   async (newValue) => {
-    const sectorAPI = await fetch(
-      `https://simi-api.com/ApiSimiweb/response/v2/barrios/idCiudad/${newValue}/`,
-      {
-        headers: {
-          Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
-        },
-      },
-    )
+    let url = `/api/zones`
 
-    sectorData.value = await sectorAPI.json()
+    const queryParams = new URLSearchParams()
+    queryParams.set("cityId", newValue)
+
+    url += `?${queryParams.toString()}`
+
+    const response = await fetch(url)
+
+    sectorData.value = await response.json()
   },
 )
 </script>

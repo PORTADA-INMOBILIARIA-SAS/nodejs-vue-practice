@@ -382,21 +382,19 @@ onMounted(async () => {
   const pathSegments = window.location.pathname.split("/")
   inmuebleId.value = pathSegments[pathSegments.length - 1]
 
-  const apiUrl = `https://simi-api.com/ApiSimiweb/response/v2/inmueble/codInmueble/${inmuebleId.value}`
+  let url = `/api/inmueble`
 
-  const response = await fetch(apiUrl, {
-    method: "GET",
-    headers: {
-      Authorization:
-        "Basic " + btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`),
-    },
-  })
+  const queryParams = new URLSearchParams()
+  queryParams.set("inmueble", inmuebleId.value)
+
+  url += `?${queryParams.toString()}`
+
+  const response = await fetch(url)
 
   if (response.ok) {
     isLoading.value = false
   }
 
   data.value = await response.json()
-  console.log(data.value)
 })
 </script>

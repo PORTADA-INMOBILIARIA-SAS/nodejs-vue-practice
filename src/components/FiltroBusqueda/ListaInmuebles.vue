@@ -71,30 +71,30 @@ const hayInmuebles = ref(0)
 const displayedPages = ref([])
 
 let updateTimer = null
-let controller = null
 
 const fetchData = async (page = 1) => {
   try {
     isLoading.value = true
 
-    if (controller) {
-      controller.abort()
-    }
+    let url = `/api/inmueblesFiltro`
 
-    controller = new AbortController()
-    const signal = controller.signal
+    // Construir la cadena de consulta para los parámetros de filtro
+    const queryParams = new URLSearchParams()
+    queryParams.set("limite", currentPage.value)
+    queryParams.set("ciudad", $filtros.value.ciudad)
+    queryParams.set("barrio", $filtros.value.barrio)
+    queryParams.set("tipoInm", $filtros.value.tipoInm)
+    queryParams.set("tipOper", $filtros.value.tipOper)
+    queryParams.set("valmin", $filtros.value.valmin)
+    queryParams.set("valmax", $filtros.value.valmax)
+    queryParams.set("banios", $filtros.value.banios)
+    queryParams.set("alcobas", $filtros.value.alcobas)
+    queryParams.set("garajes", $filtros.value.garajes)
 
-    const apiUrl = `https://www.simi-api.com/ApiSimiweb/response/v2.1.1/filtroInmueble/limite/${page}/total/12/ciudad/${$filtros.value.ciudadSelec || null}/barrio/${$filtros.value.barrioSelec || null}/tipoInm/${$filtros.value.tipoInmu || 0}/tipOper/${$filtros.value.gestion || 1}/valmin/${$filtros.value.valMin || 700000}/valmax/${$filtros.value.valMax || 50000000}/campo/fecha/precio/0/order/desc/banios/${$filtros.value.banos || 0}/alcobas/${$filtros.value.habitaciones || 0}/garajes/${$filtros.value.parking || 0}/sede/0/usuario/0`
+    // Agregar la cadena de consulta a la URL
+    url += `?${queryParams.toString()}`
 
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        Authorization:
-          "Basic " +
-          btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`),
-      },
-      signal,
-    })
+    const response = await fetch(url)
 
     if (!response.ok) {
       throw new Error(`Error al obtener los inmuebles: ${response.statusText}`)

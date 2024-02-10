@@ -123,8 +123,8 @@ const handleEnd = () => {
   isDragging.value = false
   filtros.set({
     ...filtros.value,
-    ["valMin"]: minPrice.value,
-    ["valMax"]: maxPrice.value,
+    ["valmin"]: minPrice.value,
+    ["valmax"]: maxPrice.value,
   })
 }
 
@@ -169,7 +169,7 @@ onUnmounted(() => {
 })
 
 watch(
-  () => $filtros.value.gestion,
+  () => $filtros.value.tipOper,
   (newValue) => {
     if (newValue === 5) {
       min.value = 100000000
