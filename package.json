@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=21.5.0"
   },
   "scripts": {
     "dev": "astro dev",
@@ -11,10 +11,11 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/check": "0.3.3",
+    "@astrojs/netlify": "^5.0.1",
     "@astrojs/tailwind": "5.0.3",
     "@astrojs/vue": "4.0.8",
     "@nanostores/vue": "0.10.0",
