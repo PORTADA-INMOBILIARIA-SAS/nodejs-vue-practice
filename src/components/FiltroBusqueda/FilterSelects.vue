@@ -49,7 +49,7 @@
 
   <div class="col-span-2 md:col-span-1">
     <Select
-      localStorage="barrioSelec"
+      localStorage="barrio"
       :svg="`<svg xmlns='http://www.w3.org/2000/svg'
                 class='icon icon-tabler icon-tabler-map-2' width='20' height='20' viewBox='0 0 24 24' stroke-width='2'
                 stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'>
@@ -97,19 +97,19 @@ const fetchData = async () => {
 onMounted(fetchData)
 
 // Manejar cambios en la selección de ciudad para obtener los sectores
-// watch(
-//   () => $filtros.value.ciudadSelec,
-//   async (newValue) => {
-//     const sectorAPI = await fetch(
-//       `https://simi-api.com/ApiSimiweb/response/v2/barrios/idCiudad/${newValue}/`,
-//       {
-//         headers: {
-//           Authorization: `Basic ${btoa(`Authorization:${import.meta.env.PUBLIC_SIMI_API_KEY}`)}`,
-//         },
-//       },
-//     )
+watch(
+  () => $filtros.value.ciudad,
+  async (newValue) => {
+    let url = `/api/zones`
 
-//     sectorData.value = await sectorAPI.json()
-//   },
-// )
+    const queryParams = new URLSearchParams()
+    queryParams.set("cityId", newValue)
+
+    url += `?${queryParams.toString()}`
+
+    const response = await fetch(url)
+
+    sectorData.value = await response.json()
+  },
+)
 </script>

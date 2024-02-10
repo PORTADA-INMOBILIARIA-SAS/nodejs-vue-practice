@@ -169,7 +169,7 @@ onUnmounted(() => {
 })
 
 watch(
-  () => $filtros.value.gestion,
+  () => $filtros.value.tipOper,
   (newValue) => {
     if (newValue === 5) {
       min.value = 100000000
