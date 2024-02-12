@@ -3,8 +3,6 @@ import { defineConfig } from "astro/config"
 import vue from "@astrojs/vue"
 
 import netlify from "@astrojs/netlify"
-// import fastify from "@matthewp/astro-fastify"
-// import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
