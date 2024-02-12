@@ -6,13 +6,12 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
-    "preview": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.mjs",
+    "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky install"
   },
   "dependencies": {
     "@astrojs/check": "0.3.3",
-    "@astrojs/deno": "^5.0.1",
     "@astrojs/netlify": "^5.0.1",
     "@astrojs/tailwind": "5.0.3",
     "@astrojs/vue": "4.0.8",
