@@ -53,6 +53,8 @@ export const GET: APIRoute = async ({ request }) => {
     // Agregar los parámetros a la URL base
     url += paramString
 
+    console.log(url)
+
     // Realizar la solicitud a la API de Simi
     const response = await fetch(url, {
       headers: {

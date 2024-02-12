@@ -34,10 +34,10 @@
 
   <div class="pt-36 mx-4" v-else>
     <div class="grid sm:grid-cols-[60%_40%] gap-4" v-if="data">
-      <div class="grid gap-4" v-if="data.fotos && data.fotos.length > 0">
-        <div>
+      <div class="grid gap-4 h-fit" v-if="data.fotos && data.fotos.length > 0">
+        <div class="max-h-96">
           <img
-            class="w-full max-h-96 rounded-lg object-cover"
+            class="w-full h-full rounded-lg object-cover"
             :src="data.fotos[0].foto"
             alt=""
           />
@@ -46,9 +46,9 @@
           class="grid grid-cols-5 gap-4"
           v-if="data.fotos && data.fotos.length > 1"
         >
-          <div v-for="(foto, index) in data.fotos" :key="index">
+          <div class="h-fit" v-for="(foto, index) in data.fotos" :key="index">
             <img
-              class="h-16 w-full rounded-lg object-cover"
+              class="w-full h-full rounded-lg object-cover"
               :src="foto.foto"
               alt=""
             />
@@ -322,7 +322,7 @@
               <div
                 class="bg-gradient-to-r from-[--primary-color] to-red-800 text-white w-[80%] p-5 rounded-lg"
               >
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center gap-4">
                   <div class="flex flex-col text-center">
                     <span class="text-2xl">{{ data.asesor[0].ntercero }}</span>
                     <span class="text-sm">{{ data.asesor[0].nrol }}</span>
@@ -341,13 +341,13 @@
                   >
                     <img
                       :src="data.asesor[0].FotoAsesor"
-                      class="max-h-32 rounded-full"
+                      class="rounded-full"
                       alt=""
                     />
                   </div>
                   <div
                     v-else
-                    class="flex items-center justify-center w-ful bg-white p-8 rounded-full"
+                    class="flex items-center justify-center bg-white p-8 rounded-full"
                   >
                     <svg
                       class="w-10 h-10 text-gray-300"
