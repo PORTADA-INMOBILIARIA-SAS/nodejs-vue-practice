@@ -94,8 +94,6 @@ const fetchData = async (page = 1) => {
     // Agregar la cadena de consulta a la URL
     url += `?${queryParams.toString()}`
 
-    console.log(url)
-
     const response = await fetch(url)
 
     if (!response.ok) {
