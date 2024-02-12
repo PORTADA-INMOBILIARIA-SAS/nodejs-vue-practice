@@ -3,9 +3,13 @@ import { defineConfig } from "astro/config"
 import vue from "@astrojs/vue"
 import netlify from "@astrojs/netlify"
 
+import node from "@astrojs/node"
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), vue()],
   output: "hybrid",
-  adapter: netlify(),
+  adapter: node({
+    mode: "standalone",
+  }),
 })
