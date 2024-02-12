@@ -10,6 +10,6 @@ export default defineConfig({
   integrations: [tailwind(), vue()],
   output: "hybrid",
   adapter: node({
-    mode: "standalone",
+    mode: "middleware",
   }),
 })
