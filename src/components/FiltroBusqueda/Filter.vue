@@ -116,6 +116,15 @@
                             </svg>
                                 "
         />
+        <div class="mt-5 flex justify-end text-sm">
+          <button
+            type="button"
+            class="hover:text-[--primary-color]"
+            @click="deleteFilter"
+          >
+            Borrar filtros
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -128,6 +137,8 @@ import Select from "./Select.vue"
 
 import { useStore } from "@nanostores/vue"
 import { filtros } from "./filtroStore"
+import { deleteFilter } from "./filtroStore"
+
 import RangeSlider from "./RangeSlider.vue"
 import Counter from "./Counter.vue"
 
@@ -159,7 +170,6 @@ onMounted(async () => {
   if (lStorage) {
     filtros.set(lStorage)
   }
-  console.log($filtros.value)
 })
 
 // Manejar cambios en la selección de ciudad para obtener los sectores

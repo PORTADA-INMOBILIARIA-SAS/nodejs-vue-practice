@@ -155,6 +155,17 @@ const handleMove = (event) => {
 }
 
 onMounted(() => {
+  if ($filtros.value.tipOper === 5) {
+    min.value = 100000000
+    minPrice.value = 100000000
+    maxPrice.value = 2000000000
+    max.value = 2000000000
+  } else if ($filtros.value.tipOper === 1) {
+    min.value = 700000
+    minPrice.value = 700000
+    max.value = 50000000
+    maxPrice.value = 50000000
+  }
   window.addEventListener("mousemove", handleMove)
   window.addEventListener("mouseup", handleEnd)
   window.addEventListener("touchmove", handleMove)

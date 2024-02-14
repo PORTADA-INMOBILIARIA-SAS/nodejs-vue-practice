@@ -58,6 +58,10 @@ const handleChange = (event) => {
   })
 }
 
+onMounted(() => {
+  selectedValue.value = $filtros.value[props.localStorage]
+})
+
 watch(
   () => $filtros.value[props.localStorage],
   (newValue) => {

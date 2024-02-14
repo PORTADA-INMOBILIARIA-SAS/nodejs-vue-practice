@@ -10,7 +10,7 @@
       <div class="flex items-center">
         <div class="h-[50px] w-[1px] bg-gray-300"></div>
         <div class="px-4">
-          <span>{{ filtro.localStorageKey }}</span>
+          <span>{{ counterValue }}</span>
         </div>
         <div class="h-[50px] w-[1px] bg-gray-300"></div>
         <div class="flex flex-col text-center">
@@ -35,45 +35,48 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue"
+import { ref, onMounted, watch } from "vue"
+
+import { useStore } from "@nanostores/vue"
 import { filtros } from "./filtroStore"
+
+const $filtros = useStore(filtros)
 
 const props = defineProps(["svg", "localStorage", "title"])
 
 const localStorageKey = props.localStorage
 
-const filtro = ref({
-  localStorageKey: 0,
-})
-
-const getInitialFiltro = () => {
-  return {
-    localStorageKey: filtros[localStorageKey] || 0,
-  }
-}
+const counterValue = ref(0)
 
 const saveToFiltros = () => {
   filtros.set({
     ...filtros.value,
-    [localStorageKey]: filtro.value.localStorageKey,
+    [localStorageKey]: counterValue,
   })
 }
 
 const sumarCantidad = () => {
-  if (filtro.value.localStorageKey < 5) {
-    filtro.value.localStorageKey += 1
+  if (counterValue.value < 5) {
+    counterValue.value += 1
     saveToFiltros()
   }
 }
 
+watch(
+  () => $filtros.value[props.localStorage],
+  (newValue) => {
+    counterValue.value = newValue
+  },
+)
+
 const restarCantidad = () => {
-  if (filtro.value.localStorageKey > 0) {
-    filtro.value.localStorageKey -= 1
+  if (counterValue.value > 0) {
+    counterValue -= 1
     saveToFiltros()
   }
 }
 
 onMounted(() => {
-  Object.assign(filtro.value, getInitialFiltro())
+  counterValue.value = $filtros.value[props.localStorage]
 })
 </script>

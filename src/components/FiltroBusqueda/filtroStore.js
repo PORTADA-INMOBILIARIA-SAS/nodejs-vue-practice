@@ -1,6 +1,7 @@
 import { atom } from "nanostores"
 
-export const filtros = atom({
+// Valores por defecto
+const defaultValues = {
   ciudad: 0,
   barrio: 0,
   tipoInm: 0,
@@ -10,4 +11,14 @@ export const filtros = atom({
   banios: 0,
   alcobas: 0,
   garajes: 0,
-})
+}
+
+// Atom con los valores por defecto
+export const filtros = atom(defaultValues)
+
+export const deleteFilter = () => {
+  // Establecer los valores por defecto en el atom
+  filtros.set(defaultValues)
+  // Eliminar el localStorage
+  localStorage.removeItem("filtros")
+}
