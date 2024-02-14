@@ -142,23 +142,12 @@ const isZoneDisabled = ref(1)
 // Función para obtener datos de la API de ciudades y tipos de inmuebles
 const fetchData = async () => {
   try {
-    const cache = await caches.open("myCache")
-    const cachedResponse = await cache.match("cachedData")
-    if (cachedResponse) {
-      const data = await cachedResponse.json()
-      locations.value = data.locations
-      typesData.value = data.types
-    } else {
-      const locationsAPI = await fetch(`/api/locations`)
-      const typeProperty = await fetch(`/api/types`)
-      const locationsData = await locationsAPI.json()
-      const typesData = await typeProperty.json()
-      locations.value = locationsData
-      typesData.value = typesData
-      const newData = { locations: locationsData, types: typesData }
-      const newResponse = new Response(JSON.stringify(newData))
-      await cache.put("cachedData", newResponse)
-    }
+    const locationsAPI = await fetch(`/api/locations`)
+
+    const typeProperty = await fetch(`/api/types`)
+
+    locations.value = await locationsAPI.json()
+    typesData.value = await typeProperty.json()
   } catch (error) {
     console.error("Error fetching data:", error)
   }
