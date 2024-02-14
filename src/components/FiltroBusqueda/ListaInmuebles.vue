@@ -169,7 +169,10 @@ watch(
   () => Object.values($filtros.value),
   (newValues, oldValues) => {
     if (JSON.stringify(newValues) !== JSON.stringify(oldValues)) {
+      // GUARDAMOS EL FILTRO EN EL LOCAL STORAGE CUANDO SE DETECTAN CAMBIOS Y RETORNAMOS A LA PRIMERA PAGINA
+
       currentPage.value = 1
+      localStorage.setItem("filtros", JSON.stringify($filtros.value))
       startFetchDataTimer()
     }
   },

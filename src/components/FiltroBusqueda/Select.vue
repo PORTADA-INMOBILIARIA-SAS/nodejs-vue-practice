@@ -7,11 +7,13 @@
       <select
         class="bg-white min-w-full shadow-custom rounded-md border-0 py-2 px-8 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-red-700 outline-none capitalize"
         @change="handleChange"
+        :disabled="isDisabled == 1"
       >
         <option
           v-for="option in options"
           :value="Object.values(option)[0]"
           :key="option.id"
+          :selected="Object.values(option)[0] == selectedValue"
           class="capitalize"
         >
           {{ Object.values(option)[1] }}
@@ -39,9 +41,15 @@
 </template>
 
 <script setup>
+import { ref, watch, onMounted } from "vue"
+
+import { useStore } from "@nanostores/vue"
 import { filtros } from "./filtroStore"
 
-const props = defineProps(["svg", "localStorage", "options"])
+const $filtros = useStore(filtros)
+const selectedValue = ref(0)
+
+const props = defineProps(["svg", "options", "isDisabled", "localStorage"])
 
 const handleChange = (event) => {
   filtros.set({
@@ -49,4 +57,11 @@ const handleChange = (event) => {
     [props.localStorage]: parseInt(event.target.value),
   })
 }
+
+watch(
+  () => $filtros.value[props.localStorage],
+  (newValue) => {
+    selectedValue.value = newValue
+  },
+)
 </script>

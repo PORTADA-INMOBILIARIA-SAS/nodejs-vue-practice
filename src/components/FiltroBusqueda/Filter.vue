@@ -63,7 +63,61 @@
                 <path d='M19 18v.01'></path>
                 </svg>`"
       :options="[{ id: 0, nombre: 'Sector' }, ...sectorData]"
+      :isDisabled="isZoneDisabled"
     />
+  </div>
+
+  <div class="col-span-2">
+    <RangeSlider />
+  </div>
+
+  <div class="col-span-2">
+    <div class="grid grid-cols-1 md:grid-cols-3 md:gap-3 gap-y-3 w-full">
+      <div>
+        <Counter
+          localStorage="alcobas"
+          title="Habitaciones"
+          svg="
+                                <svg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-bed' width='30' height='30' viewBox='0 0 24 24' stroke-width='1' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+                                <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+                                <path d='M7 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0' />
+                                <path d='M22 17v-3h-20' />
+                                <path d='M2 8v9' />
+                                <path d='M12 14h10v-2a3 3 0 0 0 -3 -3h-7v5z' />
+                                </svg>
+                                "
+        />
+      </div>
+
+      <div>
+        <Counter
+          localStorage="banios"
+          title="Baños"
+          svg="
+                            <svg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-toilet-paper' width='30' height='30' viewBox='0 0 24 24' stroke-width='1' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+                                <path stroke='none' d='M0 0h24v24H0z' fill='none'/>
+                                <path d='M6 10m-3 0a3 7 0 1 0 6 0a3 7 0 1 0 -6 0' /><path d='M21 10c0 -3.866 -1.343 -7 -3 -7' />
+                                <path d='M6 3h12' />
+                                <path d='M21 10v10l-3 -1l-3 2l-3 -3l-3 2v-10' />
+                                <path d='M6 10h.01' />
+                            </svg>
+                                "
+        />
+      </div>
+      <div>
+        <Counter
+          localStorage="garajes"
+          title="Parqueaderos"
+          svg="
+                            <svg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-parking-circle' width='30' height='30' viewBox='0 0 24 24' stroke-width='1' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+                                <path stroke='none' d='M0 0h24v24H0z' fill='none'/>
+                                <path d='M10 16v-8h2.667c.736 0 1.333 .895 1.333 2s-.597 2 -1.333 2h-2.667' />
+                                <path d='M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0' />
+                            </svg>
+                                "
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -74,27 +128,50 @@ import Select from "./Select.vue"
 
 import { useStore } from "@nanostores/vue"
 import { filtros } from "./filtroStore"
+import RangeSlider from "./RangeSlider.vue"
+import Counter from "./Counter.vue"
+
 const $filtros = useStore(filtros)
 
 const sectorData = ref([])
 const typesData = ref([])
 const locations = ref([])
 
+const isZoneDisabled = ref(1)
+
 // Función para obtener datos de la API de ciudades y tipos de inmuebles
 const fetchData = async () => {
   try {
-    const locationsAPI = await fetch(`/api/locations`)
-
-    const typeProperty = await fetch(`/api/types`)
-
-    locations.value = await locationsAPI.json()
-    typesData.value = await typeProperty.json()
+    const cache = await caches.open("myCache")
+    const cachedResponse = await cache.match("cachedData")
+    if (cachedResponse) {
+      const data = await cachedResponse.json()
+      locations.value = data.locations
+      typesData.value = data.types
+    } else {
+      const locationsAPI = await fetch(`/api/locations`)
+      const typeProperty = await fetch(`/api/types`)
+      const locationsData = await locationsAPI.json()
+      const typesData = await typeProperty.json()
+      locations.value = locationsData
+      typesData.value = typesData
+      const newData = { locations: locationsData, types: typesData }
+      const newResponse = new Response(JSON.stringify(newData))
+      await cache.put("cachedData", newResponse)
+    }
   } catch (error) {
     console.error("Error fetching data:", error)
   }
 }
 
-onMounted(fetchData)
+onMounted(async () => {
+  await fetchData()
+  const lStorage = JSON.parse(localStorage.getItem("filtros"))
+  if (lStorage) {
+    filtros.set(lStorage)
+  }
+  console.log($filtros.value)
+})
 
 // Manejar cambios en la selección de ciudad para obtener los sectores
 watch(
@@ -110,6 +187,8 @@ watch(
     const response = await fetch(url)
 
     sectorData.value = await response.json()
+
+    isZoneDisabled.value = 0
   },
 )
 </script>

@@ -340,7 +340,7 @@
                     "
                   >
                     <img
-                      :src="data.asesor[0].FotoAsesor"
+                      :src="`https://portadainmobiliaria.com/asesores/${data.asesor[0].cedtercero}.png`"
                       class="rounded-full"
                       alt=""
                     />
@@ -396,5 +396,7 @@ onMounted(async () => {
   }
 
   data.value = await response.json()
+
+  console.log(data)
 })
 </script>
