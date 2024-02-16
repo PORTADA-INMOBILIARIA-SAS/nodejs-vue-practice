@@ -71,7 +71,7 @@ watch(
 
 const restarCantidad = () => {
   if (counterValue.value > 0) {
-    counterValue -= 1
+    counterValue.value -= 1
     saveToFiltros()
   }
 }
