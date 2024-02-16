@@ -46,7 +46,7 @@ const props = defineProps(["svg", "localStorage", "title"])
 
 const localStorageKey = props.localStorage
 
-let counterValue = ref(0)
+const counterValue = ref(0)
 
 const saveToFiltros = () => {
   filtros.set({
