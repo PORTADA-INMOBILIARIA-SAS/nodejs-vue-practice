@@ -388,7 +388,5 @@ onMounted(async () => {
   }
 
   data.value = await response.json()
-
-  console.log(data)
 })
 </script>
