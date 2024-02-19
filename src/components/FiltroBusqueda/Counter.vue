@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue"
+import { ref, onMounted, watchEffect } from "vue"
 
 import { useStore } from "@nanostores/vue"
 import { filtros } from "../../store/filtroStore"
@@ -49,13 +49,10 @@ const localStorageKey = props.localStorage
 const counterValue = ref(0)
 
 const saveToFiltros = () => {
-  const currentValue = $filtros.value[localStorageKey]
-  if (currentValue !== counterValue.value) {
-    filtros.set({
-      ...filtros.value,
-      [localStorageKey]: counterValue.value,
-    })
-  }
+  filtros.set({
+    ...filtros.value,
+    [localStorageKey]: counterValue.value,
+  })
 }
 
 const sumarCantidad = () => {
@@ -65,13 +62,6 @@ const sumarCantidad = () => {
   }
 }
 
-watch(
-  () => $filtros.value[props.localStorage],
-  (newValue) => {
-    counterValue.value = newValue
-  },
-)
-
 const restarCantidad = () => {
   if (counterValue.value > 0) {
     counterValue.value -= 1
@@ -80,6 +70,11 @@ const restarCantidad = () => {
 }
 
 onMounted(() => {
+  const localStorageValue = $filtros.value[localStorageKey]
+  counterValue.value = localStorageValue !== undefined ? localStorageValue : 0
+})
+
+watchEffect(() => {
   counterValue.value = $filtros.value[props.localStorage]
 })
 </script>
