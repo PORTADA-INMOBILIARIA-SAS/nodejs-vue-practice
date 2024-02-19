@@ -51,7 +51,7 @@ const counterValue = ref(0)
 const saveToFiltros = () => {
   filtros.set({
     ...filtros.value,
-    [localStorageKey]: counterValue,
+    [localStorageKey]: counterValue.value,
   })
 }
 
