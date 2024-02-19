@@ -136,8 +136,8 @@ import { ref, onMounted, watch } from "vue"
 import Select from "./Select.vue"
 
 import { useStore } from "@nanostores/vue"
-import { filtros } from "./filtroStore"
-import { deleteFilter } from "./filtroStore"
+import { filtros } from "../../store/filtroStore"
+import { deleteFilter } from "../../store/filtroStore"
 
 import RangeSlider from "./RangeSlider.vue"
 import Counter from "./Counter.vue"

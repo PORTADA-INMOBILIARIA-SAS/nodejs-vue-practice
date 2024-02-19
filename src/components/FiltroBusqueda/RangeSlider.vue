@@ -91,7 +91,7 @@
 import { ref, onMounted, onUnmounted, computed, watch } from "vue"
 
 import { useStore } from "@nanostores/vue"
-import { filtros } from "./filtroStore"
+import { filtros } from "../../store/filtroStore"
 const $filtros = useStore(filtros)
 
 const min = ref(700000)

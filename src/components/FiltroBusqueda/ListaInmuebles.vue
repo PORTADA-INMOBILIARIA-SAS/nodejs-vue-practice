@@ -60,7 +60,7 @@
 import { ref, onMounted, watch } from "vue"
 import CardInmueble from "./CardInmueble.vue"
 import { useStore } from "@nanostores/vue"
-import { filtros } from "./filtroStore"
+import { filtros } from "../../store/filtroStore"
 
 const inmuebles = ref([])
 const isLoading = ref(false)

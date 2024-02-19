@@ -44,7 +44,7 @@
 import { ref, watch, onMounted } from "vue"
 
 import { useStore } from "@nanostores/vue"
-import { filtros } from "./filtroStore"
+import { filtros } from "../../store/filtroStore"
 
 const $filtros = useStore(filtros)
 const selectedValue = ref(0)
