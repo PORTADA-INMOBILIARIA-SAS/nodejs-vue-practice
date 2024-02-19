@@ -49,14 +49,16 @@ const localStorageKey = props.localStorage
 const counterValue = ref(0)
 
 const saveToFiltros = () => {
-  filtros.set({
-    ...filtros.value,
-    [localStorageKey]: counterValue.value,
-  })
+  const currentValue = $filtros.value[localStorageKey]
+  if (currentValue !== counterValue.value) {
+    filtros.set({
+      ...filtros.value,
+      [localStorageKey]: counterValue.value,
+    })
+  }
 }
 
 const sumarCantidad = () => {
-  console.log(counterValue.value)
   if (counterValue.value < 5) {
     counterValue.value += 1
     saveToFiltros()
