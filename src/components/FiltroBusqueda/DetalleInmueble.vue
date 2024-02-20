@@ -35,21 +35,81 @@
   <div class="pt-36 mx-4" v-else>
     <div class="grid sm:grid-cols-[60%_40%] gap-4" v-if="data">
       <div class="grid gap-4 h-fit" v-if="data.fotos && data.fotos.length > 0">
-        <div class="max-h-96">
+        <div class="relative flex justify-center max-h-screen">
+          <button
+            class="absolute left-0 top-[50%] text-white ml-5 bg-[--primary-color] rounded-full"
+            @click="previousImage"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-circle-arrow-left-filled"
+              width="35"
+              height="35"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path
+                d="M12 2a10 10 0 0 1 .324 19.995l-.324 .005l-.324 -.005a10 10 0 0 1 .324 -19.995zm.707 5.293a1 1 0 0 0 -1.414 0l-4 4a1.048 1.048 0 0 0 -.083 .094l-.064 .092l-.052 .098l-.044 .11l-.03 .112l-.017 .126l-.003 .075l.004 .09l.007 .058l.025 .118l.035 .105l.054 .113l.043 .07l.071 .095l.054 .058l4 4l.094 .083a1 1 0 0 0 1.32 -1.497l-2.292 -2.293h5.585l.117 -.007a1 1 0 0 0 -.117 -1.993h-5.586l2.293 -2.293l.083 -.094a1 1 0 0 0 -.083 -1.32z"
+                stroke-width="0"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <button
+            class="absolute right-0 top-[50%] text-white mr-5 bg-[--primary-color] rounded-full"
+            @click="nextImage"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-circle-arrow-right-filled"
+              width="35"
+              height="35"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path
+                d="M12 2l.324 .005a10 10 0 1 1 -.648 0l.324 -.005zm.613 5.21a1 1 0 0 0 -1.32 1.497l2.291 2.293h-5.584l-.117 .007a1 1 0 0 0 .117 1.993h5.584l-2.291 2.293l-.083 .094a1 1 0 0 0 1.497 1.32l4 -4l.073 -.082l.064 -.089l.062 -.113l.044 -.11l.03 -.112l.017 -.126l.003 -.075l-.007 -.118l-.029 -.148l-.035 -.105l-.054 -.113l-.071 -.111a1.008 1.008 0 0 0 -.097 -.112l-4 -4z"
+                stroke-width="0"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
           <img
-            class="w-full h-full rounded-lg object-cover"
-            :src="data.fotos[0].foto"
+            :src="data.fotos[displayedImage].foto"
+            :key="displayedImage"
             alt=""
+            class="h-full rounded-lg object-contain shadow-custom"
           />
         </div>
+
+        <!-- Dentro del div donde se muestran las imágenes -->
         <div
-          class="grid grid-cols-5 gap-4"
+          class="grid grid-cols-6 gap-4"
           v-if="data.fotos && data.fotos.length > 1"
         >
-          <div class="h-fit" v-for="(foto, index) in data.fotos" :key="index">
+          <div
+            class="max-h-48 w-fit"
+            v-for="(foto, index) in data.fotos"
+            :key="index"
+          >
             <img
-              class="w-full h-full rounded-lg object-cover"
+              class="w-full h-full rounded-lg object-cover transition-opacity duration-300 hover:shadow-custom hover:opacity-90 hover:cursor-pointer"
+              :class="{
+                'opacity-80': displayedImage === index,
+                'shadow-custom': displayedImage === index,
+              }"
               :src="foto.foto"
+              @click="changeImage(index)"
               alt=""
             />
           </div>
@@ -369,6 +429,27 @@ import { ref, onMounted } from "vue"
 const isLoading = ref(true)
 const inmuebleId = ref(null)
 const data = ref(null)
+
+const displayedImage = ref(0)
+
+const changeImage = (image) => {
+  displayedImage.value = image
+}
+
+const nextImage = () => {
+  if (data.value.fotos.length - 1 > displayedImage.value) {
+    displayedImage.value += 1
+  }
+}
+
+const previousImage = () => {
+  if (
+    data.value.fotos.length > displayedImage.value &&
+    displayedImage.value > 0
+  ) {
+    displayedImage.value -= 1
+  }
+}
 
 onMounted(async () => {
   const pathSegments = window.location.pathname.split("/")

@@ -187,7 +187,11 @@ watch(
 
     sectorData.value = await response.json()
 
-    isZoneDisabled.value = 0
+    if (newValue != 0) {
+      isZoneDisabled.value = 0
+    } else {
+      isZoneDisabled.value = 1
+    }
   },
 )
 </script>
