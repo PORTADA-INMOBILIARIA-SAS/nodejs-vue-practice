@@ -35,7 +35,9 @@
   <div class="pt-36 mx-4" v-else>
     <div class="grid sm:grid-cols-[60%_40%] gap-4" v-if="data">
       <div class="grid gap-4 h-fit" v-if="data.fotos && data.fotos.length > 0">
-        <div class="relative flex justify-center max-h-screen">
+        <div
+          class="relative flex justify-center max-h-screen backdrop-blur-3xl"
+        >
           <button
             class="absolute left-0 top-[50%] text-white ml-5 bg-[--primary-color] rounded-full"
             @click="previousImage"
@@ -88,7 +90,7 @@
             :src="data.fotos[displayedImage].foto"
             :key="displayedImage"
             alt=""
-            class="h-full rounded-lg object-contain shadow-custom"
+            class="h-full object-contain shadow-custom"
           />
         </div>
 
