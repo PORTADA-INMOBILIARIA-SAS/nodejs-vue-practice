@@ -48,33 +48,25 @@ const localStorageKey = props.localStorage
 
 const counterValue = ref(0)
 
-let updatingFromCode = false // Flag to indicate if updating from code
-
 const saveToFiltros = () => {
-  if (!updatingFromCode) {
-    // Check the flag before saving
-    filtros.set({
-      ...filtros.value,
-      [localStorageKey]: counterValue.value,
-    })
-  }
+  console.log(counterValue.value)
+  filtros.set({
+    ...filtros.value,
+    [localStorageKey]: counterValue.value,
+  })
 }
 
 const sumarCantidad = () => {
   if (counterValue.value < 5) {
-    updatingFromCode = true // Set the flag before updating
     counterValue.value += 1
     saveToFiltros()
-    updatingFromCode = false // Reset the flag after updating
   }
 }
 
 const restarCantidad = () => {
   if (counterValue.value > 0) {
-    updatingFromCode = true
     counterValue.value -= 1
     saveToFiltros()
-    updatingFromCode = false
   }
 }
 
@@ -84,8 +76,6 @@ onMounted(() => {
 })
 
 watchEffect(() => {
-  updatingFromCode = true // Set the flag before updating
   counterValue.value = $filtros.value[props.localStorage]
-  updatingFromCode = false // Reset the flag after updating
 })
 </script>
