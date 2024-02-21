@@ -48,35 +48,35 @@ const localStorageKey = props.localStorage
 
 const counterValue = ref(0)
 
-// const saveToFiltros = () => {
-//   filtros.set({
-//     ...filtros.value,
-//     [localStorageKey]: counterValue.value,
-//   })
-// }
+const saveToFiltros = () => {
+  filtros.set({
+    ...filtros.value,
+    [localStorageKey]: counterValue.value,
+  })
+}
 
-// const sumarCantidad = () => {
-//   if (counterValue.value < 5) {
-//     counterValue.value += 1
-//     console.log(counterValue.value)
-//     saveToFiltros()
-//   }
-// }
+const sumarCantidad = () => {
+  if (counterValue.value < 5) {
+    counterValue.value += 1
+    console.log(counterValue.value)
+    saveToFiltros()
+  }
+}
 
-// const restarCantidad = () => {
-//   if (counterValue.value > 0) {
-//     counterValue.value -= 1
-//     console.log(counterValue.value)
-//     saveToFiltros()
-//   }
-// }
+const restarCantidad = () => {
+  if (counterValue.value > 0) {
+    counterValue.value -= 1
+    console.log(counterValue.value)
+    saveToFiltros()
+  }
+}
 
-// onMounted(() => {
-//   const localStorageValue = $filtros.value[localStorageKey]
-//   counterValue.value = localStorageValue !== undefined ? localStorageValue : 0
-// })
+onMounted(() => {
+  const localStorageValue = $filtros.value[localStorageKey]
+  counterValue.value = localStorageValue !== undefined ? localStorageValue : 0
+})
 
-// watchEffect(() => {
-//   counterValue.value = $filtros.value[props.localStorage]
-// })
+watchEffect(() => {
+  counterValue.value = $filtros.value[props.localStorage]
+})
 </script>
