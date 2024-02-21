@@ -50,7 +50,7 @@ const counterValue = ref(0)
 
 const saveToFiltros = () => {
   filtros.set({
-    ...$filtros.value,
+    ...filtros.value,
     [localStorageKey]: counterValue.value,
   })
 }
@@ -58,14 +58,16 @@ const saveToFiltros = () => {
 const sumarCantidad = () => {
   if (counterValue.value < 5) {
     counterValue.value += 1
-    saveToFiltros()
+    console.log(counterValue.value)
+    // saveToFiltros()
   }
 }
 
 const restarCantidad = () => {
   if (counterValue.value > 0) {
     counterValue.value -= 1
-    saveToFiltros()
+    console.log(counterValue.value)
+    // saveToFiltros()
   }
 }
 
