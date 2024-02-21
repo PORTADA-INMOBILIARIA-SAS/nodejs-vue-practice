@@ -165,18 +165,18 @@ onMounted(() => {
   displayedPages.value = calculateDisplayedPages(currentPage.value)
 })
 
-// watch(
-//     () => Object.values($filtros.value),
-//     (newValues, oldValues) => {
-//         if (JSON.stringify(newValues) !== JSON.stringify(oldValues)) {
-//             // GUARDAMOS EL FILTRO EN EL LOCAL STORAGE CUANDO SE DETECTAN CAMBIOS Y RETORNAMOS A LA PRIMERA PAGINA
+watch(
+  () => Object.values($filtros.value),
+  (newValues, oldValues) => {
+    if (JSON.stringify(newValues) !== JSON.stringify(oldValues)) {
+      // GUARDAMOS EL FILTRO EN EL LOCAL STORAGE CUANDO SE DETECTAN CAMBIOS Y RETORNAMOS A LA PRIMERA PAGINA
 
-//             currentPage.value = 1
-//             localStorage.setItem("filtros", JSON.stringify($filtros.value))
-//             startFetchDataTimer()
-//         }
-//     },
-// )
+      currentPage.value = 1
+      localStorage.setItem("filtros", JSON.stringify($filtros.value))
+      startFetchDataTimer()
+    }
+  },
+)
 
 const changePage = (page) => {
   if (page >= 1 && page <= totalPages.value && page !== currentPage.value) {

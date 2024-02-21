@@ -58,7 +58,6 @@ const saveToFiltros = () => {
 const sumarCantidad = () => {
   if (counterValue.value < 5) {
     counterValue.value += 1
-    console.log(counterValue.value)
     saveToFiltros()
   }
 }
@@ -66,7 +65,6 @@ const sumarCantidad = () => {
 const restarCantidad = () => {
   if (counterValue.value > 0) {
     counterValue.value -= 1
-    console.log(counterValue.value)
     saveToFiltros()
   }
 }
