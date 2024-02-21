@@ -49,9 +49,8 @@ const localStorageKey = props.localStorage
 const counterValue = ref(0)
 
 const saveToFiltros = () => {
-  console.log(counterValue.value)
   filtros.set({
-    ...filtros.value,
+    ...$filtros.value,
     [localStorageKey]: counterValue.value,
   })
 }
