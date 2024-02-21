@@ -14,8 +14,7 @@
 
         <!-- Boton minimo -->
         <div
-          class="absolute h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 top-0 cursor-pointer"
-          unselectable="on"
+          class="absolute unselectable h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 top-0 cursor-pointer"
           @mousedown="handleStart('min')"
           @mouseup="handleEnd"
           @touchstart="handleStart('min')"
@@ -50,8 +49,7 @@
 
         <!-- Boton maximo -->
         <div
-          class="absolute h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 top-0 cursor-pointer"
-          unselectable="on"
+          class="absolute unselectable h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 top-0 cursor-pointer"
           @mousedown="handleStart('max')"
           @mouseup="handleEnd"
           @touchstart="handleStart('max')"

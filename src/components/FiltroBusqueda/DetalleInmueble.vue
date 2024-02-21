@@ -117,62 +117,72 @@
       </div>
 
       <div>
-        <div class="uppercase font-bold text-4xl text-center">
+        <div
+          class="uppercase font-bold text-4xl text-center bg-gradient-to-bl from-[--primary-color] to-red-950 text-transparent bg-clip-text"
+        >
           <span>{{ data.oper + " " + data.tpinmu }}</span>
         </div>
         <div class="text-lg">
           <div class="flex mt-4 justify-center">
-            <div class="text-[--primary-color]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-map-pin-filled"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path
-                  d="M18.364 4.636a9 9 0 0 1 .203 12.519l-.203 .21l-4.243 4.242a3 3 0 0 1 -4.097 .135l-.144 -.135l-4.244 -4.243a9 9 0 0 1 12.728 -12.728zm-6.364 3.364a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z"
-                  stroke-width="0"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-            <div class="ml-2">
-              <span>{{
-                data.ndepto + ", " + data.nciudad + ", " + data.NombreB
-              }}</span>
+            <div
+              class="flex bg-gradient-to-r from-[--primary-color] to-red-800 w-fit rounded-lg p-2 text-white"
+            >
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon icon-tabler icon-tabler-map-pin-filled"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path
+                    d="M18.364 4.636a9 9 0 0 1 .203 12.519l-.203 .21l-4.243 4.242a3 3 0 0 1 -4.097 .135l-.144 -.135l-4.244 -4.243a9 9 0 0 1 12.728 -12.728zm-6.364 3.364a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z"
+                    stroke-width="0"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              <div class="ml-1">
+                <span>{{
+                  data.ndepto + ", " + data.nciudad + ", " + data.NombreB
+                }}</span>
+              </div>
             </div>
           </div>
 
           <div class="flex mt-2 justify-center">
-            <div class="text-[--primary-color]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-currency-dollar"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                stroke-width="3"
-                stroke="currentColor"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path
-                  d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
-                />
-                <path d="M12 3v3m0 12v3" />
-              </svg>
-            </div>
-            <div class="ml-2">
-              <span>{{ data.precio }}</span>
+            <div
+              class="flex bg-gradient-to-r from-[--primary-color] to-red-800 text-white p-2 rounded-lg"
+            >
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon icon-tabler icon-tabler-currency-dollar"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="3"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path
+                    d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
+                  />
+                  <path d="M12 3v3m0 12v3" />
+                </svg>
+              </div>
+              <div class="ml-1">
+                <span>{{ data.precio }}</span>
+              </div>
             </div>
           </div>
 
@@ -469,5 +479,9 @@ onMounted(async () => {
   }
 
   data.value = await response.json()
+
+  setInterval(() => {
+    displayedImage.value = (displayedImage.value + 1) % data.value.fotos.length
+  }, 4000)
 })
 </script>
