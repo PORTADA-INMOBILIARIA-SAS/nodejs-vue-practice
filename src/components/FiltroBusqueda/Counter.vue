@@ -74,7 +74,7 @@ onMounted(() => {
   counterValue.value = localStorageValue !== undefined ? localStorageValue : 0
 })
 
-watchEffect(() => {
-  counterValue.value = $filtros.value[props.localStorage]
-})
+// watchEffect(() => {
+//   counterValue.value = $filtros.value[props.localStorage]
+// })
 </script>
