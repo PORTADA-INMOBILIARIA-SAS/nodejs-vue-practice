@@ -21,20 +21,22 @@ await Promise.all(fetchPromises)
 
 {
   data.map((post: any, index: number) => (
-    <div class="flex flex-col cursor-pointer card-blog">
-      <div class="relative flex-grow">
-        <img
-          src={images[index]}
-          alt=""
-          class="w-full h-full object-cover rounded-t-md"
-        />
+    <a href={`/blog/${post.id}`}>
+      <div class="flex flex-col cursor-pointer card-blog h-full">
+        <div class="relative flex-grow">
+          <img
+            src={images[index]}
+            alt=""
+            class="w-full h-full object-cover rounded-t-md"
+          />
+        </div>
+        <div class="bg-[--primary-color] p-5 text-center rounded-b-md card-blog-text">
+          <span class="font-bold text-white uppercase">
+            {post.title.rendered}
+          </span>
+        </div>
       </div>
-      <div class="bg-[--primary-color] p-5 text-center rounded-b-md card-blog-text">
-        <span class="font-bold text-white uppercase">
-          {post.title.rendered}
-        </span>
-      </div>
-    </div>
+    </a>
   ))
 }
 

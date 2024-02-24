@@ -14,8 +14,7 @@
 
         <!-- Boton minimo -->
         <div
-          class="absolute h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 top-0 cursor-pointer"
-          unselectable="on"
+          class="absolute unselectable h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 top-0 cursor-pointer"
           @mousedown="handleStart('min')"
           @mouseup="handleEnd"
           @touchstart="handleStart('min')"
@@ -50,8 +49,7 @@
 
         <!-- Boton maximo -->
         <div
-          class="absolute h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 top-0 cursor-pointer"
-          unselectable="on"
+          class="absolute unselectable h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 top-0 cursor-pointer"
           @mousedown="handleStart('max')"
           @mouseup="handleEnd"
           @touchstart="handleStart('max')"
@@ -91,7 +89,7 @@
 import { ref, onMounted, onUnmounted, computed, watch } from "vue"
 
 import { useStore } from "@nanostores/vue"
-import { filtros } from "./filtroStore"
+import { filtros } from "../../store/filtroStore"
 const $filtros = useStore(filtros)
 
 const min = ref(700000)
@@ -155,6 +153,17 @@ const handleMove = (event) => {
 }
 
 onMounted(() => {
+  if ($filtros.value.tipOper === 5) {
+    min.value = 100000000
+    minPrice.value = 100000000
+    maxPrice.value = 2000000000
+    max.value = 2000000000
+  } else if ($filtros.value.tipOper === 1) {
+    min.value = 700000
+    minPrice.value = 700000
+    max.value = 50000000
+    maxPrice.value = 50000000
+  }
   window.addEventListener("mousemove", handleMove)
   window.addEventListener("mouseup", handleEnd)
   window.addEventListener("touchmove", handleMove)

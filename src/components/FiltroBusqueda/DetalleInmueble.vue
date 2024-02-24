@@ -35,21 +35,81 @@
   <div class="pt-36 mx-4" v-else>
     <div class="grid sm:grid-cols-[60%_40%] gap-4" v-if="data">
       <div class="grid gap-4 h-fit" v-if="data.fotos && data.fotos.length > 0">
-        <div class="max-h-96">
+        <div
+          class="relative flex justify-center max-h-screen backdrop-blur-3xl"
+        >
+          <button
+            class="absolute left-0 top-[50%] text-white ml-5 rounded-full bg-gradient-to-r from-[--primary-color] to-red-800"
+            @click="previousImage"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-circle-arrow-left"
+              width="35"
+              height="35"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 21a9 9 0 1 0 0 -18a9 9 0 0 0 0 18" />
+              <path d="M8 12l4 4" />
+              <path d="M8 12h8" />
+              <path d="M12 8l-4 4" />
+            </svg>
+          </button>
+          <button
+            class="absolute right-0 top-[50%] text-white mr-5 rounded-full bg-gradient-to-r from-[--primary-color] to-red-800"
+            @click="nextImage"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-circle-arrow-right"
+              width="35"
+              height="35"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0 -18" />
+              <path d="M16 12l-4 -4" />
+              <path d="M16 12h-8" />
+              <path d="M12 16l4 -4" />
+            </svg>
+          </button>
           <img
-            class="w-full h-full rounded-lg object-cover"
-            :src="data.fotos[0].foto"
+            :src="data.fotos[displayedImage].foto"
+            :key="displayedImage"
             alt=""
+            class="h-full object-contain shadow-custom"
           />
         </div>
+
+        <!-- Dentro del div donde se muestran las imágenes -->
         <div
-          class="grid grid-cols-5 gap-4"
+          class="grid grid-cols-6 gap-4"
           v-if="data.fotos && data.fotos.length > 1"
         >
-          <div class="h-fit" v-for="(foto, index) in data.fotos" :key="index">
+          <div
+            class="max-h-48 w-fit"
+            v-for="(foto, index) in data.fotos"
+            :key="index"
+          >
             <img
-              class="w-full h-full rounded-lg object-cover"
+              class="w-full h-full rounded-lg object-cover transition-opacity duration-300 hover:shadow-custom hover:opacity-90 hover:cursor-pointer"
+              :class="{
+                'opacity-80': displayedImage === index,
+                'shadow-custom': displayedImage === index,
+              }"
               :src="foto.foto"
+              @click="changeImage(index)"
               alt=""
             />
           </div>
@@ -57,62 +117,72 @@
       </div>
 
       <div>
-        <div class="uppercase font-bold text-4xl text-center">
+        <div
+          class="uppercase font-bold text-4xl text-center bg-gradient-to-bl from-[--primary-color] to-red-950 text-transparent bg-clip-text"
+        >
           <span>{{ data.oper + " " + data.tpinmu }}</span>
         </div>
         <div class="text-lg">
           <div class="flex mt-4 justify-center">
-            <div class="text-[--primary-color]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-map-pin-filled"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path
-                  d="M18.364 4.636a9 9 0 0 1 .203 12.519l-.203 .21l-4.243 4.242a3 3 0 0 1 -4.097 .135l-.144 -.135l-4.244 -4.243a9 9 0 0 1 12.728 -12.728zm-6.364 3.364a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z"
-                  stroke-width="0"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-            <div class="ml-2">
-              <span>{{
-                data.ndepto + ", " + data.nciudad + ", " + data.NombreB
-              }}</span>
+            <div
+              class="flex bg-gradient-to-r from-[--primary-color] to-red-800 w-fit rounded-lg p-2 text-white"
+            >
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon icon-tabler icon-tabler-map-pin-filled"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path
+                    d="M18.364 4.636a9 9 0 0 1 .203 12.519l-.203 .21l-4.243 4.242a3 3 0 0 1 -4.097 .135l-.144 -.135l-4.244 -4.243a9 9 0 0 1 12.728 -12.728zm-6.364 3.364a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z"
+                    stroke-width="0"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              <div class="ml-1">
+                <span>{{
+                  data.ndepto + ", " + data.nciudad + ", " + data.NombreB
+                }}</span>
+              </div>
             </div>
           </div>
 
           <div class="flex mt-2 justify-center">
-            <div class="text-[--primary-color]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-currency-dollar"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                stroke-width="3"
-                stroke="currentColor"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path
-                  d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
-                />
-                <path d="M12 3v3m0 12v3" />
-              </svg>
-            </div>
-            <div class="ml-2">
-              <span>{{ data.precio }}</span>
+            <div
+              class="flex bg-gradient-to-r from-[--primary-color] to-red-800 text-white p-2 rounded-lg"
+            >
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="icon icon-tabler icon-tabler-currency-dollar"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="3"
+                  stroke="currentColor"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path
+                    d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2"
+                  />
+                  <path d="M12 3v3m0 12v3" />
+                </svg>
+              </div>
+              <div class="ml-1">
+                <span>{{ data.precio }}</span>
+              </div>
             </div>
           </div>
 
@@ -338,28 +408,20 @@
                       data.asesor[0].FotoAsesor !=
                       `https://simicrm.app/mcomercialweb/`
                     "
+                    class="max-w-40"
                   >
                     <img
-                      :src="data.asesor[0].FotoAsesor"
+                      :src="`https://portadainmobiliaria.com/asesores/${data.asesor[0].cedtercero}.png`"
                       class="rounded-full"
                       alt=""
                     />
                   </div>
-                  <div
-                    v-else
-                    class="flex items-center justify-center bg-white p-8 rounded-full"
-                  >
-                    <svg
-                      class="w-10 h-10 text-gray-300"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 20 18"
-                    >
-                      <path
-                        d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"
-                      />
-                    </svg>
+                  <div v-else class="max-w-40">
+                    <img
+                      :src="`https://portadainmobiliaria.com/asesores/900336513.png`"
+                      class="rounded-full"
+                      alt=""
+                    />
                   </div>
                 </div>
               </div>
@@ -377,6 +439,27 @@ import { ref, onMounted } from "vue"
 const isLoading = ref(true)
 const inmuebleId = ref(null)
 const data = ref(null)
+
+const displayedImage = ref(0)
+
+const changeImage = (image) => {
+  displayedImage.value = image
+}
+
+const nextImage = () => {
+  if (data.value.fotos.length - 1 > displayedImage.value) {
+    displayedImage.value += 1
+  }
+}
+
+const previousImage = () => {
+  if (
+    data.value.fotos.length > displayedImage.value &&
+    displayedImage.value > 0
+  ) {
+    displayedImage.value -= 1
+  }
+}
 
 onMounted(async () => {
   const pathSegments = window.location.pathname.split("/")
@@ -396,5 +479,9 @@ onMounted(async () => {
   }
 
   data.value = await response.json()
+
+  setInterval(() => {
+    displayedImage.value = (displayedImage.value + 1) % data.value.fotos.length
+  }, 4000)
 })
 </script>
