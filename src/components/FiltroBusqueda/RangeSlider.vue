@@ -5,7 +5,7 @@
     <div class="py-1 relative min-w-full" ref="containerRef">
       <div class="h-2 bg-gray-200 rounded-full">
         <div
-          class="absolute h-2 rounded-full bg-[--primary-color]"
+          class="absolute h-2 rounded-full bg-gradient-to-r from-[--primary-color] to-red-800"
           :style="{ width: rangeWidth, left: rangeLeft }"
         ></div>
 

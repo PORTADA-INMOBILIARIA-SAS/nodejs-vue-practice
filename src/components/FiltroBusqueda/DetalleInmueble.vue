@@ -114,6 +114,7 @@
             :key="displayedImage"
             alt=""
             class="w-full shadow-custom object-cover hover:cursor-pointer"
+            @click="showPreview(displayedImage)"
           />
         </div>
 
@@ -128,9 +129,9 @@
           >
             <div class="h-32 w-full">
               <img
-                class="w-full h-full rounded-lg object-cover transition-opacity duration-300 hover:shadow-custom hover:contrast-125 hover:cursor-pointer"
+                class="w-full h-full rounded-lg object-cover transition-opacity duration-300 hover:shadow-custom hover:contrast-75 hover:cursor-pointer"
                 :class="{
-                  'contrast-125': displayedImage === index,
+                  'contrast-75': displayedImage === index,
                   'shadow-custom': displayedImage === index,
                 }"
                 :src="foto.foto"
@@ -144,9 +145,9 @@
           <template v-if="data.fotos.length > 6">
             <div class="h-32 w-full relative" :key="data.fotos.length">
               <img
-                class="w-full h-full rounded-lg object-cover transition-opacity duration-300 hover:shadow-custom hover:contrast-125 hover:cursor-pointer"
+                class="w-full h-full rounded-lg object-cover transition-opacity duration-300 hover:shadow-custom hover:contrast-75 hover:cursor-pointer"
                 :class="{
-                  'contrast-125': displayedImage === data.fotos.length - 1,
+                  'contrast-75': displayedImage === data.fotos.length - 1,
                   'shadow-custom': displayedImage === data.fotos.length - 1,
                 }"
                 :src="data.fotos[data.fotos.length - 1].foto"
@@ -156,10 +157,10 @@
 
               <!-- Texto "+" con la cantidad de imágenes restantes -->
               <div
-                class="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 text-white font-bold rounded-lg hover:cursor-pointer hover:shadow-custom hover:bg-opacity-60"
+                class="absolute inset-0 flex justify-center text-2xl items-center bg-black bg-opacity-50 text-white font-bold rounded-lg hover:cursor-pointer hover:shadow-custom hover:bg-opacity-60"
                 @click="showPreview(data.fotos.length - 1)"
               >
-                +{{ data.fotos.length - 6 }}
+                + {{ data.fotos.length - 6 }}
               </div>
             </div>
           </template>
@@ -172,7 +173,7 @@
           <div class="h-[calc(100vh-1rem)]">
             <div class="relative h-full">
               <button
-                class="absolute top-0 right-0 m-4 p-1 rounded-full text-black backdrop-blur-lg hover:shadow-custom"
+                class="absolute top-0 right-0 m-4 p-1 rounded-full text-white backdrop-blur-lg hover:shadow-custom"
                 @click="closePreviewImage"
               >
                 <!-- Icono de cerrar -->
@@ -194,7 +195,7 @@
                 </svg>
               </button>
               <button
-                class="absolute left-0 top-[50%] text-black ml-5 rounded-full backdrop-blur-lg"
+                class="absolute left-0 top-[50%] text-white ml-5 rounded-full backdrop-blur-lg"
                 @click="previousImage"
               >
                 <svg
@@ -217,7 +218,7 @@
                 </svg>
               </button>
               <button
-                class="absolute right-0 top-[50%] text-black mr-5 rounded-full backdrop-blur-lg"
+                class="absolute right-0 top-[50%] text-white mr-5 rounded-full backdrop-blur-lg"
                 @click="nextImage"
               >
                 <svg
@@ -239,6 +240,15 @@
                   <path d="M12 16l4 -4" />
                 </svg>
               </button>
+
+              <div
+                class="absolute bottom-0 left-[50%] px-2 py-1 backdrop-blur-lg rounded-lg font-bold text-lg text-white mb-3"
+              >
+                <span>{{
+                  `${displayedImage + 1} / ${data.fotos.length}`
+                }}</span>
+              </div>
+
               <img
                 :src="data.fotos[displayedImage].foto"
                 :key="displayedImage"
@@ -472,7 +482,6 @@
             <div class="mt-4 flex flex-wrap w-full gap-4 justify-center">
               <template v-for="internas in data.caracteristicasInternas">
                 <div
-                  v-if="internas.mostrargrupo == 1"
                   class="bg-gradient-to-bl from-[--primary-color] to-red-800 shadow-lg text-white px-2 py-1 rounded-lg"
                 >
                   <span>{{ internas.Descripcion }}</span>
@@ -487,12 +496,11 @@
             </div>
             <hr class="my-5" />
             <div class="mt-4 flex flex-wrap w-full gap-4 justify-center">
-              <template v-for="internas in data.caracteristicasExternas">
+              <template v-for="externas in data.caracteristicasExternas">
                 <div
-                  v-if="internas.mostrargrupo == 1"
                   class="bg-gradient-to-bl from-[--primary-color] to-red-800 shadow-lg text-white px-2 py-1 rounded-lg"
                 >
-                  <span>{{ internas.Descripcion }}</span>
+                  <span>{{ externas.Descripcion }}</span>
                 </div>
               </template>
             </div>
@@ -516,22 +524,10 @@
                       >Contactar Asesor</a
                     >
                   </div>
-                  <div
-                    v-if="
-                      data.asesor[0].FotoAsesor !=
-                      `https://simicrm.app/mcomercialweb/`
-                    "
-                    class="max-w-40"
-                  >
+                  <div class="max-w-40">
                     <img
                       :src="`https://portadainmobiliaria.com/asesores/${data.asesor[0].cedtercero}.png`"
-                      class="rounded-full"
-                      alt=""
-                    />
-                  </div>
-                  <div v-else class="max-w-40">
-                    <img
-                      :src="`https://portadainmobiliaria.com/asesores/900336513.png`"
+                      @error="handleImageError"
                       class="rounded-full"
                       alt=""
                     />
@@ -558,8 +554,9 @@ let autoPlay = null
 const displayedImage = ref(0)
 const showPreviewImage = ref(false)
 
+// ABRIR PREVIEW DE IMAGENES
 const showPreview = (index) => {
-  if (index === data.value.fotos.length - 1) {
+  if (index === data.value.fotos.length - 1 || index === displayedImage.value) {
     showPreviewImage.value = true
     document.body.classList.add("overflow-hidden")
     clearInterval(autoPlay)
@@ -569,23 +566,26 @@ const showPreview = (index) => {
   }
 }
 
-// Método para cerrar la vista previa de la imagen
+// CERRAR PREVIEW DE IMAGENES
 const closePreviewImage = () => {
   showPreviewImage.value = false
   document.body.classList.remove("overflow-hidden")
 }
 
+// CAMBIAR IMAGEN CON CLICK EN LAS PREVIEWS
 const changeImage = (image) => {
   displayedImage.value = image
   clearInterval(autoPlay)
 }
 
+// MOSTRAR SIGUIENTE IMAGEN
 const nextImage = () => {
   if (data.value.fotos.length - 1 > displayedImage.value) {
     displayedImage.value += 1
   }
 }
 
+// MOSTRAR IMAGEN ANTERIOR
 const previousImage = () => {
   if (
     data.value.fotos.length > displayedImage.value &&
@@ -595,11 +595,18 @@ const previousImage = () => {
   }
 }
 
+// OBTENER EL AÑO ACTUAL
 const getYear = () => {
   const today = new Date()
   const year = today.getFullYear()
 
   return year
+}
+
+// EN CASO DE NO ENCONTRAR IMAGEN USAR LA DE FIEL
+const handleImageError = (event) => {
+  event.target.onerror = null // Evitar un bucle infinito
+  event.target.src = "https://portadainmobiliaria.com/asesores/900336513.png"
 }
 
 onMounted(async () => {
