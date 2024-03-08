@@ -17,7 +17,7 @@
           class="absolute unselectable h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 top-0 cursor-pointer"
           @mousedown="handleStart('min')"
           @mouseup="handleEnd"
-          @touchstart="handleStart('min')"
+          @touchstart.passive="handleStart('min')"
           @touchend="handleEnd"
           :style="{ left: rangeLeft }"
         >
@@ -52,7 +52,7 @@
           class="absolute unselectable h-4 flex items-center justify-center w-4 rounded-full bg-white shadow border border-gray-300 -ml-2 top-0 cursor-pointer"
           @mousedown="handleStart('max')"
           @mouseup="handleEnd"
-          @touchstart="handleStart('max')"
+          @touchstart.passive="handleStart('max')"
           @touchend="handleEnd"
           :style="{ left: rangeRight }"
         >
@@ -113,11 +113,11 @@ const rangeRight = computed(
 const formatCurrency = (value) =>
   `$ ${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
 
-const handleStart = (type) => {
+const handleStart = (event, type) => {
   isDragging.value = type
 }
 
-const handleEnd = () => {
+const handleEnd = (event) => {
   isDragging.value = false
   filtros.set({
     ...filtros.value,
