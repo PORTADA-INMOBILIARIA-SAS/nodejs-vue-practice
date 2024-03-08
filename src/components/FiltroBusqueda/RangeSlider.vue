@@ -113,11 +113,11 @@ const rangeRight = computed(
 const formatCurrency = (value) =>
   `$ ${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
 
-const handleStart = (event, type) => {
+const handleStart = (type) => {
   isDragging.value = type
 }
 
-const handleEnd = (event) => {
+const handleEnd = () => {
   isDragging.value = false
   filtros.set({
     ...filtros.value,
