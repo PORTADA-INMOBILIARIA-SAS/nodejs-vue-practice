@@ -10,7 +10,7 @@
 
   <div
     v-if="isLoading"
-    class="w-full flex justify-center items-center min-h-screen"
+    class="w-full flex justify-center items-center min-h-screen animate-spin-clockwise animate-iteration-count-infinite"
   >
     <div role="status">
       <svg
@@ -581,7 +581,9 @@ const changeImage = (image) => {
 // MOSTRAR SIGUIENTE IMAGEN
 const nextImage = () => {
   if (data.value.fotos.length - 1 > displayedImage.value) {
-    displayedImage.value += 1
+    document.startViewTransition(() => {
+      displayedImage.value += 1
+    })
   }
 }
 
@@ -589,9 +591,13 @@ const nextImage = () => {
 const previousImage = () => {
   if (
     data.value.fotos.length > displayedImage.value &&
-    displayedImage.value > 0
+    document.startViewTransition(() => {
+      displayedImage.value > 0
+    })
   ) {
-    displayedImage.value -= 1
+    document.startViewTransition(() => {
+      displayedImage.value -= 1
+    })
   }
 }
 
@@ -629,7 +635,10 @@ onMounted(async () => {
   data.value = await response.json()
 
   autoPlay = setInterval(() => {
-    displayedImage.value = (displayedImage.value + 1) % data.value.fotos.length
+    document.startViewTransition(() => {
+      displayedImage.value =
+        (displayedImage.value + 1) % data.value.fotos.length
+    })
   }, 4000)
 })
 </script>

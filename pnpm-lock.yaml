@@ -17,6 +17,9 @@ dependencies:
   '@astrojs/vue':
     specifier: 4.0.8
     version: 4.0.8(@babel/core@7.23.9)(astro@4.0.6)(vite@5.0.12)(vue@3.4.15)
+  '@midudev/tailwind-animations':
+    specifier: ^0.0.7
+    version: 0.0.7(tailwindcss@3.4.0)
   '@nanostores/vue':
     specifier: 0.10.0
     version: 0.10.0(nanostores@0.9.5)(vue@3.4.15)
@@ -955,6 +958,14 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
+    dev: false
+
+  /@midudev/tailwind-animations@0.0.7(tailwindcss@3.4.0):
+    resolution: {integrity: sha512-K897X4NvM3tV2/R7aCjl6gJ6msWSTqQtcAwb5VX5D5+m/Mo650mEFoeODwqzaePYNro5BTGyXXFQw/kiHBZlUA==}
+    peerDependencies:
+      tailwindcss: ^3.0.0
+    dependencies:
+      tailwindcss: 3.4.0
     dev: false
 
   /@nanostores/vue@0.10.0(nanostores@0.9.5)(vue@3.4.15):

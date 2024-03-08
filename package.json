@@ -15,6 +15,7 @@
     "@astrojs/netlify": "^5.0.1",
     "@astrojs/tailwind": "5.0.3",
     "@astrojs/vue": "4.0.8",
+    "@midudev/tailwind-animations": "^0.0.7",
     "@nanostores/vue": "0.10.0",
     "astro": "4.0.6",
     "nanostores": "0.9.5",

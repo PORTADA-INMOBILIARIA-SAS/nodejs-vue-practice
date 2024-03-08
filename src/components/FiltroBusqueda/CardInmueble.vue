@@ -50,7 +50,7 @@
           </svg>
         </div>
         <div
-          class="h-[30%] absolute bottom-0 w-full text-white py-2 text-xl rounded-bl-md z-10 bg-gradient-to-t from-[--primary-color] bottom-info"
+          class="h-[35%] absolute bottom-0 w-full text-white py-2 text-xl rounded-bl-md z-10 bg-gradient-to-t from-[--primary-color] bottom-info"
         >
           <div class="absolute bottom-4 px-4 w-full">
             <div
