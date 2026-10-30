@@ -6,7 +6,6 @@ const data = await response.json()
 
 const images: string[] = []
 
-// Array para almacenar todas las promesas de las solicitudes fetch
 const fetchPromises = data.map(async (post: any) => {
   const response = await fetch(
     `https://portadainmobiliaria.com/wp-json/wp/v2/media/${post.featured_media}`,
@@ -15,30 +14,27 @@ const fetchPromises = data.map(async (post: any) => {
   images.push(imageRes.source_url)
 })
 
-// Esperar a que todas las solicitudes fetch se completen
 await Promise.all(fetchPromises)
 ---
 
-{
-  data.map((post: any, index: number) => (
-    <a href={`/blog/${post.id}`}>
-      <div class="flex flex-col cursor-pointer card-blog h-full">
-        <div class="relative flex-grow">
-          <img
-            src={images[index]}
-            alt=""
-            class="w-full h-full object-cover rounded-t-md"
-          />
-        </div>
-        <div class="bg-[--primary-color] p-5 text-center rounded-b-md card-blog-text">
-          <span class="font-bold text-white uppercase">
-            {post.title.rendered}
-          </span>
-        </div>
+{data.map((post: any, index: number) => (
+  <a href={`/blog/${post.id}`}>
+    <div class="flex flex-col cursor-pointer card-blog h-full">
+      <div class="relative flex-grow">
+        <img
+          src={images[index]}
+          alt=""
+          class="w-full h-full object-cover rounded-t-md"
+        />
       </div>
-    </a>
-  ))
-}
+      <div class="bg-[--primary-color] p-5 text-center rounded-b-md card-blog-text">
+        <span class="font-bold text-white uppercase">
+          {post.title.rendered}
+        </span>
+      </div>
+    </div>
+  </a>
+))}
 
 <style>
   .card-blog:hover img {
