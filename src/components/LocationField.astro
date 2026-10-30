@@ -1,0 +1,56 @@
+---
+interface Props {
+  name?: string
+  id?: string
+  class?: string
+}
+
+const { name = "ciudad", id = "lugares", class: clase = "" } = Astro.props
+
+const lugares = [
+  "Medellín",
+  "Laureles, Medellín",
+  "El Poblado, Medellín",
+  "Los Colores, Medellín",
+  "Belén, Medellín",
+  "Bello",
+  "Envigado",
+  "Sabaneta",
+  "La Estrella",
+  "Rionegro",
+  "Itagüí",
+  "Bogotá",
+]
+---
+
+<label class={`${clase} cursor-text`}>
+  <svg
+    class="h-6 w-6 shrink-0 text-slate-700"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+    <circle cx="12" cy="10" r="3"></circle>
+  </svg>
+  <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+    <span class="text-[13px] text-slate-700">Ciudad o barrio</span>
+    <input
+      type="text"
+      name={name}
+      list={id}
+      autocomplete="off"
+      placeholder="¿Dónde quieres vivir?"
+      class="w-full bg-transparent text-[15px] text-slate-900 outline-none placeholder:text-slate-400"
+    />
+    <datalist id={id}>
+      {lugares.map((lugar) => (
+        <option value={lugar} />
+      ))}
+    </datalist>
+  </span>
+</label>
