@@ -16,13 +16,14 @@ export const GET: APIRoute = async ({ request }) => {
     // Obtener los parámetros de consulta de la solicitud
     const queryParams = new URL(request.url).searchParams
 
-    // Construir la URL base de la API de Simi
-    let url =
-      "https://www.simi-api.com/ApiSimiweb/response/v2.1.1/filtroInmueble/total/12/"
+    // URL base de la API de inmuebles (esta dirección no requiere clave)
+    let url = "https://api-crinmo.azurewebsites.net/simi/v2.1.1/filtroInmueble/"
 
-    // Construir un objeto que mapee los parámetros a sus valores predeterminados
+    // Parámetros con sus valores predeterminados.
+    // El orden importa: la API espera limite y total primero.
     const defaultParams = {
       limite: "1",
+      total: "12",
       ciudad: "0",
       barrio: "0",
       tipoInm: "0",
@@ -39,37 +40,29 @@ export const GET: APIRoute = async ({ request }) => {
       usuario: "0",
     }
 
-    // Actualizar los valores predeterminados con los parámetros proporcionados en la solicitud
+    // Actualizar los valores predeterminados con los parámetros de la solicitud
     for (const [param, value] of queryParams.entries()) {
-      // Utiliza una aserción de tipo para asegurar a TypeScript que param es una clave válida
       ;(defaultParams as Record<string, string>)[param] = value
     }
 
-    // Convertir el objeto de parámetros en una cadena de consulta
+    // Convertir el objeto de parámetros en la ruta que espera la API
     const paramString = Object.entries(defaultParams)
       .map(([key, value]) => `${key}/${value}`)
       .join("/")
 
-    // Agregar los parámetros a la URL base
     url += paramString
 
-    // Realizar la solicitud a la API de Simi
+    // Solicitud a la API (sin cabecera de autorización)
     const response = await fetch(url, {
-      headers: {
-        Authorization: `Basic ${btoa(`Authorization:${import.meta.env.SECRET_SIMI_API_KEY}`)}`,
-      },
       signal: currentController.signal,
     })
 
-    // Verificar si la solicitud fue exitosa
     if (!response.ok) {
       throw new Error(`La solicitud falló con estado ${response.status}`)
     }
 
-    // Leer el cuerpo de la respuesta como texto
     const responseBody = await response.text()
 
-    // Devolver una respuesta exitosa con el cuerpo de la respuesta
     return new Response(responseBody, {
       status: 200,
       headers: {
@@ -77,7 +70,6 @@ export const GET: APIRoute = async ({ request }) => {
       },
     })
   } catch (error) {
-    // Si ocurre algún error, devolver una respuesta de error
     return new Response(`Error al procesar la solicitud: ${error}`, {
       status: 500,
       headers: {

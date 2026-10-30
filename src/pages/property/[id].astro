@@ -1,0 +1,1076 @@
+---
+import Layout from "../../layouts/Layout.astro"
+import Navbar from "../../components/navbar.astro"
+import { fetchPropertyDetailCached } from "../../lib/simiApi"
+
+export const prerender = false
+
+const { id } = Astro.params
+
+let inmueble: any = null
+let galeria: string[] = []
+
+inmueble = await fetchPropertyDetailCached(id || "")
+
+function extraerFotos(item: any): string[] {
+  if (!item) return []
+
+  const lista: string[] = []
+
+  if (item.foto1) lista.push(item.foto1)
+  if (item.Foto1) lista.push(item.Foto1)
+  if (item.foto) lista.push(item.foto)
+  if (item.Foto) lista.push(item.Foto)
+
+  for (let i = 2; i <= 30; i++) {
+    if (item[`foto${i}`]) lista.push(item[`foto${i}`])
+    if (item[`Foto${i}`]) lista.push(item[`Foto${i}`])
+  }
+
+  const fotosArray =
+    item.fotos || item.Fotos || item.fotosInmueble || item.FotosInmueble
+
+  if (Array.isArray(fotosArray)) {
+    fotosArray.forEach((f: any) => {
+      const url = typeof f === "string" ? f : f?.foto || f?.Foto || f?.url
+      if (url && typeof url === "string" && url.trim()) lista.push(url.trim())
+    })
+  }
+
+  return [...new Set(lista)].filter(
+    (url) => typeof url === "string" && url.trim() !== "",
+  )
+}
+
+const fotosApi = extraerFotos(inmueble)
+galeria = fotosApi
+
+const displayPhotos: string[] = []
+for (let i = 0; i < 5; i++) {
+  if (galeria.length > 0) {
+    displayPhotos.push(galeria[i % galeria.length])
+  } else {
+    displayPhotos.push("")
+  }
+}
+
+const codigo =
+  inmueble?.idInm ||
+  inmueble?.Codigo_Inmueble ||
+  inmueble?.idInmueble ||
+  id ||
+  "P-101"
+const tipo =
+  inmueble?.tpinmu ||
+  inmueble?.Tipo_Inmueble ||
+  inmueble?.tipoInmueble ||
+  "Apartamento"
+const ciudad =
+  inmueble?.nciudad || inmueble?.Ciudad || inmueble?.ciudad || "Medellín"
+const barrio =
+  inmueble?.NombreB ||
+  inmueble?.Barrio ||
+  inmueble?.barrio ||
+  inmueble?.zona ||
+  "Laureles"
+
+const latitud = Number(inmueble?.latitud) || 0
+const longitud = Number(inmueble?.longitud) || 0
+const tieneCoords = latitud !== 0 && longitud !== 0
+
+const altFoto = (i: number) => `${tipo} en ${barrio || ciudad} - foto ${i + 1}`
+
+const valorCanon =
+  inmueble?.ValorCanon ??
+  inmueble?.Canon ??
+  inmueble?.valorCanon ??
+  inmueble?.ValorVenta ??
+  3200000
+
+const canon =
+  Number(valorCanon) > 0
+    ? `$ ${Number(valorCanon).toLocaleString("es-CO")}`
+    : "$ 3.200.000"
+
+const area = Number(inmueble?.AreaConstruida ?? inmueble?.areaConstruida) || 92
+const habitaciones = Number(inmueble?.Alcobas ?? inmueble?.alcobas) || 3
+const banos =
+  Number(inmueble?.banios ?? inmueble?.Banos ?? inmueble?.banos) || 2
+const parqueaderos =
+  Number(inmueble?.garaje ?? inmueble?.Garaje ?? inmueble?.parqueaderos) || 1
+
+const descripcion =
+  inmueble?.descripcionlarga ||
+  inmueble?.descripcioncorta ||
+  inmueble?.Descripcion ||
+  inmueble?.descripcion ||
+  "Un espacio cálido, con sala y comedor integrados, cocina abierta y un balcón para disfrutar con calma. Un ejemplo de cómo presentaremos cada rincón de tu próximo hogar."
+
+const asesoresApi = Array.isArray(inmueble?.asesor)
+  ? inmueble.asesor
+  : Array.isArray(inmueble?.Asesor)
+    ? inmueble.Asesor
+    : Array.isArray(inmueble?.asesores)
+      ? inmueble.asesores
+      : []
+
+const asesor =
+  asesoresApi[0] ||
+  (inmueble?.asesor && typeof inmueble.asesor === "object"
+    ? inmueble.asesor
+    : inmueble?.Asesor && typeof inmueble.Asesor === "object"
+      ? inmueble.Asesor
+      : {})
+
+const telefonoOriginal =
+  asesor?.celular ||
+  asesor?.telefono ||
+  asesor?.TelefonoAsesor ||
+  asesor?.fijo ||
+  inmueble?.TelefonoAsesor ||
+  inmueble?.Telefono_Asesor ||
+  inmueble?.telefonoAsesor ||
+  ""
+
+const telefonoLimpio = String(telefonoOriginal).replace(/\D/g, "")
+const asesorTelefono = telefonoLimpio
+  ? telefonoLimpio.startsWith("57")
+    ? telefonoLimpio
+    : telefonoLimpio.length === 10
+      ? `57${telefonoLimpio}`
+      : telefonoLimpio
+  : ""
+
+const wa = (texto: string) =>
+  asesorTelefono
+    ? `https://wa.me/${asesorTelefono}?text=${encodeURIComponent(texto)}`
+    : "#"
+
+function getCardHeadline(barrioText: string): string {
+  const clean = (barrioText || "").toLowerCase()
+  if (clean.includes("laureles") || !barrioText)
+    return "Un balcón para empezar el día."
+  if (clean.includes("esmeraldal")) return "Tu refugio entre verde y ciudad."
+  if (clean.includes("otra parte")) return "Espacio lleno de luz y confort."
+  if (clean.includes("poblado")) return "Exclusividad, calma y la mejor vista."
+  if (clean.includes("suramerica") || clean.includes("suramérica"))
+    return "Modernidad para compartir en familia."
+  if (clean.includes("colores")) return "Tranquilidad y cercanía a todo."
+  if (clean.includes("belen") || clean.includes("belén"))
+    return "Tu próximo hogar en un punto ideal."
+  if (clean.includes("primavera"))
+    return "Vistas abiertas y excelente ubicación."
+  return "Un balcón para empezar el día."
+}
+
+const titular = getCardHeadline(barrio)
+
+const medidas = [
+  { label: "Área", value: `${area} m²` },
+  { label: "Alcobas", value: habitaciones },
+  { label: "Baños", value: banos },
+  { label: "Parqueaderos", value: parqueaderos },
+]
+
+const detalles = [
+  "Balcón",
+  "Ascensor",
+  "Mascotas",
+  "Cocina abierta",
+  "Zona de ropas",
+  "Luz natural",
+]
+
+const iconoFlecha = "M5 12h14m-6-6 6 6-6 6"
+---
+
+<Layout
+  title={`${tipo} en ${barrio || ciudad} · Cód. ${codigo} - Portada Inmobiliaria`}
+>
+  <Navbar />
+
+  <style is:global>
+    .property-page,
+    .property-page * {
+      font-family: "Poppins", sans-serif;
+    }
+  </style>
+
+  <main class="property-page w-full min-h-screen bg-[#fffdf9] text-[#333333] pb-14">
+    <div class="mx-auto w-full px-6 lg:px-0 lg:w-[76vw] max-w-[1600px] pt-10 pb-10">
+      <div class="flex items-center justify-between text-[13px] leading-5">
+        <a
+          href="/search"
+          id="btn-back"
+          class="flex items-center gap-2 text-[#333333] hover:text-black font-medium transition-colors cursor-pointer"
+        >
+          <span aria-hidden="true">←</span>
+          <span>Volver a la búsqueda</span>
+        </a>
+
+        <div class="flex items-center gap-5">
+          <button
+            type="button"
+            id="btn-save-favorite"
+            data-code={codigo}
+            class="group flex items-center gap-1.5 text-[#333333] hover:text-black font-medium transition-colors cursor-pointer"
+          >
+            <svg
+              id="fav-heart-icon"
+              class="h-3 w-3 text-[#333333] transition-colors"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+            </svg>
+            <span id="fav-label">Guardar</span>
+          </button>
+
+          <button
+            type="button"
+            id="btn-share"
+            class="group flex items-center gap-1.5 text-[#333333] hover:text-black font-medium transition-colors cursor-pointer relative"
+          >
+            <span id="share-label">Compartir</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-auto w-full px-6 lg:px-0 lg:w-[76vw] max-w-[1600px]">
+      <div
+        id="property-gallery-grid"
+        class="flex flex-col md:flex-row gap-[9px] h-auto md:h-[clamp(420px,32.5vw,620px)] overflow-hidden rounded-[24px]"
+      >
+        <div
+          class="gallery-tile relative md:flex-[2_1_0%] h-[260px] md:h-auto min-h-0 overflow-hidden group cursor-pointer bg-[#f2eee8]"
+          data-index="0"
+        >
+          <img
+            src={displayPhotos[0]}
+            alt={altFoto(0)}
+            class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+
+        <div class="md:flex-1 grid grid-cols-2 md:grid-cols-1 md:grid-rows-2 gap-[9px] h-[160px] md:h-auto min-h-0">
+          <div
+            class="gallery-tile relative h-full min-h-0 overflow-hidden group cursor-pointer bg-[#f2eee8]"
+            data-index="1"
+          >
+            <img
+              src={displayPhotos[1]}
+              alt={altFoto(1)}
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+
+          <div
+            class="gallery-tile relative h-full min-h-0 overflow-hidden group cursor-pointer bg-[#f2eee8]"
+            data-index="2"
+          >
+            <img
+              src={displayPhotos[2]}
+              alt={altFoto(2)}
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+
+        <div class="md:flex-1 grid grid-cols-2 md:grid-cols-1 md:grid-rows-2 gap-[9px] h-[160px] md:h-auto min-h-0">
+          <div
+            class="gallery-tile relative h-full min-h-0 overflow-hidden group cursor-pointer bg-[#f2eee8]"
+            data-index="3"
+          >
+            <img
+              src={displayPhotos[3]}
+              alt={altFoto(3)}
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+
+          <div
+            class="gallery-tile relative h-full min-h-0 overflow-hidden group cursor-pointer bg-[#f2eee8]"
+            data-index="4"
+          >
+            <img
+              src={displayPhotos[4]}
+              alt={altFoto(4)}
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              loading="lazy"
+              decoding="async"
+            />
+
+            <button
+              type="button"
+              id="btn-ver-todas-fotos"
+              class="absolute bottom-[22px] right-[23px] z-10 inline-flex h-[45px] items-center gap-[6px] rounded-full bg-white px-[22px] text-[13px] font-medium leading-none text-[#333333] shadow-[0_1px_3px_rgba(0,0,0,0.14)] transition-colors hover:bg-[#fdfbf8] cursor-pointer"
+              aria-label="Ver todas las fotos"
+            >
+              <span>Ver las {galeria.length} fotos</span>
+              <svg
+                class="h-3.5 w-3.5 shrink-0 text-[#333333]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M7 17L17 7M17 7H8M17 7V16"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-3 text-[13px] leading-[20px] text-[#8b857e]">
+        Inmueble {codigo}
+      </p>
+    </div>
+
+    <div class="mx-auto w-full px-6 lg:px-0 lg:w-[76vw] max-w-[1600px] mt-7">
+      <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px] gap-10 xl:gap-x-[74px] items-start">
+        <div>
+          <span class="block text-[11px] uppercase tracking-[0.18em] text-[#5c5c5c]">
+            {tipo} en arriendo
+          </span>
+
+          <h1 class="mt-3 text-[34px] sm:text-[24px] xl:text-[36px] font-normal leading-[1.1] tracking-[-0.025em] text-[#2b2b2b]">
+            {titular}
+          </h1>
+
+          <div class="mt-6 mb-8 flex items-center gap-2.5 text-[14px] text-[#5c5c5c]">
+            <svg
+              class="h-4 w-4 shrink-0"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span>
+              {barrio ? `${barrio}, ` : ""}
+              {ciudad}
+            </span>
+          </div>
+
+          <div class="border-y border-[#e8e3dc]">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-y-5 py-6">
+              {medidas.map((item, i) => (
+                <div
+                  class={
+                    i > 0 ? "sm:border-l sm:border-[#e8e3dc] sm:pl-[18px]" : ""
+                  }
+                >
+                  <span class="block text-[13px] text-[#6b6b6b]">
+                    {item.label}
+                  </span>
+                  <span class="mt-1.5 block text-[26px] leading-8 font-normal text-[#2b2b2b]">
+                    {item.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <nav class="border-b border-[#e8e3dc]">
+            <div class="flex items-center gap-10 py-[26px] text-[14px] text-[#333333]">
+              <a href="#el-espacio" class="hover:text-black transition-colors">
+                El espacio
+              </a>
+              <a
+                href="#caracteristicas"
+                class="hover:text-black transition-colors"
+              >
+                Características
+              </a>
+              <a href="#ubicacion" class="hover:text-black transition-colors">
+                Ubicación
+              </a>
+            </div>
+          </nav>
+
+          <section id="el-espacio" class="pt-10 scroll-mt-28">
+            <h2 class="text-[28px] font-light leading-[1.2] tracking-[-0.02em] text-[#2b2b2b]">
+              Imagínate viviendo aquí.
+            </h2>
+            <p class="mt-5 text-[14px] leading-[27px] text-[#5c5c5c]">
+              {descripcion}
+            </p>
+
+            <div class="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[1, 2, 3].map((n) => (
+                <figure
+                  class="gallery-tile group m-0 cursor-pointer"
+                  data-index={n}
+                >
+                  <div class="relative aspect-[1.2] overflow-hidden rounded-[20px] bg-[#f2eee8]">
+                    <img
+                      src={displayPhotos[n]}
+                      alt={altFoto(n)}
+                      class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <figcaption class="mt-3 text-[11px] leading-4 text-[#4a4a4a]">
+                    {`Foto ${n + 1}`}
+                    <span aria-hidden="true" class="ml-1 text-[9px]">
+                      ↗
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              id="btn-plano-conceptual"
+              class="mt-6 inline-flex h-[54px] items-center rounded-xl border border-[#e4ded5] bg-white px-[22px] text-[14px] text-[#3a3a3a] transition-colors hover:bg-[#fdfbf8] cursor-pointer"
+            >
+              <span>Ver plano conceptual</span>
+            </button>
+          </section>
+
+          <section id="caracteristicas" class="pt-10 scroll-mt-28">
+            <h2 class="text-[28px] font-light leading-[1.2] tracking-[-0.02em] text-[#2b2b2b]">
+              Los detalles que hacen la diferencia.
+            </h2>
+
+            <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-[17px] text-[13px] text-[#3a3a3a]">
+              {detalles.map((detalle) => (
+                <div class="flex items-center gap-4">
+                  <svg
+                    class="h-[14px] w-[14px] shrink-0 text-[#7a8b92]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m4 12.5 5 5L20 6.5" />
+                  </svg>
+                  <span>{detalle}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section id="ubicacion" class="pt-10 scroll-mt-28">
+            <h2 class="text-[28px] font-light leading-[1.2] tracking-[-0.02em] text-[#2b2b2b]">
+              Conoce el entorno.
+            </h2>
+
+            {tieneCoords ? (
+              <div class="mt-5 w-full h-[320px] sm:h-[380px] rounded-[24px] overflow-hidden relative border border-[#ede7df] shadow-sm">
+                <iframe
+                  title={`Mapa de ${barrio || ciudad}`}
+                  class="w-full h-full border-0"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${longitud - 0.007}%2C${latitud - 0.005}%2C${longitud + 0.007}%2C${latitud + 0.005}&layer=mapnik&marker=${latitud}%2C${longitud}`}
+                />
+                <a
+                  href={`https://www.openstreetmap.org/?mlat=${latitud}&mlon=${longitud}#map=16/${latitud}/${longitud}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="absolute bottom-3 right-3 inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-sm text-[#4a4a4a] text-[11px] font-medium px-3 py-1.5 rounded-full border border-[#ede7df] shadow-sm hover:bg-white transition-colors z-10"
+                >
+                  <svg
+                    class="w-3.5 h-3.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M7 17L17 7M17 7H8M17 7V16" />
+                  </svg>
+                  <span>Ver mapa completo</span>
+                </a>
+              </div>
+            ) : (
+              <div class="mt-5 w-full h-[220px] sm:h-[260px] rounded-[24px] overflow-hidden relative border border-[#f0ebe4] bg-[#f4efe8] flex items-center justify-center">
+                <span class="text-[#8b857e] text-[13px]">
+                  Coordenadas no disponibles para este inmueble.
+                </span>
+              </div>
+            )}
+
+            <p class="mt-3 text-[12px] sm:text-[13px] text-[#8b857e]">
+              Mapa del inmueble y lugares cercanos verificados.
+            </p>
+          </section>
+
+          <section class="pt-12" id="similares-section">
+            <h2 class="text-[28px] font-light leading-[1.2] tracking-[-0.02em] text-[#2b2b2b] mb-6">
+              También podrían gustarte.
+            </h2>
+            <div
+              id="similares-grid"
+              class="grid grid-cols-1 sm:grid-cols-2 gap-5"
+            >
+              <div class="relative aspect-[4/3] rounded-[22px] bg-[#f2eee8] animate-pulse"></div>
+              <div class="relative aspect-[4/3] rounded-[22px] bg-[#f2eee8] animate-pulse"></div>
+            </div>
+          </section>
+        </div>
+
+        <aside class="w-full lg:sticky lg:top-[130px]">
+          <div class="w-full rounded-[32px] border border-[#e9e4dd] bg-white px-[30px] pt-8 pb-10">
+            <span class="block text-[11px] uppercase tracking-[0.2em] text-[#6b6b6b]">
+              Tu próximo paso
+            </span>
+
+            <div class="mt-5 text-[32px] leading-[1.1] font-normal tracking-[-0.02em] text-[#2b2b2b]">
+              {canon}
+            </div>
+            <div class="mt-2 text-[12px] text-[#6b6b6b]">Canon mensual</div>
+
+            <div class="mt-5 text-[12px] text-[#6b6b6b]">
+              Administración incluida
+            </div>
+            <p class="mt-[22px] text-[12px] leading-[22px] text-[#6b6b6b]">
+              Servicios públicos y cargos de ingreso, si aplican, se presentan
+              por separado.
+            </p>
+
+            <div class="mt-4 space-y-[13px]">
+              <a
+                href={wa(
+                  `Hola, quiero agendar una visita para el inmueble ${codigo} en ${barrio || ciudad}.`,
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex h-[54px] w-full items-center justify-center gap-2.5 rounded-[14px] bg-[#ffaaa0] hover:bg-[#ff958a] text-[14px] font-medium text-[#2b2b2b] transition-colors"
+              >
+                <span>Agendar una visita</span>
+                <svg
+                  class="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d={iconoFlecha}></path>
+                </svg>
+              </a>
+
+              <a
+                href={wa(
+                  `Hola, quiero iniciar el proceso de arrendamiento para el inmueble ${codigo} en ${barrio || ciudad}.`,
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex h-[54px] w-full items-center justify-center gap-2.5 rounded-[14px] border border-[#d8d3cb] bg-white hover:bg-[#fdfbf8] text-[14px] font-medium text-[#2b2b2b] transition-colors"
+              >
+                <span>Quiero este inmueble</span>
+                <svg
+                  class="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d={iconoFlecha}></path>
+                </svg>
+              </a>
+            </div>
+
+            <a
+              href="#gastos-ingreso"
+              id="btn-ver-gastos"
+              class="mt-7 flex items-center justify-center gap-2 text-[12px] font-medium text-[#333333] hover:text-black transition-colors"
+            >
+              <span>Ver todos los gastos de ingreso</span>
+              <svg
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d={iconoFlecha}></path>
+              </svg>
+            </a>
+
+            <div class="mt-9 flex items-center gap-3.5 border-t border-[#ece8e2] pt-7">
+              <div class="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-full bg-[#dbeaf0] text-[18px] text-[#6b8794]">
+                P
+              </div>
+              <div>
+                <div class="text-[13px] font-medium text-[#333333]">
+                  Tu equipo Portada
+                </div>
+                <div class="mt-1 text-[11px] text-[#8b8b8b]">
+                  Te acompañamos en cada paso.
+                </div>
+              </div>
+            </div>
+
+            <a
+              href={wa(`Hola, tengo una pregunta sobre el inmueble ${codigo}.`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-6 flex items-center justify-center gap-2 text-[12px] font-medium text-[#333333] hover:text-black transition-colors"
+            >
+              <span>Tengo una pregunta</span>
+              <svg
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d={iconoFlecha}></path>
+              </svg>
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <div
+    id="lightbox-modal"
+    class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Visor de fotos en pantalla completa"
+  >
+    <div class="absolute top-0 inset-x-0 p-5 flex justify-between items-center z-50 text-white">
+      <span
+        id="lightbox-counter"
+        class="text-xs sm:text-sm font-medium tracking-wide bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15"
+      >
+        1 / {galeria.length}
+      </span>
+
+      <button
+        id="close-lightbox"
+        class="text-white hover:text-red-400 transition-colors cursor-pointer p-2 rounded-full hover:bg-white/10"
+        aria-label="Cerrar visor"
+      >
+        <svg
+          class="h-6 w-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 6L6 18M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <button
+      id="lightbox-prev"
+      class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 text-white/90 hover:text-white bg-black/40 hover:bg-black/70 p-3 rounded-full cursor-pointer z-50 transition-all hover:scale-110"
+      aria-label="Anterior foto"
+    >
+      <svg
+        class="h-6 w-6"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M15 18l-6-6 6-6"></path>
+      </svg>
+    </button>
+
+    <div class="w-full h-full max-w-6xl max-h-[85vh] p-4 flex items-center justify-center relative">
+      <img
+        id="lightbox-img"
+        src=""
+        alt="Foto ampliada del inmueble"
+        class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl transition-transform duration-200 select-none"
+      />
+    </div>
+
+    <button
+      id="lightbox-next"
+      class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 text-white/90 hover:text-white bg-black/40 hover:bg-black/70 p-3 rounded-full cursor-pointer z-50 transition-all hover:scale-110"
+      aria-label="Siguiente foto"
+    >
+      <svg
+        class="h-6 w-6"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M9 18l6-6-6-6"></path>
+      </svg>
+    </button>
+  </div>
+</Layout>
+
+<script define:vars={{ galeria, codigo }}>
+  const esc = (valor) =>
+    String(valor ?? "").replace(
+      /[&<>"']/g,
+      (c) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[c],
+    )
+
+  const STORAGE_KEY = "portada-favorites"
+
+  function getFavorites() {
+    try {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]")
+      return Array.isArray(data) ? data : []
+    } catch {
+      return []
+    }
+  }
+
+  function isFav(code) {
+    if (!code) return false
+    return getFavorites().includes(String(code))
+  }
+
+  function toggleFavorite(code) {
+    if (!code) return false
+    const sCode = String(code)
+    let list = getFavorites()
+    if (list.includes(sCode)) {
+      list = list.filter((c) => c !== sCode)
+    } else {
+      list.push(sCode)
+    }
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list))
+    } catch {}
+    return list.includes(sCode)
+  }
+
+  const svgHeart = (active) =>
+    `<svg viewBox="0 0 24 24" fill="${active ? "#ef4444" : "none"}" stroke="${active ? "#ef4444" : "currentColor"}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;pointer-events:none;transition:fill 0.2s, stroke 0.2s"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`
+
+  function updateSimilarFavButtons(targetCode, active) {
+    document
+      .querySelectorAll(`.btn-fav-similar[data-code="${targetCode}"]`)
+      .forEach((btn) => {
+        btn.dataset.active = active ? "true" : "false"
+        btn.style.color = active ? "#ef4444" : "#4a4a4a"
+        btn.innerHTML = svgHeart(active)
+      })
+  }
+
+  let renderFavState = () => {}
+
+  function setupPropertyDetail() {
+    const raiz = document.getElementById("property-gallery-grid")
+    if (!raiz || raiz.dataset.listo === "true") return
+    raiz.dataset.listo = "true"
+
+    const images = Array.isArray(galeria) && galeria.length > 0 ? galeria : []
+    const lightboxModal = document.getElementById("lightbox-modal")
+    const lightboxImg = document.getElementById("lightbox-img")
+    const lightboxCounter = document.getElementById("lightbox-counter")
+    const closeBtn = document.getElementById("close-lightbox")
+    const prevBtn = document.getElementById("lightbox-prev")
+    const nextBtn = document.getElementById("lightbox-next")
+
+    let currentIdx = 0
+
+    function updateLightbox(index) {
+      if (images.length === 0) return
+      currentIdx = (index + images.length) % images.length
+      if (lightboxImg) lightboxImg.src = images[currentIdx]
+      if (lightboxCounter)
+        lightboxCounter.textContent = `${currentIdx + 1} / ${images.length}`
+    }
+
+    function openLightbox(index = 0) {
+      if (!lightboxModal) return
+      updateLightbox(index)
+      lightboxModal.classList.remove("opacity-0", "pointer-events-none")
+      document.body.style.overflow = "hidden"
+    }
+
+    function closeLightbox() {
+      if (!lightboxModal) return
+      lightboxModal.classList.add("opacity-0", "pointer-events-none")
+      document.body.style.overflow = "auto"
+    }
+
+    document.querySelectorAll(".gallery-tile").forEach((tile) => {
+      tile.addEventListener("click", () => {
+        const idx = Number(tile.getAttribute("data-index")) || 0
+        openLightbox(idx)
+      })
+    })
+
+    const viewAllBtn = document.getElementById("btn-ver-todas-fotos")
+    viewAllBtn?.addEventListener("click", (e) => {
+      e.stopPropagation()
+      openLightbox(0)
+    })
+
+    const planoBtn = document.getElementById("btn-plano-conceptual")
+    planoBtn?.addEventListener("click", () => {
+      openLightbox(0)
+    })
+
+    closeBtn?.addEventListener("click", closeLightbox)
+    prevBtn?.addEventListener("click", () => updateLightbox(currentIdx - 1))
+    nextBtn?.addEventListener("click", () => updateLightbox(currentIdx + 1))
+
+    lightboxModal?.addEventListener("click", (e) => {
+      if (e.target === lightboxModal) closeLightbox()
+    })
+
+    document.addEventListener("keydown", (e) => {
+      if (
+        lightboxModal &&
+        !lightboxModal.classList.contains("pointer-events-none")
+      ) {
+        if (e.key === "ArrowRight") updateLightbox(currentIdx + 1)
+        if (e.key === "ArrowLeft") updateLightbox(currentIdx - 1)
+        if (e.key === "Escape") closeLightbox()
+      }
+    })
+
+    const backBtn = document.getElementById("btn-back")
+    backBtn?.addEventListener("click", (e) => {
+      if (document.referrer && document.referrer.includes("/search")) {
+        e.preventDefault()
+        window.history.back()
+      }
+    })
+
+    const favBtn = document.getElementById("btn-save-favorite")
+    const heartIcon = document.getElementById("fav-heart-icon")
+    const favLabel = document.getElementById("fav-label")
+
+    renderFavState = function () {
+      const active = isFav(codigo)
+      if (heartIcon) {
+        if (active) {
+          heartIcon.setAttribute("fill", "#ef4444")
+          heartIcon.classList.add("text-red-500")
+          heartIcon.classList.remove("text-[#333333]")
+        } else {
+          heartIcon.setAttribute("fill", "none")
+          heartIcon.classList.remove("text-red-500")
+          heartIcon.classList.add("text-[#333333]")
+        }
+      }
+      if (favLabel) {
+        favLabel.textContent = active ? "Guardado" : "Guardar"
+      }
+    }
+
+    renderFavState()
+
+    favBtn?.addEventListener("click", () => {
+      const active = toggleFavorite(codigo)
+      renderFavState()
+      updateSimilarFavButtons(codigo, active)
+    })
+
+    const shareBtn = document.getElementById("btn-share")
+    const shareLabel = document.getElementById("share-label")
+    shareBtn?.addEventListener("click", async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: document.title,
+            url: window.location.href,
+          })
+          return
+        } catch {}
+      }
+      try {
+        await navigator.clipboard.writeText(window.location.href)
+        if (shareLabel) {
+          const original = shareLabel.textContent
+          shareLabel.textContent = "¡Copiado!"
+          setTimeout(() => (shareLabel.textContent = original), 2000)
+        }
+      } catch {
+        alert("Enlace copiado al portapapeles")
+      }
+    })
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupPropertyDetail)
+  } else {
+    setupPropertyDetail()
+  }
+
+  document.addEventListener("astro:page-load", setupPropertyDetail)
+
+  async function cargarSimilares() {
+    const grid = document.getElementById("similares-grid")
+    if (!grid || grid.dataset.listo === "true") return
+    grid.dataset.listo = "true"
+
+    try {
+      const res = await fetch(
+        `/api/similar?excluir=${encodeURIComponent(codigo)}`,
+      )
+      if (!res.ok) return
+      const items = await res.json()
+      if (!Array.isArray(items) || items.length === 0) return
+
+      const fallbackImg = "/img/interior-portada.webp"
+
+      function getHeadline(barri) {
+        const b = (barri || "").toLowerCase()
+        if (b.includes("laureles")) return "Un balcón para empezar el día."
+        if (b.includes("esmeraldal")) return "Tu refugio entre verde y ciudad."
+        if (b.includes("poblado"))
+          return "Exclusividad, calma y la mejor vista."
+        if (b.includes("suramerica") || b.includes("suramérica"))
+          return "Modernidad para compartir en familia."
+        if (b.includes("colores")) return "Tranquilidad y cercanía a todo."
+        if (b.includes("belen") || b.includes("belén"))
+          return "Tu próximo hogar en un punto ideal."
+        if (b.includes("primavera"))
+          return "Vistas abiertas y excelente ubicación."
+        if (b.includes("centro")) return "En el corazón de la ciudad."
+        if (b.includes("envigado")) return "Calidad de vida en Envigado."
+        if (b.includes("sabaneta")) return "Confort y tranquilidad en Sabaneta."
+        return "Pequeño espacio, grandes planes."
+      }
+
+      function getBadge(barri, tipo) {
+        const b = (barri || "").toLowerCase()
+        const t = (tipo || "").toLowerCase()
+        if (b.includes("esmeraldal") || b.includes("primavera"))
+          return "Con zonas verdes"
+        if (b.includes("poblado")) return "Zona premium"
+        if (b.includes("laureles")) return "Para tu primer hogar"
+        if (t.includes("casa")) return "Casa independiente"
+        return "Para tu primer hogar"
+      }
+
+      grid.innerHTML = items
+        .slice(0, 2)
+        .map((item) => {
+          const img = esc(item.imagen || fallbackImg)
+          const precio = esc(item.precio || "")
+          const barri = esc(item.barrio || "")
+          const ciud = esc(item.ciudad || "")
+          const tip = esc(item.tipo || "Inmueble")
+          const rawCod = String(item.codigo || "").trim()
+          const cod = encodeURIComponent(rawCod)
+          const areaTxt = item.area > 0 ? `${Number(item.area)} m²` : ""
+          const habTxt = item.hab > 0 ? `${Number(item.hab)} alc.` : ""
+          const banoTxt = item.banos > 0 ? `${Number(item.banos)} baños` : ""
+          const parqTxt = item.parq > 0 ? `${Number(item.parq)} parq.` : ""
+          const metaParts = [areaTxt, habTxt, banoTxt, parqTxt].filter(Boolean)
+          const headline = getHeadline(barri)
+          const badge = getBadge(barri, tip)
+          const active = isFav(rawCod)
+
+          return `
+          <a href="/property/${cod}" style="display:block;text-decoration:none;color:inherit">
+            <div style="position:relative;aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:#f2eee8;margin-bottom:14px">
+              <img src="${img}" alt="${tip} en ${barri || ciud}" loading="lazy" decoding="async"
+                style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s"
+                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+                onerror="this.src='${fallbackImg}'"
+              />
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.45) 0%,transparent 55%);pointer-events:none"></div>
+              <div style="position:absolute;bottom:12px;left:14px;background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.25)">${badge}</div>
+              <button type="button" aria-label="Guardar como favorito" class="btn-fav-similar" data-code="${esc(rawCod)}"
+                data-active="${active ? "true" : "false"}"
+                style="position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.92);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;color:${active ? "#ef4444" : "#4a4a4a"};border:none;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.12);transition:all 0.2s;z-index:10"
+              >${svgHeart(active)}</button>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:#a39c94;margin-bottom:3px;letter-spacing:0.01em;gap:8px">
+              <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${barri ? `${barri} · ` : ""}${ciud}</span>
+              ${rawCod && rawCod !== "N/A" ? `<span style="flex-shrink:0;font-weight:500;color:#6b6b75">Cód. ${esc(rawCod)}</span>` : ""}
+            </div>
+            <div style="font-size:16px;font-weight:700;color:#2b2b2b;line-height:1.3;margin-bottom:5px">${headline}</div>
+            ${
+              metaParts.length
+                ? `
+            <div style="display:flex;gap:10px;margin-bottom:8px">
+              ${metaParts.map((m) => `<span style="font-size:12px;color:#8b857e;background:#fffdf9;border:1px solid #ede7df;border-radius:6px;padding:2px 7px">${m}</span>`).join("")}
+            </div>`
+                : ""
+            }
+            ${precio ? `<div style="font-size:16px;font-weight:700;color:#2b2b2b">${precio} <span style="font-size:12px;font-weight:400;color:#a39c94">Canon mensual</span></div>` : ""}
+            <div style="font-size:11px;color:#a39c94;margin-top:3px">Administración incluida</div>
+            ${rawCod && rawCod !== "N/A" ? `<div style="font-size:12px;font-weight:500;color:#6b6b75;margin-top:6px">Cód. ${esc(rawCod)}</div>` : ""}
+          </a>`
+        })
+        .join("")
+
+      grid.querySelectorAll(".btn-fav-similar").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          const targetCode = btn.getAttribute("data-code")
+          if (!targetCode) return
+          const isNowFav = toggleFavorite(targetCode)
+          updateSimilarFavButtons(targetCode, isNowFav)
+          if (targetCode === codigo) {
+            renderFavState()
+          }
+        })
+        btn.addEventListener("mouseenter", () => {
+          if (btn.dataset.active !== "true") btn.style.color = "#ef4444"
+        })
+        btn.addEventListener("mouseleave", () => {
+          if (btn.dataset.active !== "true") btn.style.color = "#4a4a4a"
+        })
+      })
+    } catch {
+      grid.innerHTML = ""
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", cargarSimilares)
+  } else {
+    cargarSimilares()
+  }
+  document.addEventListener("astro:page-load", cargarSimilares)
+</script>

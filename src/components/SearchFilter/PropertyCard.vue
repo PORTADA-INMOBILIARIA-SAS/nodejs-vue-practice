@@ -1,5 +1,5 @@
 <template>
-  <a :href="`/inmueble/${inmueble.Codigo_Inmueble}`">
+  <a :href="`/property/${inmueble.Codigo_Inmueble}`">
     <div
       class="h-[450px] w-full rounded-md overflow-hidden shadow-custom bg-white apt-card cursor-pointer"
     >

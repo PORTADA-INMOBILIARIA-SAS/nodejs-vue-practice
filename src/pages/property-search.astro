@@ -1,0 +1,43 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Filter from "../components/filter.astro"
+
+// @ts-ignore
+import PropertyList from "../components/SearchFilter/PropertyList.vue"
+---
+
+<Layout title="Búsqueda de Inmueble - Portada Inmobiliaria">
+  <main class="min-h-screen bg-[#0b0f19] text-white">
+    <section class="relative w-full min-h-[600px] flex flex-col justify-center items-center pt-20 pb-16 px-4 overflow-hidden">
+      <div class="absolute inset-0 z-0">
+        <img
+          src="/hero-bg.jpg"
+          alt="Portada Inmobiliaria Fondo"
+          class="w-full h-full object-cover object-center"
+          loading="eager"
+        />
+
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0b0f19]/80 via-[#0b0f19]/60 to-[#0b0f19]"></div>
+      </div>
+
+      <div class="relative z-10 w-full max-w-5xl text-center space-y-4">
+        <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight drop-shadow-md">
+          Búsqueda de Inmueble
+        </h1>
+
+        <p class="text-gray-200 text-lg sm:text-xl font-medium max-w-2xl mx-auto drop-shadow">
+          Encuentra el lugar ideal para arrendar o comprar con nuestro buscador
+          especializado.
+        </p>
+
+        <div class="pt-6">
+          <Filter />
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 py-12">
+      <PropertyList client:visible />
+    </section>
+  </main>
+</Layout>
