@@ -1,28 +1,108 @@
-<div
-  class="flex flex-col bg-gray-900 text-white justify-center items-center p-5 mt-8"
->
-  <div class="flex-row text-center">
-    <span
-      class="border-b-2 m-4 flex-wrap border-transparent cursor-pointer hover:border-white transition duration-300 ease-in-out"
-    >
-      Política Sagrilaft
-    </span>
-    <span
-      class="border-b-2 m-4 flex-wrap border-transparent cursor-pointer hover:border-white transition duration-300 ease-in-out"
-    >
-      Política SST
-    </span>
-    <div class="mt-2">
-      <span
-        class="border-b-2 m-4 flex-wrap border-transparent cursor-pointer hover:border-white transition duration-300 ease-in-out"
-      >
-        Política Tratamiento Datos Personales
-      </span>
+---
+const year = new Date().getFullYear()
+
+const columns = [
+  {
+    title: "Tu próximo lugar",
+    twoColumns: false,
+    links: [
+      { label: "Inmuebles en arriendo", href: "/search?mode=rent" },
+      { label: "Inmuebles en venta", href: "/search?mode=sale" },
+      { label: "Publica tu inmueble", href: "/promote-property" },
+    ],
+  },
+  {
+    title: "Estamos cerca",
+    twoColumns: true,
+    links: [
+      { label: "Mi espacio propietario", href: "#" },
+      { label: "Anticipo de canon", href: "#" },
+      { label: "Mi presupuesto de compra", href: "#" },
+      { label: "Financiación", href: "#" },
+      { label: "Mis solicitudes", href: "#" },
+      { label: "Contacto y sedes", href: "/contact" },
+      { label: "Guías y consejos", href: "#" },
+      { label: "Mis inmuebles favoritos", href: "/search?favorites=all" },
+      { label: "Mis búsquedas guardadas", href: "#" },
+      { label: "Conversar con Portada", href: "#" },
+      { label: "Contacto y acompañamiento", href: "/pqrs" },
+      { label: "Portal de autogestión", href: "/self-management" },
+    ],
+  },
+]
+---
+
+<style is:global>
+  .site-footer,
+  .site-footer * {
+    font-family: "Poppins", sans-serif;
+  }
+</style>
+
+<footer class="site-footer w-full border-t border-[#ece8e0] bg-[#faf8f4] text-[#5e5e68]">
+  <div class="mx-auto w-full px-6 lg:px-0 lg:w-[76vw] max-w-[1600px]">
+    <div class="grid grid-cols-1 items-start gap-8 pt-9 pb-8 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_2fr] lg:gap-12">
+      <div class="sm:col-span-2 lg:col-span-1">
+        <a
+          href="/"
+          aria-label="Portada Inmobiliaria – Inicio"
+          class="inline-block"
+        >
+          <img
+            src="/img/logo-portada.webp"
+            alt="Portada Inmobiliaria S.A.S."
+            class="h-[64px] w-auto object-contain mix-blend-multiply"
+            width="400"
+            height="160"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <p class="mt-3 text-[13px] leading-5 text-[#5e5e68]">
+          Profesionales en vivir mejor.
+        </p>
+      </div>
+
+      {columns.map((column) => (
+        <nav
+          aria-label={column.title}
+          class:list={[
+            "lg:pt-[10px]",
+            column.twoColumns && "sm:col-span-2 lg:col-span-1",
+          ]}
+        >
+          <p class="text-[14px] font-medium leading-[21px] text-[#2a2a33]">
+            {column.title}
+          </p>
+          <ul
+            class:list={[
+              "mt-4",
+              column.twoColumns ? "sm:columns-2 sm:gap-x-8" : "",
+            ]}
+          >
+            {column.links.map((link) => (
+              <li class="mb-[11px] break-inside-avoid">
+                <a
+                  href={link.href}
+                  class="text-[13px] leading-5 text-[#5e5e68] transition-colors hover:text-[#2a2a33]"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+
+    <div class="flex flex-col gap-2 border-t border-[#e8e4dc] pt-5 pb-6 text-[11px] leading-4 text-[#6b6b75] sm:flex-row sm:items-center sm:justify-between">
+      <p>
+        © {year} Portada Inmobiliaria · Prototipo para junta, sin operaciones
+        reales.
+      </p>
+      <a href="#" class="transition-colors hover:text-[#2a2a33]">
+        Sobre esta demostración
+      </a>
     </div>
   </div>
-  <div class="flex-col text-center mt-4">
-    <span class="text-sm"
-      >© Copyright 2024 - Portada Inmobiliaria. Todos los derechos reservados</span
-    >
-  </div>
-</div>
+</footer>

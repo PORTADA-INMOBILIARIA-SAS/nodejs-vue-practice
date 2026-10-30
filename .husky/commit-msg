@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx --no -- commitlint --edit $1
+export PATH="/c/Users/usuario/AppData/Roaming/fnm/node-versions/v24.15.0/installation:$PATH"
+
+./node_modules/.bin/commitlint --edit $1
+

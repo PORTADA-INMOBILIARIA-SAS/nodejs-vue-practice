@@ -1,0 +1,214 @@
+---
+const RUTA_BUSQUEDA = "/search"
+const RUTA_AUTOGESTION = "/self-management"
+const RUTA_SERVICIOS = "/services"
+
+const enBusqueda = Astro.url.pathname.startsWith(RUTA_BUSQUEDA)
+const esServicios = Astro.url.pathname.startsWith(RUTA_SERVICIOS)
+const compacto = enBusqueda || esServicios
+const currentMode =
+  Astro.url.searchParams.get("mode") ||
+  Astro.url.searchParams.get("modalidad") ||
+  ""
+const esCompra =
+  enBusqueda && (currentMode === "sale" || currentMode === "venta")
+const esArriendo = enBusqueda && !esCompra
+
+const enlaces = [
+  {
+    texto: "Arrendar",
+    href: `${RUTA_BUSQUEDA}?mode=rent`,
+    activo: esArriendo,
+  },
+  {
+    texto: "Comprar",
+    href: `${RUTA_BUSQUEDA}?mode=sale`,
+    activo: esCompra,
+  },
+  { texto: "Propietarios", href: "/#propietarios", activo: false },
+  { texto: "Servicios", href: RUTA_SERVICIOS, activo: esServicios },
+  { texto: "Financiación", href: "#", activo: false },
+]
+
+const esDetalle = Astro.url.pathname.startsWith("/property")
+
+const contenedor = esDetalle
+  ? "mx-auto max-w-[1700px] px-6"
+  : compacto
+    ? "mx-auto max-w-[1470px] px-5"
+    : "px-5 lg:px-12"
+const _logo = esDetalle
+  ? "h-[44px]"
+  : compacto
+    ? "h-[64px]"
+    : "h-[64px] sm:h-[76px]"
+const navegacion = esDetalle
+  ? "gap-[17px] text-[14px] text-[#3a3a3a]"
+  : compacto
+    ? "gap-[19px] text-[13px]"
+    : "gap-10 text-[17px]"
+const grupoBotones = compacto || esDetalle ? "gap-2.5" : "gap-3"
+const boton = esDetalle
+  ? "h-[54px] gap-2.5 px-6 text-[14px]"
+  : compacto
+    ? "h-12 gap-2.5 px-4 text-[13px]"
+    : "h-[52px] gap-3 px-5 text-base"
+const icono = compacto || esDetalle ? "h-[22px] w-[22px]" : "h-6 w-6"
+const alturaBarra = esDetalle ? "h-[99px]" : "h-[88px]"
+---
+
+<style is:global>
+  .encabezado-portada,
+  .encabezado-portada * {
+    font-family: "Poppins", sans-serif;
+  }
+</style>
+
+<header
+  class:list={[
+    "encabezado-portada fixed inset-x-0 top-0 z-50 w-full border-b bg-white",
+    esDetalle ? "border-[#f2efeb]" : "border-slate-100",
+  ]}
+>
+  {esDetalle && <div class="h-[9px] w-full bg-[#fff3c7]" aria-hidden="true" />}
+  <div
+    class:list={[
+      "flex w-full items-center justify-between gap-6",
+      alturaBarra,
+      contenedor,
+    ]}
+  >
+    <a
+      href="/"
+      aria-label="Portada Inmobiliaria - Inicio"
+      class:list={["shrink-0 flex items-center", esDetalle && "w-[220px]"]}
+    >
+      <img
+        src="/img/logo-portada.webp"
+        alt="Portada Inmobiliaria"
+        class="h-[52px] sm:h-[60px] w-auto object-contain"
+        width="400"
+        height="160"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </a>
+
+    <nav
+      class:list={["hidden items-center text-slate-800 lg:flex", navegacion]}
+    >
+      {enlaces.map((enlace) => (
+        <a
+          href={enlace.href}
+          aria-current={enlace.activo ? "page" : undefined}
+          class:list={[
+            "transition-colors hover:text-red-600",
+            enlace.activo &&
+              "text-[#9b3d33] underline decoration-[#d9534f] decoration-1 underline-offset-[6px]",
+          ]}
+        >
+          {enlace.texto}
+        </a>
+      ))}
+    </nav>
+
+    <div class:list={["hidden items-center lg:flex", grupoBotones]}>
+      <a
+        href="/pay-rent"
+        class:list={[
+          "flex items-center rounded-xl font-medium transition-colors",
+          esDetalle
+            ? "bg-[#ffaaa0] text-[#2b2b2b] hover:bg-[#ff958a]"
+            : "bg-[#f58f8f] text-[#2e3040] hover:bg-[#f27d7d]",
+          boton,
+        ]}
+      >
+        <svg
+          class={icono}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path>
+          <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path>
+        </svg>
+        Paga aquí tu arriendo
+      </a>
+
+      <a
+        href={RUTA_AUTOGESTION}
+        class:list={[
+          "flex items-center rounded-xl transition-colors",
+          esDetalle
+            ? "border border-[#ede7df] bg-[#faf8f5] text-[#333] hover:border-[#ded5ca] hover:bg-white"
+            : "border border-slate-200 bg-[#faf8f4] text-slate-800 hover:border-slate-300 hover:bg-slate-50",
+          boton,
+        ]}
+      >
+        <svg
+          class={icono}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="8" r="5"></circle>
+          <path d="M20 21a8 8 0 0 0-16 0"></path>
+        </svg>
+        Autogestión
+      </a>
+    </div>
+
+    <details class="relative lg:hidden">
+      <summary
+        aria-label="Abrir menú"
+        class="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-lg border border-slate-200 text-slate-800 [&::-webkit-details-marker]:hidden"
+      >
+        <svg
+          class="h-6 w-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </summary>
+
+      <div class="absolute right-0 top-full mt-3 flex w-64 flex-col gap-1 rounded-xl border border-slate-100 bg-white p-3 shadow-xl">
+        {enlaces.map((enlace) => (
+          <a
+            href={enlace.href}
+            class="rounded-lg px-3 py-2.5 text-slate-800 hover:bg-slate-50"
+          >
+            {enlace.texto}
+          </a>
+        ))}
+        <a
+          href="/pay-rent"
+          class="mt-1 rounded-lg bg-[#f58f8f] px-3 py-2.5 text-center font-medium text-[#2e3040]"
+        >
+          Paga aquí tu arriendo
+        </a>
+        <a
+          href={RUTA_AUTOGESTION}
+          class="rounded-lg border border-slate-200 px-3 py-2.5 text-center text-slate-800"
+        >
+          Portal de autogestión
+        </a>
+      </div>
+    </details>
+  </div>
+</header>
+
+<div class={esDetalle ? "h-[109px]" : "h-[89px]"} aria-hidden="true"></div>

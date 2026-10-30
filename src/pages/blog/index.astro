@@ -1,0 +1,208 @@
+---
+import Layout from "../../layouts/Layout.astro"
+
+const articulos = [
+  {
+    id: "comprar-casa-propia-ventajas",
+    titulo: "Comprar casa propia trae sus ventajas",
+    etiqueta: "BLOG",
+    imagen: "/img/img41.webp",
+    resumen:
+      "El camino a tu casa propia empieza con decisiones informadas Comprar casa propia es uno de esos grandes acontecimientos que muchas personas sueñan alcanzar. Más que una meta económica, representa estabilidad, autonomía y una inversión para toda la vida. Pero, también es una decisión que implica compromisos importantes, análisis financiero",
+    fecha: "julio 19, 2025",
+  },
+  {
+    id: "seguridad-en-los-pagos",
+    titulo: "Seguridad en los pagos",
+    etiqueta: "BLOG",
+    imagen: "/img/img40.webp",
+    resumen:
+      "Seguridad en los pagos: una prioridad en el sector inmobiliario En el negocio inmobiliario, se manejan pagos mensuales, inversiones importantes y contratos de largo plazo que van unidos a servicios que garantizan la reputación de una inmobiliaria, la seguridad en las transacciones no es un lujo, sino una necesidad. Cada vez",
+    fecha: "julio 11, 2025",
+  },
+  {
+    id: "decreto-583-de-2025",
+    titulo: "¿Qué es el Decreto 583 de 2025?",
+    etiqueta: "BLOG",
+    imagen: "/img/img39.webp",
+    resumen:
+      "Entiende los cambios clave y las normativas actualizadas que afectan la compra, venta y arrendamiento de inmuebles en Colombia durante este año...",
+    fecha: "julio 9, 2025",
+  },
+  {
+    id: "por-que-no-has-vendido-tu-apartamento",
+    titulo: "¿Por qué no has vendido tu apartamento?",
+    etiqueta: "BLOG",
+    imagen: "/img/img38.webp",
+    resumen:
+      "Analizamos los errores más comunes al fijar el precio, la presentación de la propiedad y la estrategia de marketing inmobiliario que pueden estar frenando tu venta...",
+    fecha: "junio 27, 2025",
+  },
+]
+
+const populares = [
+  {
+    id: "comprar-casa-propia-ventajas",
+    titulo: "Comprar casa propia trae sus ventajas",
+    fecha: "julio 19, 2025",
+  },
+  {
+    id: "seguridad-en-los-pagos",
+    titulo: "Seguridad en los pagos",
+    fecha: "julio 11, 2025",
+  },
+  {
+    id: "decreto-583-de-2025",
+    titulo: "¿Qué es el Decreto 583 de 2025?",
+    fecha: "julio 9, 2025",
+  },
+  {
+    id: "por-que-no-has-vendido-tu-apartamento",
+    titulo: "¿Por qué no has vendido tu apartamento?",
+    fecha: "junio 27, 2025",
+  },
+  {
+    id: "tasa-de-seguridad",
+    titulo: "Tasa de seguridad",
+    fecha: "junio 24, 2025",
+  },
+]
+---
+
+<Layout title="Blog | Portada Inmobiliaria">
+  <main class="w-full min-h-screen bg-white font-sans pt-24 pb-16">
+    <header class="fixed top-0 left-0 w-full z-50 px-6 lg:px-16 py-4 flex items-center justify-between bg-white border-b border-neutral-100 shadow-sm">
+      <div class="flex items-center">
+        <a href="/" class="cursor-pointer">
+          <img
+            src="/img/img31.webp"
+            alt="Portada Inmobiliaria S.A.S."
+            class="w-[180px] sm:w-[200px] h-auto object-contain"
+          />
+        </a>
+      </div>
+
+      <nav class="hidden md:flex items-center justify-between flex-grow max-w-3xl mx-12 text-xs font-bold tracking-wider text-slate-800">
+        <a
+          href="/autogestion"
+          class="hover:text-red-600 transition-colors uppercase"
+        >
+          Portal Autogestión
+        </a>
+        <a
+          href="/pagar-arriendo"
+          class="hover:text-red-600 transition-colors uppercase"
+        >
+          Pagar Arriendo
+        </a>
+        <a
+          href="/inmuebles-exclusivos"
+          class="hover:text-red-600 transition-colors uppercase"
+        >
+          Inmuebles Exclusivos
+        </a>
+
+        <a
+          href="/blog"
+          class="hover:text-red-600 transition-colors uppercase font-bold text-red-600"
+        >
+          Blog
+        </a>
+      </nav>
+
+      <div class="flex items-center">
+        <button
+          aria-label="Favoritos"
+          class="text-slate-800 hover:text-red-600 transition-colors p-2 cursor-pointer"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* COLUMNA IZQUIERDA: POSTS */}
+        <div class="lg:col-span-8">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-10">
+            {articulos.map((item) => (
+              <article class="flex flex-col group cursor-pointer">
+                <div class="relative w-full h-64 sm:h-72 overflow-hidden bg-neutral-100 mb-3">
+                  <span class="absolute top-2 left-2 z-10 bg-slate-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase">
+                    {item.etiqueta}
+                  </span>
+                  <a href={`/blog/${item.id}`} class="block w-full h-full">
+                    <img
+                      src={item.imagen}
+                      alt={item.titulo}
+                      class="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </a>
+                </div>
+
+                <h3 class="text-base font-bold text-red-600 leading-snug mb-2 group-hover:underline">
+                  <a href={`/blog/${item.id}`}>{item.titulo}</a>
+                </h3>
+
+                <p class="text-xs text-slate-700 leading-relaxed mb-4 line-clamp-4 font-normal">
+                  {item.resumen}
+                </p>
+
+                <div class="mt-auto flex flex-col gap-1">
+                  <a
+                    href={`/blog/${item.id}`}
+                    class="text-[11px] font-bold text-red-600 uppercase tracking-wider"
+                  >
+                    LEER MÁS
+                  </a>
+                  <time class="text-[10px] text-red-400 font-medium">
+                    {item.fecha}
+                  </time>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        {/* COLUMNA DERECHA: POPULARES */}
+        <aside class="lg:col-span-4 border-l-2 border-red-600 pl-6 lg:pl-8">
+          <div class="sticky top-28">
+            <div class="text-right mb-6">
+              <h2 class="text-3xl sm:text-4xl font-extrabold text-red-600 uppercase tracking-tight">
+                POPULARES
+              </h2>
+            </div>
+
+            <div class="flex flex-col divide-y divide-red-600 border-t border-b border-red-600">
+              {populares.map((pop) => (
+                <div class="py-5 flex flex-col group">
+                  <a href={`/blog/${pop.id}`}>
+                    <h3 class="text-sm font-bold text-slate-900 group-hover:text-red-600 transition-colors leading-snug mb-2">
+                      {pop.titulo}
+                    </h3>
+                  </a>
+                  <time class="text-[11px] text-red-400 font-medium">
+                    {pop.fecha}
+                  </time>
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+</Layout>

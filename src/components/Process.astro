@@ -1,0 +1,113 @@
+---
+const pasos = [
+  {
+    numero: "01",
+    titulo: "Encuentra y visita",
+    texto: "Explora el catálogo y conoce tu próximo lugar.",
+    linea: "border-[#e6e0d6]",
+  },
+  {
+    numero: "02",
+    titulo: "Prepara tu estudio",
+    texto: "Consulta los requisitos según tu perfil.",
+    linea: "border-[#bcd6e8]",
+  },
+  {
+    numero: "03",
+    titulo: "Revisa y firma",
+    texto: "Revisa el contrato y la firma de ejemplo.",
+    linea: "border-[#f2db8c]",
+  },
+  {
+    numero: "04",
+    titulo: "Realiza tu pago",
+    texto: "Consulta el valor y tu comprobante.",
+    linea: "border-[#f4a39d]",
+  },
+  {
+    numero: "05",
+    titulo: "Recibe las llaves",
+    texto: "Coordina la entrega y revisa el inventario.",
+    linea: "border-[#a9cfc4]",
+  },
+]
+
+const etapas = [
+  { texto: "Encontrar", href: "/search" },
+  { texto: "Habitar", href: "/pay-rent" },
+  { texto: "Cuidar", href: "/self-management" },
+]
+
+const enlaceEncabezado = {
+  texto: "Conocer el proceso completo",
+  href: "/services",
+}
+const enlaceEtapas = { texto: "Quiero conocerlas", href: "/pqrs" }
+---
+
+<section
+  aria-labelledby="titulo-proceso"
+  class="seccion-puertas mx-auto w-full max-w-[1760px] bg-white px-5 pb-[clamp(48px,9vh,100px)] sm:px-8 lg:px-[8.2%]"
+>
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+    <div>
+      <p class="text-[10px] font-medium uppercase tracking-[0.25em] text-slate-500">
+        Paso a paso, contigo
+      </p>
+      <h2
+        id="titulo-proceso"
+        class="mt-4 text-[length:clamp(24px,2.5vw,36px)] font-light leading-[1.15] tracking-tight text-slate-800"
+      >
+        Del primer clic a tus nuevas llaves.
+      </h2>
+    </div>
+
+    <a
+      href={enlaceEncabezado.href}
+      class="shrink-0 text-[13px] text-slate-900 hover:underline sm:pt-8"
+    >
+      {enlaceEncabezado.texto} →
+    </a>
+  </div>
+
+  <ol class="mt-12 grid grid-cols-1 gap-x-[18px] gap-y-8 sm:grid-cols-2 lg:grid-cols-5">
+    {pasos.map((paso) => (
+      <li class={`border-t-2 pt-8 ${paso.linea}`}>
+        <span class="text-[13px] text-slate-500">{paso.numero}</span>
+        <h3 class="mt-7 text-[17px] font-normal text-slate-900">
+          {paso.titulo}
+        </h3>
+        <p class="mt-4 text-[13px] leading-[1.7] text-slate-500">
+          {paso.texto}
+        </p>
+      </li>
+    ))}
+  </ol>
+
+  <div class="mt-[clamp(48px,8vh,80px)] rounded-[28px] border border-slate-200 bg-white px-6 py-10 text-center">
+    <p class="text-[10px] font-medium uppercase tracking-[0.25em] text-slate-500">
+      Contigo en cada etapa
+    </p>
+
+    <div class="mt-7 flex flex-wrap items-center justify-center gap-x-[clamp(32px,5vw,72px)] gap-y-3">
+      {etapas.map((etapa) => (
+        <a
+          href={etapa.href}
+          class="text-[length:clamp(20px,1.8vw,26px)] font-normal text-slate-800 transition-colors hover:text-red-600"
+        >
+          {etapa.texto}
+        </a>
+      ))}
+    </div>
+
+    <p class="mt-7 text-[12.5px] text-slate-500">
+      Explora el diseño de las alternativas para tu inmueble.
+      <a
+        href={enlaceEtapas.href}
+        class="text-slate-700 underline underline-offset-2"
+      >
+        {enlaceEtapas.texto} →
+      </a>
+    </p>
+  </div>
+</section>

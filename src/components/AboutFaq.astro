@@ -1,0 +1,496 @@
+---
+const WHATSAPP = "https://api.whatsapp.com/send?phone=573004939403"
+
+interface FaqItem {
+  q: string
+  a: string
+  link?: {
+    text: string
+    href?: string
+    modal?: boolean
+  }
+  initialOpen?: boolean
+}
+
+const faqs: FaqItem[] = [
+  {
+    q: "¿Puedo anticipar mi canon?",
+    a: "Sí. Puedes solicitar hasta 10 meses de canon cuando tu inmueble ya esté arrendado. Portada no anticipa cánones en vacancia. Solicita la propuesta con el valor neto a recibir y los costos.",
+    link: { text: "Consultar anticipo", href: "#" },
+  },
+  {
+    q: "¿Cómo sé qué vivienda puedo comprar?",
+    a: "Usa el simulador de presupuesto con tu cuota mensual, ahorros y escenario de financiación. Lleva el resultado al catálogo y consulta alternativas con Bancolombia, Davivienda o BBVA.",
+    link: { text: "Calcular presupuesto", href: "#" },
+  },
+  {
+    q: "¿Puedo financiar un mantenimiento?",
+    a: "Portada cuenta con financiación para mantenimientos. Comparte la cotización o cuéntanos qué reparación necesitas para recibir orientación del equipo.",
+    link: { text: "Consultar financiación", href: "#" },
+  },
+  {
+    q: "¿Cómo puedo encontrar un inmueble?",
+    a: "Elige Arrendar o Comprar para explorar el catálogo de demostración. Puedes consultar fotografías, fichas y favoritos. Indica ciudad, tipo o código y ajusta los demás filtros dentro del catálogo.",
+    link: { text: "Ver catálogo de inmuebles", href: "/search?mode=rent" },
+    initialOpen: true,
+  },
+  {
+    q: "¿Dónde pago mi arriendo?",
+    a: "Usa el botón “Paga aquí tu arriendo” para recorrer el detalle, la selección de entidad y el comprobante de un pago simulado.",
+    link: { text: "Ver opciones de pago", href: "/pay-rent" },
+  },
+  {
+    q: "¿Cómo entro al portal de autogestión?",
+    a: "Selecciona “Portal de autogestión” y elige un perfil de demostración. Allí puedes recorrer cuentas, documentos y servicios.",
+    link: { text: "Entrar al portal", href: "/self-management" },
+  },
+  {
+    q: "¿Puedo publicar un inmueble para arrendar o vender?",
+    a: "Sí. En “Publica tu inmueble” encontrarás el acceso al formulario de Portada para registrar sus características, revisar las fotos y ver el anuncio de ejemplo. También puedes hablar con el equipo para recibir orientación.",
+    link: { text: "Registrar mi inmueble", href: "/promote-property" },
+  },
+  {
+    q: "¿Cómo solicito mantenimiento?",
+    a: "Prepara un reporte con el código del inmueble y una descripción de la novedad. Para radicación y seguimiento, usa los servicios disponibles en tu portal de autogestión.",
+    link: { text: "Preparar reporte", href: "/pqrs" },
+  },
+  {
+    q: "¿Cómo conozco tarifas y coberturas?",
+    a: "Solicita una cotización para tu inmueble. El equipo debe confirmar por escrito tarifas, impuestos, alcance y condiciones de las coberturas.",
+    link: { text: "Conocer las opciones para propietarios", href: "#" },
+  },
+]
+
+const apoyoBotones = [
+  {
+    texto: "Solicitar mantenimiento",
+    href: "/pqrs",
+    primario: true,
+  },
+  {
+    texto: "Peticiones y reclamos",
+    href: "/pqrs",
+    primario: false,
+  },
+]
+
+const apoyoEnlaces = [
+  { texto: "Mi espacio propietario", href: "/self-management" },
+  { texto: "Consultar mi solicitud", href: "/pqrs" },
+  { texto: "Ver todos mis servicios", href: "/self-management" },
+]
+
+const arrow = '<path d="M3 10h13M11 5l5 5-5 5"/>'
+---
+
+<div class="about-faq">
+  <section class="about" id="nosotros">
+    <p class="eyebrow">Somos Portada Inmobiliaria</p>
+    <h2 class="about-title">
+      Detrás de cada puerta,
+      <br />
+      hay una historia que importa.
+    </h2>
+    <p class="about-text">
+      La de quien busca su primer hogar. La de una familia que crece.
+      <br />
+      La de quien confía su inmueble. Queremos acompañarte en la tuya.
+    </p>
+    <a class="text-link" href="/services">
+      Conoce más de Portada
+      <svg
+        viewBox="0 0 20 20"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        set:html={arrow}
+      />
+    </a>
+  </section>
+
+  <div class="support-wrap">
+    <section class="support" aria-labelledby="titulo-apoyo">
+      <div class="support-intro">
+        <p class="eyebrow eyebrow-sm">Ya haces parte de Portada</p>
+        <h2 id="titulo-apoyo" class="support-title">
+          ¿Cómo podemos ayudarte hoy?
+        </h2>
+      </div>
+
+      <div class="support-actions">
+        <div class="support-buttons">
+          {apoyoBotones.map((boton) => (
+            <a
+              href={boton.href}
+              class={
+                boton.primario
+                  ? "support-btn support-btn-dark"
+                  : "support-btn support-btn-light"
+              }
+            >
+              {boton.texto} →
+            </a>
+          ))}
+        </div>
+
+        <ul class="support-links">
+          {apoyoEnlaces.map((enlace) => (
+            <li>
+              <a href={enlace.href}>{enlace.texto} →</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <section class="faq" id="faq">
+    <div class="faq-intro">
+      <p class="eyebrow eyebrow-sm">Estamos para ayudarte</p>
+      <h2 class="faq-title">
+        Lo que te
+        <br />
+        preguntas, aquí.
+      </h2>
+      <p class="faq-more">¿Necesitas algo más?</p>
+      <a
+        class="text-link text-link-sm"
+        href={WHATSAPP}
+        target="_blank"
+        rel="noopener"
+      >
+        Habla con nosotros
+        <svg
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          set:html={arrow}
+        />
+      </a>
+    </div>
+
+    <div class="faq-list">
+      {faqs.map((item) => (
+        <details class="faq-item" open={item.initialOpen}>
+          <summary>
+            <span>{item.q}</span>
+            <svg
+              class="chevron"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m18 15-6-6-6 6" />
+            </svg>
+          </summary>
+          <div class="faq-answer">
+            <p>{item.a}</p>
+            {item.link &&
+              (item.link.modal ? (
+                <button type="button" class="answer-link" data-open-pay>
+                  {item.link.text} →
+                </button>
+              ) : (
+                <a class="answer-link" href={item.link.href || "#"}>
+                  {item.link.text} →
+                </a>
+              ))}
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+</div>
+
+<style>
+  .about-faq {
+    --header-h: 110px;
+    --pad-top: 40px;
+    --ink: #2b2b33;
+    --muted: #5d6068;
+    --line: #e1e6e8;
+    font-family: "Poppins", sans-serif;
+    color: var(--ink);
+    width: min(1580px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    line-height: 18px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 16px;
+  }
+  .eyebrow-sm {
+    font-size: 10.5px;
+  }
+
+  .about {
+    text-align: center;
+    padding: var(--pad-top) 0 56px;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: calc(var(--header-h) - var(--pad-top) + 13px);
+  }
+  .about-title {
+    font-size: clamp(30px, 2.6vw, 46px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin: 0 0 20px;
+  }
+  .about-text {
+    font-size: 14px;
+    line-height: 28px;
+    font-weight: 300;
+    color: var(--muted);
+    margin: 0 0 24px;
+  }
+
+  .guides-wrap {
+    width: 100%;
+    padding-top: clamp(32px, 5vh, 56px);
+  }
+
+  .support-wrap {
+    padding: clamp(16px, 3vh, 40px) 0 72px;
+    border-bottom: 1px solid var(--line);
+  }
+  .support {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 32px;
+    align-items: start;
+    background: #f7f4ee;
+    border-radius: 24px;
+    padding: 40px 44px;
+  }
+  .support-intro {
+    padding-top: 11px;
+  }
+  .support-title {
+    max-width: 460px;
+    font-size: clamp(26px, 2.2vw, 38px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+  .support-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px;
+  }
+  .support-btn {
+    display: inline-flex;
+    align-items: center;
+    height: 59px;
+    padding: 0 24px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    text-decoration: none;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s;
+  }
+  .support-btn-dark {
+    background: #2e3040;
+    color: #fff;
+    font-weight: 600;
+  }
+  .support-btn-dark:hover {
+    background: #1f212d;
+  }
+  .support-btn-light {
+    background: #faf8f4;
+    border: 1px solid var(--line);
+    color: var(--ink);
+  }
+  .support-btn-light:hover {
+    border-color: #c9cfd2;
+  }
+  .support-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 14px;
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+  }
+  .support-links a {
+    font-size: 14px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .support-links a:hover {
+    text-decoration: underline;
+  }
+  .support-btn:focus-visible,
+  .support-links a:focus-visible {
+    outline: 2px solid #3b8ea5;
+    outline-offset: 3px;
+  }
+
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .text-link svg {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    transition: transform 0.2s;
+  }
+  .text-link:hover svg {
+    transform: translateX(4px);
+  }
+  .text-link-sm {
+    font-size: 13px;
+  }
+  .text-link:focus-visible,
+  .answer-link:focus-visible {
+    outline: 2px solid #3b8ea5;
+    outline-offset: 3px;
+  }
+
+  .faq {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 88px;
+    align-items: start;
+    padding: 56px 0 64px;
+    scroll-margin-top: calc(var(--header-h) - 56px + 13px);
+  }
+  .faq-intro {
+    padding-top: 16px;
+  }
+  .faq-title {
+    font-size: clamp(30px, 2.4vw, 44px);
+    font-weight: 300;
+    line-height: 1.17;
+    letter-spacing: -0.03em;
+    margin: 0 0 24px;
+  }
+  .faq-more {
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--muted);
+    margin: 0 0 15px;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--line);
+    transition: all 0.2s ease;
+  }
+  .faq-item summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 48px;
+    padding: 16px 4px;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink);
+    cursor: pointer;
+    user-select: none;
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item summary:focus-visible {
+    outline: 2px solid #2b7a8d;
+    outline-offset: 2px;
+  }
+  .chevron {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    color: #64748b;
+    transition: transform 0.25s ease;
+  }
+  .faq-item[open] .chevron {
+    transform: rotate(180deg);
+  }
+  .faq-answer {
+    padding: 0 48px 28px 4px;
+    max-width: 720px;
+  }
+  .faq-answer p {
+    font-size: 14.5px;
+    line-height: 1.8;
+    color: #4b5563;
+    margin: 0 0 16px;
+  }
+  .answer-link {
+    display: inline-block;
+    padding: 0;
+    background: none;
+    border: 0;
+    font: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .answer-link:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 900px) {
+    .about {
+      padding: 32px 0 44px;
+    }
+    .about-title br,
+    .about-text br {
+      display: none;
+    }
+    .support-wrap {
+      padding-bottom: 48px;
+    }
+    .support {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding: 28px 24px;
+    }
+    .support-intro {
+      padding-top: 0;
+    }
+    .faq {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding: 32px 0 48px;
+    }
+    .faq-intro {
+      padding-top: 0;
+    }
+    .faq-answer {
+      padding-right: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .text-link svg,
+    .chevron,
+    .support-btn {
+      transition: none;
+    }
+  }
+</style>

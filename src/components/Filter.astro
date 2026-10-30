@@ -1,146 +1,293 @@
-<div class="flex justify-center items-center m-28">
-  <section class="search-bar relative">
-    <!-- Botones Superiores -->
-    <div class="buttons-search flex">
-      <div class="buttons-search flex items-end min-h-16">
-        <label class="input">
-          <input
-            type="radio"
-            name="opcion"
-            value="arrendar"
-            class="hidden"
-            checked
-          />
-          <div class="flex rounded-t-md cursor-pointer">
-            <img class="mr-2" src="/icons/arrendar.svg" alt="" width="24" />
-            <span class="text-lg text-white">Arrendar</span>
-          </div>
-        </label>
-        <label class="input">
-          <input type="radio" name="opcion" value="comprar" class="hidden" />
-          <div class="flex rounded-t-md cursor-pointer">
-            <img class="mr-2" src="/icons/comprar.svg" alt="" width="18" />
-            <span class="text-lg text-white">Comprar</span>
-          </div>
-        </label>
-      </div>
-    </div>
-    <!-- Inputs -->
-    <div
-      class="form shadow-custom flex justify-center bg-white rounded-tr-md rounded-bl-md flex-wrap p-10"
-    >
-      <div
-        class="input-container flex w-full sm:w-full md:w-1/3 text-[--primary-color]"
-      >
-        <div class="relative flex items-center w-full">
-          <div class="absolute pl-2">
-            <svg
-              class="icon icon-tabler icon-tabler-home"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
-              <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
-              <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
-            </svg>
-          </div>
-          <select
-            class="min-w-full rounded-md border-0 py-1.5 px-7 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-red-700 outline-none"
-          >
-            <option value="0" selected="">Tipo de Inmueble</option>
-            <!-- Opciones del select -->
-          </select>
-        </div>
+---
+---
+
+<div class="filter-wrapper w-full max-w-5xl mx-auto relative font-sans">
+  <div class="filter-tabs flex items-end ml-4">
+    <button type="button" id="tab-arrendar" class="tab-btn active">
+      Arrendar
+    </button>
+
+    <button type="button" id="tab-comprar" class="tab-btn inactive">
+      Comprar
+    </button>
+  </div>
+
+  <form id="filter-form" class="filter-bar">
+    <div class="filter-fields">
+      <div class="filter-field">
+        <svg
+          class="filter-icon"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+          ></path>
+        </svg>
+
+        <select id="select-tipo" class="filter-select">
+          <option value="">Tipo de inmueble</option>
+          <option value="apartamento">Apartamento</option>
+          <option value="casa">Casa</option>
+          <option value="apartaestudio">Apartaestudio</option>
+          <option value="local">Local Comercial</option>
+        </select>
       </div>
 
-      <div
-        class="input-container flex w-full sm:w-full md:w-1/3 text-[--primary-color]"
-      >
-        <div class="relative flex items-center w-full my-5 md:mx-5 md:my-0">
-          <div class="absolute pl-2">
-            <svg
-              class="icon icon-tabler icon-tabler-location-filled"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path
-                d="M20.891 2.006l.106 -.006l.13 .008l.09 .016l.123 .035l.107 .046l.1 .057l.09 .067l.082 .075l.052 .059l.082 .116l.052 .096c.047 .1 .077 .206 .09 .316l.005 .106c0 .075 -.008 .149 -.024 .22l-.035 .123l-6.532 18.077a1.55 1.55 0 0 1 -1.409 .903a1.547 1.547 0 0 1 -1.329 -.747l-.065 -.127l-3.352 -6.702l-6.67 -3.336a1.55 1.55 0 0 1 -.898 -1.259l-.006 -.149c0 -.56 .301 -1.072 .841 -1.37l.14 -.07l18.017 -6.506l.106 -.03l.108 -.018z"
-                stroke-width="0"
-                fill="currentColor"></path>
-            </svg>
-          </div>
-          <select
-            class="min-w-full rounded-md border-0 py-1.5 px-7 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-red-700 outline-none"
-          >
-            <option value="0" selected="">Ubicación</option>
-          </select>
-        </div>
+      <div class="filter-field">
+        <svg
+          class="filter-icon"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+          ></path>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+          ></path>
+        </svg>
+
+        <select id="select-ubicacion" class="filter-select">
+          <option value="">Ubicación</option>
+          <option value="envigado">Envigado</option>
+          <option value="medellin">Medellín</option>
+          <option value="poblado">El Poblado</option>
+          <option value="laureles">Laureles</option>
+          <option value="sabaneta">Sabaneta</option>
+        </select>
       </div>
 
-      <div
-        class="input-container flex w-full sm:w-full md:w-1/3 text-[--primary-color]"
-      >
-        <div class="relative flex items-center w-full">
-          <div class="absolute pl-2">
-            <svg
-              class="icon icon-tabler icon-tabler-search"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              ><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
-                d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path
-                d="M21 21l-6 -6"></path></svg
-            >
-          </div>
-          <input
-            class="min-w-full rounded-md border-0 py-1.5 px-7 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-900 focus:ring-2 focus:ring-red-700 outline-none"
-            placeholder="Buscar por Código"
-          />
-        </div>
+      <div class="filter-field">
+        <svg
+          class="filter-icon"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          ></path>
+        </svg>
+
+        <input
+          type="text"
+          id="input-codigo"
+          placeholder="Código"
+          class="filter-input"
+        />
       </div>
+
+      <button type="submit" class="filter-search">
+        Buscar...
+      </button>
     </div>
-    <!-- Boton Inferior -->
-    <div>
-      <button
-        class="bg-[--primary-color] text-white p-2 rounded-b-md absolute right-0"
-        >Buscar</button
-      >
-    </div>
-  </section>
+  </form>
 </div>
 
 <style>
-  label div {
-    background-color: rgb(108, 111, 118);
+  .filter-wrapper {
+    position: relative;
+    z-index: 50;
   }
 
-  .input input[type="radio"] + div {
-    padding: 8px 9px;
-    transition: all ease 0.3s;
+  .filter-tabs {
+    height: 34px;
+    position: relative;
+    z-index: 2;
   }
 
-  .input input[type="radio"]:checked + div {
-    background-color: var(--primary-color);
-    padding: 10px 9px;
-    transition: all ease 0.3s;
+  .tab-btn {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-bottom: none;
+    padding: 8px 22px;
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border-radius: 10px 10px 0 0;
+    backdrop-filter: blur(8px);
+  }
+
+  .tab-btn.active {
+    background: rgba(255, 255, 255, 0.92);
+    color: #111827;
+    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .tab-btn.inactive {
+    background: rgba(0, 0, 0, 0.68);
+    color: rgba(255, 255, 255, 0.95);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .tab-btn.inactive:hover {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  .filter-bar {
+    width: 100%;
+    position: relative;
+    background: rgba(20, 20, 20, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 0 16px 16px 16px;
+    padding: 12px;
+    box-shadow:
+      0 15px 35px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .filter-fields {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .filter-field {
+    flex: 1;
+    min-width: 0;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 13px;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 11px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transition: all 0.2s ease;
+  }
+
+  .filter-field:hover {
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  .filter-icon {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    color: #374151;
+  }
+
+  .filter-select,
+  .filter-input {
+    width: 100%;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #1f2937;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .filter-select {
+    cursor: pointer;
+  }
+
+  .filter-input::placeholder {
+    color: #374151;
+    opacity: 1;
+  }
+
+  .filter-search {
+    height: 46px;
+    flex-shrink: 0;
+    padding: 0 24px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 11px;
+    background: rgba(0, 0, 0, 0.88);
+    color: white;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.2);
+  }
+
+  .filter-search:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 768px) {
+    .filter-tabs {
+      margin-left: 8px;
+    }
+
+    .tab-btn {
+      padding: 8px 16px;
+      font-size: 11px;
+    }
+
+    .filter-bar {
+      padding: 10px;
+      border-radius: 0 14px 14px 14px;
+    }
+
+    .filter-fields {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .filter-field,
+    .filter-search {
+      width: 100%;
+      height: 44px;
+    }
+
+    .filter-search {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 </style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const tab_arrendar = document.getElementById("tab-arrendar")
+    const tab_comprar = document.getElementById("tab-comprar")
+
+    function setModalidad(tipo_modalidad: string) {
+      if (tipo_modalidad === "arrendar") {
+        tab_arrendar?.classList.add("active")
+        tab_arrendar?.classList.remove("inactive")
+
+        tab_comprar?.classList.add("inactive")
+        tab_comprar?.classList.remove("active")
+      } else {
+        tab_comprar?.classList.add("active")
+        tab_comprar?.classList.remove("inactive")
+
+        tab_arrendar?.classList.add("inactive")
+        tab_arrendar?.classList.remove("active")
+      }
+    }
+
+    tab_arrendar?.addEventListener("click", () => {
+      setModalidad("arrendar")
+    })
+
+    tab_comprar?.addEventListener("click", () => {
+      setModalidad("comprar")
+    })
+  })
+</script>

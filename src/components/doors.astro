@@ -1,0 +1,316 @@
+---
+import Possibilities from "./Possibilities.astro"
+import Process from "./Process.astro"
+
+const RUTA_BUSQUEDA = "/search"
+
+const puertas = [
+  {
+    id: "arriendo",
+    titulo: "Un hogar para arrendar",
+    texto: "Encuentra ese espacio que va contigo y con tu forma de vivir.",
+    enlace: "Explorar arriendos",
+    href: `${RUTA_BUSQUEDA}?mode=rent`,
+    fondo: "bg-[#e6eff6]",
+  },
+  {
+    id: "venta",
+    titulo: "Un lugar para llamar tuyo",
+    texto: "Da el siguiente paso y conoce opciones para comprar tu inmueble.",
+    enlace: "Explorar inmuebles en venta",
+    href: `${RUTA_BUSQUEDA}?mode=sale`,
+    fondo: "bg-[#fdf1c4]",
+  },
+  {
+    id: "publicar",
+    titulo: "Una oportunidad para tu inmueble",
+    texto: "Publica tu propiedad en arriendo o venta y empieza con nosotros.",
+    enlace: "Quiero publicar",
+    href: "#",
+    fondo: "bg-[#fde3e0]",
+  },
+]
+
+const ciudades = [
+  "Medellín",
+  "Envigado",
+  "Sabaneta",
+  "Bello",
+  "Rionegro",
+  "Bogotá",
+]
+---
+
+<style is:global>
+  .seccion-puertas,
+  .seccion-puertas * {
+    font-family: "Poppins", sans-serif;
+  }
+  @media (min-width: 1024px) {
+    .escala-puertas {
+      zoom: var(--escala, 1);
+    }
+  }
+</style>
+
+<section
+  id="puertas"
+  class="seccion-puertas escala-puertas w-full bg-white"
+  style="--escala:0.8;content-visibility:auto;contain-intrinsic-size:0 800px"
+>
+  <div class="mx-auto w-full max-w-[1486px] px-5 py-[clamp(48px,9vh,100px)] sm:px-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <p class="text-[11px] font-medium uppercase tracking-[0.25em] text-[#6b6b75]">
+          Cada etapa, un nuevo comienzo
+        </p>
+        <h1 class="mt-[22px] text-[length:clamp(30px,3.4vw,38px)] font-light leading-[1.1] tracking-[-0.02em] text-[#2a2a33]">
+          ¿Qué puerta quieres abrir?
+        </h1>
+      </div>
+      <p class="max-w-[220px] text-[15px] leading-[25px] text-[#6b6b75]">
+        Estamos cerca, en cada paso hacia tu próximo lugar.
+      </p>
+    </div>
+
+    <div class="mt-[46px] grid grid-cols-1 divide-y divide-[#e6e2da] overflow-hidden rounded-[28px] border border-[#e6e2da] bg-white md:grid-cols-3 md:divide-x md:divide-y-0">
+      {puertas.map((puerta) => (
+        <article class="group relative flex flex-col px-[34px] py-[37px] transition-colors duration-200 hover:bg-[#faf8f4]">
+          <span
+            class={`flex h-[65px] w-[65px] items-center justify-center rounded-full ${puerta.fondo}`}
+          >
+            {puerta.id === "arriendo" && (
+              <svg
+                class="h-[26px] w-[26px] text-[#2a2a33]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+                <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              </svg>
+            )}
+            {puerta.id === "venta" && (
+              <svg
+                class="h-[26px] w-[26px] text-[#2a2a33]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="7.5" cy="8.5" r="5.5" />
+                <path d="m21 22-9.6-9.6" />
+                <path d="m15.5 16.5 3-3L22 17l-3 3" />
+              </svg>
+            )}
+            {puerta.id === "publicar" && (
+              <svg
+                class="h-[26px] w-[26px] text-[#2a2a33]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
+                <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
+              </svg>
+            )}
+          </span>
+
+          <h3 class="mt-6 text-[18px] font-normal text-[#2a2a33]">
+            {puerta.titulo}
+          </h3>
+          <p class="mt-2.5 max-w-[330px] text-[14px] font-light leading-[25px] text-[#6b6b75]">
+            {puerta.texto}
+          </p>
+
+          <a
+            href={puerta.href}
+            class={`mt-auto flex items-center gap-3 pt-[34px] text-[13px] font-medium text-[#2a2a33] after:absolute after:inset-0 ${puerta.href === "#" ? "cursor-default opacity-60 pointer-events-none" : "hover:underline cursor-pointer"}`}
+          >
+            {puerta.enlace}
+            {puerta.href !== "#" && (
+              <svg
+                class="h-[18px] w-[18px] transition-transform duration-200 group-hover:translate-x-0.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            )}
+          </a>
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-7 flex flex-wrap items-center gap-x-[22px] gap-y-3">
+      <p class="text-[13px] font-light text-[#6b6b75]">
+        Empieza por tu lugar favorito
+      </p>
+      <div class="flex flex-wrap gap-[9px]">
+        {ciudades.map((ciudad) => (
+          <a
+            href={`${RUTA_BUSQUEDA}?mode=rent&city=${encodeURIComponent(ciudad)}`}
+            class="flex h-9 items-center gap-1.5 rounded-full border border-[#e0dcd3] px-3.5 text-[13px] text-[#2a2a33] transition-colors hover:border-[#c9c4b8] hover:bg-[#faf8f4]"
+          >
+            {ciudad}
+            <svg
+              class="h-2 w-2 text-[#6b6b75]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M7 17 17 7" />
+              <path d="M7 7h10v10" />
+            </svg>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section
+  id="propietarios"
+  class="seccion-puertas w-full bg-white"
+  style="content-visibility:auto;contain-intrinsic-size:0 900px"
+>
+  <div class="mx-auto w-full max-w-[1760px] px-5 pb-[clamp(48px,9vh,100px)] sm:px-8 lg:px-[8.2%]">
+    <div class="grid grid-cols-1 overflow-hidden rounded-[28px] bg-[#f5f1ea] lg:min-h-[clamp(560px,75vh,700px)] lg:grid-cols-2">
+      <div class="relative min-h-[320px]">
+        <picture class="absolute inset-0 h-full w-full">
+          <source
+            media="(max-width: 640px)"
+            srcset="/img/interior-portada-480.webp"
+            type="image/webp"
+            width="480"
+            height="360"
+          />
+          <source
+            media="(max-width: 1024px)"
+            srcset="/img/interior-portada-800.webp"
+            type="image/webp"
+            width="750"
+            height="562"
+          />
+          <img
+            src="/img/interior-portada.webp"
+            alt="Una sala luminosa, con tonos cálidos y un balcón rodeado de verde"
+            class="h-full w-full object-cover object-center"
+            width="800"
+            height="600"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+        <span class="absolute bottom-8 left-8 rounded-lg bg-white/95 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-slate-700">
+          Espacios para nuevas historias
+        </span>
+      </div>
+
+      <div class="flex flex-col justify-center p-8 sm:p-12 lg:p-[60px]">
+        <p class="text-[11px] font-medium uppercase tracking-[0.25em] text-slate-500">
+          Para propietarios
+        </p>
+
+        <h2 class="mt-5 max-w-[440px] text-[length:clamp(32px,3vw,58px)] font-light leading-[1.1] tracking-tight text-slate-800">
+          Tu inmueble tiene mucho por vivir.
+        </h2>
+
+        <p class="mt-8 max-w-[400px] text-[15px] leading-[1.9] text-slate-600">
+          Ábrele la puerta a su próxima historia. En Portada te acompañamos para
+          ponerlo en arriendo o en venta.
+        </p>
+
+        <ol class="mt-8 flex flex-col gap-6">
+          <li class="flex gap-4">
+            <span class="w-6 shrink-0 pt-0.5 text-[14px] text-slate-500">
+              01
+            </span>
+            <div>
+              <h3 class="text-[16px] font-medium text-slate-900">
+                Cuéntanos sobre tu inmueble
+              </h3>
+              <p class="mt-1 text-[14px] text-slate-500">
+                Registra su ubicación y características.
+              </p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="w-6 shrink-0 pt-0.5 text-[14px] text-slate-500">
+              02
+            </span>
+            <div>
+              <h3 class="text-[16px] font-medium text-slate-900">
+                Conversemos sobre tus planes
+              </h3>
+              <p class="mt-1 text-[14px] text-slate-500">
+                Un asesor te orienta en el proceso.
+              </p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="w-6 shrink-0 pt-0.5 text-[14px] text-slate-500">
+              03
+            </span>
+            <div>
+              <h3 class="text-[16px] font-medium text-slate-900">
+                Demos el siguiente paso
+              </h3>
+              <p class="mt-1 text-[14px] text-slate-500">
+                Conoce las condiciones para promocionarlo.
+              </p>
+            </div>
+          </li>
+        </ol>
+
+        <a
+          href="/promote-property"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-10 inline-flex h-[clamp(52px,6vh,65px)] w-fit items-center gap-3 rounded-xl bg-[#2e3040] px-7 text-base font-semibold text-white transition-colors hover:bg-[#1f212d]"
+        >
+          Publica tu inmueble
+          <svg
+            class="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="content-visibility:auto;contain-intrinsic-size:0 1200px">
+  <Possibilities />
+  <Process />
+</div>

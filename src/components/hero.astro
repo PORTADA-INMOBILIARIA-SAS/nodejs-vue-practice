@@ -1,0 +1,399 @@
+---
+import LocationField from "./LocationField.astro"
+const RUTA_BUSQUEDA = "/search"
+const RUTA_PUBLICAR = "/promote-property"
+
+const modalidadInicial = "arriendo"
+
+const tabs = [
+  { id: "arriendo", texto: "Arrendar" },
+  { id: "venta", texto: "Comprar" },
+  { id: "publicar", texto: "Publica tu inmueble" },
+]
+
+const tipos = [
+  "Apartamento",
+  "Casa",
+  "Local",
+  "Oficina",
+  "Bodega",
+  "Lote",
+  "Finca",
+]
+
+const presupuestos: Record<string, { valor: string; texto: string }[]> = {
+  arriendo: [
+    { valor: "1000000", texto: "Hasta $ 1.000.000" },
+    { valor: "2000000", texto: "Hasta $ 2.000.000" },
+    { valor: "3000000", texto: "Hasta $ 3.000.000" },
+    { valor: "5000000", texto: "Hasta $ 5.000.000" },
+    { valor: "8000000", texto: "Hasta $ 8.000.000" },
+  ],
+  venta: [
+    { valor: "200000000", texto: "Hasta $ 200.000.000" },
+    { valor: "400000000", texto: "Hasta $ 400.000.000" },
+    { valor: "600000000", texto: "Hasta $ 600.000.000" },
+    { valor: "1000000000", texto: "Hasta $ 1.000.000.000" },
+    { valor: "2000000000", texto: "Hasta $ 2.000.000.000" },
+  ],
+}
+
+const campo =
+  "flex h-[clamp(52px,7.4vh,76px)] items-center gap-4 rounded-xl border border-slate-200 bg-white px-5 focus-within:border-slate-400"
+---
+
+<section
+  id="hero-section"
+  class="relative flex min-h-[calc(100svh-88px)] w-full items-center overflow-hidden bg-slate-200 lg:h-[calc(100svh-88px)] lg:min-h-[560px]"
+  style="contain:layout style"
+>
+  <picture class="absolute inset-0 h-full w-full">
+    <source
+      media="(max-width: 640px)"
+      srcset="/img/img1-mobile.webp"
+      type="image/webp"
+      width="640"
+      height="427"
+    />
+    <img
+      src="/img/img1.webp"
+      alt="Familia compartiendo el desayuno en casa"
+      class="h-full w-full object-cover object-center"
+      width="1440"
+      height="960"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </picture>
+
+  <div class="relative z-10 w-full px-4 py-6 sm:px-8 lg:px-0 lg:py-0">
+    <div class="w-full max-w-[632px] rounded-[28px] bg-white/95 px-6 py-[clamp(18px,3.4vh,36px)] shadow-xl sm:px-9 lg:ml-[8%] lg:w-[33.4vw] lg:min-w-[440px]">
+      <h1 class="text-[length:clamp(30px,min(5.4vh,8vw),54px)] font-normal leading-[1.08] tracking-tight text-slate-900">
+        Abre la puerta a<br />
+        nuevos momentos.
+      </h1>
+
+      <p class="mt-2.5 text-[15px] text-slate-600">
+        Arrienda, compra o publica tu inmueble.
+      </p>
+
+      <div
+        role="group"
+        aria-label="Tipo de búsqueda"
+        class="mt-6 flex flex-wrap items-center gap-x-8 gap-y-2 border-b border-slate-200"
+      >
+        {tabs.map((tab) => (
+          <button
+            type="button"
+            data-modalidad={tab.id}
+            aria-pressed={tab.id === modalidadInicial ? "true" : "false"}
+            class="-mb-px cursor-pointer border-b-2 border-transparent pb-2.5 text-base text-slate-500 transition-colors hover:text-slate-800 aria-pressed:border-[#d9534f] aria-pressed:font-medium aria-pressed:text-slate-900"
+          >
+            {tab.texto}
+          </button>
+        ))}
+      </div>
+
+      <div
+        id="panel-publicar"
+        style="display: none"
+        class="mt-[clamp(10px,2vh,24px)] flex flex-col items-start gap-[clamp(8px,1.6vh,16px)]"
+      >
+        <span class="flex h-14 w-14 items-center justify-center rounded-full bg-[#fde4e4]">
+          <svg
+            class="h-6 w-6 text-slate-800"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="7.5" cy="8.5" r="5.5"></circle>
+            <path d="m21 22-9.6-9.6"></path>
+            <path d="m15.5 16.5 3-3L22 17l-3 3"></path>
+          </svg>
+        </span>
+
+        <h2 class="text-[length:clamp(22px,min(4.2vh,7vw),40px)] font-light leading-[1.1] tracking-tight text-slate-900">
+          Tu inmueble, el próximo hogar de alguien.
+        </h2>
+
+        <p class="text-[15px] leading-relaxed text-slate-600">
+          Cuéntanos qué quieres arrendar o vender. Te acompañamos en el
+          siguiente paso.
+        </p>
+
+        <a
+          href={RUTA_PUBLICAR}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-1 flex h-[clamp(48px,6.6vh,65px)] w-full items-center justify-center gap-3 rounded-xl bg-[#2e3040] text-base font-semibold text-white transition-colors hover:bg-[#1f212d]"
+        >
+          Empezar mi publicación
+          <svg
+            class="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+
+        <p class="w-full text-center text-xs leading-tight text-slate-500">
+          Registra tu inmueble en el formulario de Portada.
+        </p>
+      </div>
+
+      <form
+        id="form-busqueda"
+        action={RUTA_BUSQUEDA}
+        method="get"
+        class="mt-[clamp(10px,2vh,24px)] flex flex-col gap-[clamp(8px,1.3vh,12px)]"
+        data-presupuestos={JSON.stringify(presupuestos)}
+      >
+        <input type="hidden" name="modalidad" value={modalidadInicial} />
+
+        <LocationField class={campo} />
+
+        <div class="grid grid-cols-1 gap-[clamp(8px,1.3vh,12px)] sm:grid-cols-2">
+          <label class={`${campo} cursor-pointer`}>
+            <svg
+              class="h-6 w-6 shrink-0 text-slate-700"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span class="relative flex min-w-0 flex-1 flex-col gap-0.5">
+              <span class="text-[13px] text-slate-700">Tipo de inmueble</span>
+              <select
+                name="tipo"
+                class="w-full cursor-pointer appearance-none bg-transparent pr-6 text-[15px] text-slate-900 outline-none"
+              >
+                <option value="">Todos los tipos</option>
+                {tipos.map((tipo) => (
+                  <option value={tipo}>{tipo}</option>
+                ))}
+              </select>
+              <svg
+                class="pointer-events-none absolute bottom-0.5 right-0 h-4 w-4 text-slate-700"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </span>
+          </label>
+
+          <label class={`${campo} cursor-pointer`}>
+            <svg
+              class="h-6 w-6 shrink-0 text-slate-700"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect width="20" height="12" x="2" y="6" rx="2"></rect>
+              <circle cx="12" cy="12" r="2"></circle>
+              <path d="M6 12h.01M18 12h.01"></path>
+            </svg>
+            <span class="relative flex min-w-0 flex-1 flex-col gap-0.5">
+              <span class="text-[13px] text-slate-700">Presupuesto máximo</span>
+              <select
+                name="presupuesto"
+                class="w-full cursor-pointer appearance-none bg-transparent pr-6 text-[15px] text-slate-900 outline-none"
+              >
+                <option value="">Sin límite</option>
+                {presupuestos[modalidadInicial].map((opcion) => (
+                  <option value={opcion.valor}>{opcion.texto}</option>
+                ))}
+              </select>
+              <svg
+                class="pointer-events-none absolute bottom-0.5 right-0 h-4 w-4 text-slate-700"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </span>
+          </label>
+        </div>
+
+        <label class={`${campo} cursor-text`}>
+          <svg
+            class="h-6 w-6 shrink-0 text-slate-700"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path>
+            <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle>
+          </svg>
+          <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+            <span class="text-[13px] text-slate-700">
+              Código del inmueble
+              <span class="text-[11px] text-slate-400">· opcional</span>
+            </span>
+            <input
+              type="text"
+              name="codigo"
+              autocomplete="off"
+              placeholder="Ingresa el código"
+              class="w-full bg-transparent text-[15px] text-slate-900 outline-none placeholder:text-slate-400"
+            />
+          </span>
+        </label>
+
+        <button
+          type="submit"
+          class="mt-1 flex h-[clamp(48px,6.6vh,65px)] w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-[#2e3040] text-lg font-semibold text-white transition-colors hover:bg-[#1f212d]"
+        >
+          <svg
+            class="h-6 w-6"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          Buscar inmueble
+        </button>
+
+        <p class="text-center text-xs leading-tight text-slate-500">
+          Explora inmuebles de ejemplo para esta presentación.
+        </p>
+
+        <a
+          href="/search?mode=sale"
+          class="mt-1 flex w-full items-center justify-center rounded-xl bg-[#fef2c9] px-5 py-3 text-center text-[13px] font-medium text-[#73581c] transition-colors hover:bg-[#faeab5]"
+        >
+          ¿Qué vivienda puedo comprar con mi presupuesto? →
+        </a>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  function iniciarBusqueda() {
+    var form = document.getElementById("form-busqueda")
+    if (!form || form.dataset.listo === "true") return
+    form.dataset.listo = "true"
+
+    var presupuestos = JSON.parse(form.dataset.presupuestos || "{}")
+    var modalidad = form.elements.namedItem("modalidad")
+    var presupuesto = form.elements.namedItem("presupuesto")
+    var panelPublicar = document.getElementById("panel-publicar")
+    var tabs = Array.from(document.querySelectorAll("button[data-modalidad]"))
+
+    var aplicar = function (valor) {
+      tabs.forEach(function (tab) {
+        tab.setAttribute(
+          "aria-pressed",
+          String(tab.dataset.modalidad === valor),
+        )
+      })
+
+      var esPublicar = valor === "publicar"
+      form.style.display = esPublicar ? "none" : ""
+      if (panelPublicar) panelPublicar.style.display = esPublicar ? "" : "none"
+      if (esPublicar) return
+
+      if (modalidad) modalidad.value = valor
+      var opciones = presupuestos[valor] || []
+      if (presupuesto) {
+        presupuesto.innerHTML = ""
+        var defOpt = document.createElement("option")
+        defOpt.value = ""
+        defOpt.textContent = "Sin límite"
+        presupuesto.appendChild(defOpt)
+        opciones.forEach(function (o) {
+          var opt = document.createElement("option")
+          opt.value = o.valor
+          opt.textContent = o.texto
+          presupuesto.appendChild(opt)
+        })
+      }
+    }
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        aplicar(tab.dataset.modalidad || "")
+      })
+    })
+
+    form.addEventListener("submit", function () {
+      var campos = Array.from(form.elements).filter(function (el) {
+        return (
+          (el instanceof HTMLInputElement || el instanceof HTMLSelectElement) &&
+          el.name !== "" &&
+          el.value.trim() === ""
+        )
+      })
+      campos.forEach(function (el) {
+        el.disabled = true
+      })
+      setTimeout(function () {
+        campos.forEach(function (el) {
+          el.disabled = false
+        })
+      }, 0)
+    })
+  }
+
+  function initOnInteraction() {
+    iniciarBusqueda()
+    window.removeEventListener("pointerdown", initOnInteraction)
+    window.removeEventListener("focusin", initOnInteraction)
+  }
+  window.addEventListener("pointerdown", initOnInteraction, {
+    passive: true,
+    once: true,
+  })
+  window.addEventListener("focusin", initOnInteraction, {
+    passive: true,
+    once: true,
+  })
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(iniciarBusqueda, { timeout: 2000 })
+  } else {
+    setTimeout(iniciarBusqueda, 100)
+  }
+</script>

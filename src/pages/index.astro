@@ -1,105 +1,40 @@
 ---
+export const prerender = true
+
 import Layout from "../layouts/Layout.astro"
-import Filter from "../components/Filter.astro"
-import Sedes from "../components/Sedes.vue"
-import Title from "../components/Title.astro"
-import Blog from "../components/Blog.astro"
+import Navbar from "../components/navbar.astro"
+import Hero from "../components/hero.astro"
+import Doors from "../components/doors.astro"
+import AboutFaq from "../components/AboutFaq.astro"
 ---
 
 <Layout title="Portada Inmobiliaria - Profesionales en Vivir Mejor">
-  <div class="pt-24">
-    <img src="/img/banner1.webp" alt="" />
-  </div>
-  <Filter />
+  <link
+    rel="preload"
+    as="image"
+    href="/img/img1-mobile.webp"
+    type="image/webp"
+    media="(max-width: 640px)"
+    fetchpriority="high"
+    slot="head"
+  />
+  <link
+    rel="preload"
+    as="image"
+    href="/img/img1.webp"
+    type="image/webp"
+    media="(min-width: 641px)"
+    fetchpriority="high"
+    slot="head"
+  />
 
-  <!-- CARDS DESTACADOS -->
-  <Title>Inmuebles Destacados</Title>
+  <Navbar />
 
-  <!-- DESTACADOS -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mx-4">
-    <div class="relative overflow-hidden">
-      <img
-        src="/img/destacados/destacado1.webp"
-        class="hover:scale-105 hover:brightness-75 transition-transform duration-300 ease-in-out cursor-pointer"
-        alt=""
-      />
+  <main id="inicio" class="w-full min-h-screen bg-white text-slate-900">
+    <Hero />
+    <Doors />
+    <div style="content-visibility:auto;contain-intrinsic-size:0 3000px">
+      <AboutFaq />
     </div>
-    <div class="relative overflow-hidden">
-      <img
-        src="/img/destacados/destacado2.webp"
-        class="hover:scale-105 hover:brightness-75 transition-transform duration-300 ease-in-out cursor-pointer"
-        alt=""
-      />
-    </div>
-    <div class="relative overflow-hidden">
-      <img
-        src="/img/destacados/destacado3.webp"
-        class="hover:scale-105 hover:brightness-75 transition-transform duration-300 ease-in-out cursor-pointer"
-        alt=""
-      />
-    </div>
-  </div>
-
-  <!-- CARDS BLOG -->
-  <Title>Blog</Title>
-
-  <div
-    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-4 max-w-full"
-  >
-    <Blog />
-  </div>
-
-  <!-- NUESTRAS SEDES -->
-  <Title>Nuestras Sedes</Title>
-  <Sedes client:idle />
-
-  <!-- <div class="grid grid-cols-6 gap-4 mx-4">
-    <div class="col-span-4">
-      <div class="flex-col flex-1 text-center">
-        <span class="font-bold text-3xl">ANTIOQUIA</span>
-        <div class="grid grid-cols-4 gap-4 mt-2">
-          <div class="p-2">
-            <img src="/img/sedes/laureles.webp" alt="" />
-          </div>
-          <div class="p-2">
-            <img src="/img/sedes/bello.webp" alt="" />
-          </div>
-          <div class="p-2">
-            <img src="/img/sedes/colores.webp" alt="" />
-          </div>
-          <div class="p-2">
-            <img src="/img/sedes/poblado.webp" alt="" />
-          </div>
-          <div class="p-2">
-            <img src="/img/sedes/envigado.webp" alt="" />
-          </div>
-          <div class="p-2">
-            <img src="/img/sedes/sabaneta.webp" alt="" />
-          </div>
-          <div class="p-2">
-            <img src="/img/sedes/estrella.webp" alt="" />
-          </div>
-          <div class="p-2">
-            <img src="/img/sedes/rionegro.webp" alt="" />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-span-2">
-      <div class="flex-col text-center">
-        <span class="font-bold text-3xl">CUNDINAMARCA</span>
-        <div class="grid grid-cols-2 gap-4 mt-2">
-          <div class="p-2">
-            <img src="/img/sedes/bogota.webp" alt="" />
-          </div>
-          <div class="p-2">
-            <img src="/img/sedes/mosquera.webp" alt="" />
-          </div>
-        </div>
-      </div>
-      <div class="flex items-center justify-center p-4">
-        <img src="/img/logo-horizontal-portada.webp" alt="Logo" />
-      </div>
-    </div>
-  </div> -->
+  </main>
 </Layout>

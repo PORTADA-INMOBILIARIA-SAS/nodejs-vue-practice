@@ -5,31 +5,34 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "check": "astro check",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky"
   },
   "dependencies": {
-    "@astrojs/check": "^0.3.3",
-    "@astrojs/netlify": "^5.0.1",
-    "@astrojs/tailwind": "^5.0.3",
-    "@astrojs/vercel": "^7.3.3",
-    "@astrojs/vue": "^4.0.8",
-    "@nanostores/vue": "^0.10.0",
-    "astro": "^4.0.6",
-    "nanostores": "^0.9.5",
-    "tailwindcss": "^3.4.0",
-    "typescript": "^5.3.3",
-    "vue": "^3.4.15"
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/markdown-remark": "^7.3.0",
+    "@astrojs/vercel": "^11.0.17",
+    "@astrojs/vue": "^7.1.2",
+    "@nanostores/vue": "^1.1.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.4.4",
+    "nanostores": "^1.5.5",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.7.3",
+    "vue": "^3.5.24"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.6.0",
     "@commitlint/config-conventional": "^18.6.0",
+    "esbuild": "^0.28.2",
     "git-format-staged": "^3.0.0",
     "husky": "^9.0.7",
+    "lighthouse": "^13.5.0",
     "lint-staged": "^15.2.0",
     "prettier": "^3.2.4",
-    "prettier-plugin-astro": "^0.13.0"
+    "prettier-plugin-astro": "^1.1.2"
   }
 }
