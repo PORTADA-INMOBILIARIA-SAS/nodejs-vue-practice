@@ -1,0 +1,1485 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Navbar from "../components/navbar.astro"
+
+import { toNumber } from "../lib/propertyCatalog"
+import type { Mode, Property } from "../lib/propertyCatalog"
+import { resolveLocation, resolvePropertyTypeId } from "../lib/simiLocations"
+import {
+  fetchSimiPropertiesCached as fetchSimiProperties,
+  fetchPropertyByCodeCached as fetchPropertyByCode,
+} from "../lib/simiApi"
+
+export const prerender = false
+
+const PAGE_SIZE = 12
+
+const propertyTypes = [
+  "Apartamento",
+  "Casa",
+  "Apartaestudio",
+  "Local",
+  "Oficina",
+  "Consultorio",
+  "Bodega",
+  "Lote",
+  "Finca",
+  "Edificio",
+]
+
+const places = [
+  "Medellín",
+  "Laureles, Medellín",
+  "El Poblado, Medellín",
+  "Los Colores, Medellín",
+  "Belén, Medellín",
+  "Bello",
+  "Envigado",
+  "Sabaneta",
+  "La Estrella",
+  "Rionegro",
+  "Itagüí",
+  "Bogotá",
+]
+
+const bedroomOptions = [
+  { value: "", label: "Cualquiera" },
+  { value: "1", label: "1+" },
+  { value: "2", label: "2+" },
+  { value: "3", label: "3+" },
+  { value: "4", label: "4+" },
+]
+
+const featureOptions = [
+  { value: "", label: "Todas las características" },
+  { value: "balcon", label: "Balcón" },
+  { value: "ascensor", label: "Ascensor" },
+  { value: "mascotas", label: "Mascotas" },
+  { value: "piscina", label: "Piscina" },
+  { value: "jardin", label: "Jardín" },
+]
+
+const sortOptions = [
+  { value: "recommended", label: "Recomendados" },
+  { value: "newest", label: "Más recientes" },
+  { value: "price_asc", label: "Menor precio" },
+  { value: "price_desc", label: "Mayor precio" },
+]
+
+const labelClass = "mb-2 block text-[14px] font-medium text-[#2a2a33]"
+const fieldClass =
+  "h-14 w-full rounded-xl border border-[#e0dcd3] bg-white px-4 text-[15px] text-[#2a2a33] outline-none placeholder:text-[#8a8a94] focus:border-[#b8b3a6] transition-colors"
+const smallSelectClass =
+  "h-10 cursor-pointer rounded-xl border border-[#e0dcd3] bg-[#f7f5f0] px-3.5 text-[13px] text-[#2a2a33] outline-none focus:border-[#b8b3a6]"
+const pageButtonClass =
+  "flex h-11 min-w-11 items-center justify-center rounded-xl border border-[#e6e2da] bg-white px-4 text-[14px] text-[#2a2a33] transition-colors hover:border-[#c9c4b8]"
+const activePageButtonClass =
+  "flex h-11 min-w-11 items-center justify-center rounded-xl border border-[#2e3040] bg-[#2e3040] px-4 text-[14px] text-white"
+
+const query = Astro.url.searchParams
+const read = (name: string, legacyName: string) =>
+  query.get(name) ?? query.get(legacyName) ?? ""
+
+const rawMode = read("mode", "modalidad")
+const mode: Mode = rawMode === "sale" || rawMode === "venta" ? "sale" : "rent"
+const city = read("city", "ciudad").trim()
+const propertyType = read("type", "tipo").trim()
+const budget = toNumber(read("budget", "presupuesto"))
+const code = read("code", "codigo").trim()
+const bedrooms = Math.min(9, toNumber(query.get("bedrooms")))
+const feature = query.get("feature") ?? ""
+const sort = query.get("sort") ?? "recommended"
+const favoriteCodes = (query.get("favorites") ?? "")
+  .split(",")
+  .map((item) => item.trim())
+  .filter(Boolean)
+const requestedPage = Math.max(1, toNumber(query.get("page")) || 1)
+
+const normalize = (text: string) =>
+  text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+
+const currency = new Intl.NumberFormat("es-CO")
+
+const apiOrder =
+  sort === "price_asc"
+    ? { campo: "precio", order: "asc", precio: "1" }
+    : sort === "price_desc"
+      ? { campo: "precio", order: "desc", precio: "1" }
+      : { campo: "fecha", order: "desc", precio: "0" }
+
+let visible: Property[] = []
+let total = 0
+let totalPages = 1
+let currentPage = requestedPage
+let loadFailed = false
+
+// Move properties without photo to the end
+const sortWithPhotosFirst = (list: Property[]) =>
+  [...list].sort((a, b) => {
+    const aHas = a.photo ? 1 : 0
+    const bHas = b.photo ? 1 : 0
+    return bHas - aHas
+  })
+
+try {
+  if (favoriteCodes.length > 0) {
+    const validCodes = favoriteCodes.filter((c) => c && c !== "all")
+    if (validCodes.length > 0) {
+      const fetched = await Promise.all(
+        validCodes.map((c) => fetchPropertyByCode(c, mode)),
+      )
+      const all = fetched.filter((p): p is Property => Boolean(p))
+      total = all.length
+      totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+      currentPage = Math.min(requestedPage, totalPages)
+      visible = sortWithPhotosFirst(
+        all.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE),
+      )
+    } else {
+      total = 0
+      totalPages = 1
+      currentPage = 1
+      visible = []
+    }
+  } else if (code) {
+    const found = await fetchPropertyByCode(code, mode)
+    if (found) {
+      visible = [found]
+      total = 1
+      totalPages = 1
+      currentPage = 1
+    } else {
+      visible = []
+      total = 0
+      totalPages = 1
+      currentPage = 1
+    }
+  } else {
+    const loc = resolveLocation(city)
+    const typeId = resolvePropertyTypeId(propertyType)
+
+    const hasUnresolvedText = Boolean(city && loc.cityId === 0)
+    const hasFeature = Boolean(feature)
+
+    if (!hasUnresolvedText && !hasFeature) {
+      const result = await fetchSimiProperties({
+        mode,
+        page: requestedPage,
+        perPage: PAGE_SIZE,
+        cityId: loc.cityId,
+        barrioId: loc.barrioId,
+        typeId,
+        maxPrice: budget > 0 ? budget : 0,
+        bedrooms,
+        campo: apiOrder.campo,
+        precio: apiOrder.precio,
+        order: apiOrder.order,
+      })
+
+      visible = sortWithPhotosFirst(result.items)
+      total = result.totalItems
+      totalPages = result.totalPages
+      currentPage = requestedPage
+    } else {
+      const result = await fetchSimiProperties({
+        mode,
+        page: 1,
+        perPage: 100,
+        cityId: loc.cityId,
+        barrioId: loc.barrioId,
+        typeId,
+        maxPrice: budget > 0 ? budget : 0,
+        bedrooms,
+      })
+
+      const placeTerms = normalize(city)
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean)
+
+      const filtered = result.items.filter((p) => {
+        if (hasUnresolvedText) {
+          const place = normalize(`${p.neighborhood} ${p.city} ${p.zone}`)
+          if (placeTerms.some((t) => !place.includes(t))) return false
+        }
+        if (propertyType && normalize(p.type) !== normalize(propertyType))
+          return false
+        if (budget > 0 && p.price > budget) return false
+        if (feature) {
+          const desc = normalize(`${p.description} ${p.type}`)
+          if (feature === "balcon" && !desc.includes("balcon")) return false
+          if (feature === "ascensor" && !desc.includes("ascensor")) return false
+          if (
+            feature === "mascotas" &&
+            !desc.includes("mascota") &&
+            !desc.includes("pet")
+          )
+            return false
+          if (
+            feature === "piscina" &&
+            !desc.includes("piscina") &&
+            !desc.includes("alberca")
+          )
+            return false
+          if (
+            feature === "jardin" &&
+            !desc.includes("jardin") &&
+            !desc.includes("patio") &&
+            !desc.includes("zonas verdes")
+          )
+            return false
+          if (feature === "furnished" && !p.furnished) return false
+          if (feature === "admin" && !p.adminIncluded) return false
+          if (feature === "featured" && !p.featured) return false
+        }
+        return true
+      })
+
+      total = filtered.length
+      totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+      currentPage = Math.min(requestedPage, totalPages)
+      visible = sortWithPhotosFirst(
+        filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE),
+      )
+    }
+  }
+} catch (e) {
+  console.error("Error al cargar inmuebles:", e)
+  loadFailed = true
+}
+
+const firstPage = Math.max(1, currentPage - 2)
+const lastPage = Math.min(totalPages, currentPage + 2)
+const pageNumbers = Array.from(
+  { length: lastPage - firstPage + 1 },
+  (_, index) => firstPage + index,
+)
+
+const pageLink = (page: number) => {
+  const params = new URLSearchParams(Astro.url.searchParams)
+  params.set("page", String(page))
+  return `/search?${params.toString()}`
+}
+
+const photoUrl = (url: string) => (url ? url.replace(/=s\d+$/, "=s640") : "")
+
+const viewParam = (query.get("view") || "list").toLowerCase()
+const isMapView = viewParam === "map"
+
+const CITY_COORDINATES: Record<string, [number, number]> = {
+  medellin: [6.2442, -75.5812],
+  envigado: [6.167, -75.584],
+  sabaneta: [6.1517, -75.6156],
+  bello: [6.3373, -75.5579],
+  itagui: [6.1846, -75.5991],
+  laestrella: [6.1578, -75.6432],
+  "la estrella": [6.1578, -75.6432],
+  rionegro: [6.154, -75.374],
+  bogota: [4.711, -74.0721],
+  guarne: [6.2801, -75.4428],
+  laceja: [6.0315, -75.4312],
+  "la ceja": [6.0315, -75.4312],
+  marinilla: [6.1747, -75.3341],
+  sopetran: [6.5005, -75.7441],
+}
+
+const BARRIO_COORDINATES: Record<string, [number, number]> = {
+  laureles: [6.244, -75.593],
+  poblado: [6.208, -75.568],
+  belen: [6.23, -75.599],
+  "los colores": [6.261, -75.594],
+  colores: [6.261, -75.594],
+  estadio: [6.255, -75.588],
+  floresta: [6.259, -75.599],
+  conquistadores: [6.241, -75.583],
+  robledo: [6.274, -75.593],
+  "san german": [6.269, -75.591],
+  "otra parte": [6.178, -75.5888],
+  "el esmeraldal": [6.172, -75.578],
+  esmeraldal: [6.172, -75.578],
+  primavera: [6.1636, -75.6037],
+  suramerica: [6.1618, -75.6305],
+  cumbres: [6.169, -75.575],
+  ditaires: [6.175, -75.608],
+  "san joaquin": [6.245, -75.591],
+}
+
+function getCardHeadline(property: Property): string {
+  const desc = property.description?.trim() || ""
+  if (desc) {
+    const firstSentence = desc.split(/[.\n!]/)[0]?.trim()
+    if (
+      firstSentence &&
+      firstSentence.length >= 14 &&
+      firstSentence.length <= 60 &&
+      !firstSentence.toLowerCase().startsWith("apartamento en") &&
+      !firstSentence.toLowerCase().startsWith("casa en") &&
+      !firstSentence.toLowerCase().startsWith("inmueble en")
+    ) {
+      return firstSentence.endsWith(".") ? firstSentence : `${firstSentence}.`
+    }
+  }
+  const cleanBarrio = normalize(property.neighborhood)
+  if (cleanBarrio.includes("laureles")) return "Un balcón para empezar el día."
+  if (cleanBarrio.includes("esmeraldal"))
+    return "Tu refugio entre verde y ciudad."
+  if (cleanBarrio.includes("otra parte"))
+    return "Espacio lleno de luz y confort."
+  if (cleanBarrio.includes("poblado"))
+    return "Exclusividad, calma y la mejor vista."
+  if (cleanBarrio.includes("suramerica") || cleanBarrio.includes("suramérica"))
+    return "Modernidad para compartir en familia."
+  if (cleanBarrio.includes("colores")) return "Tranquilidad y cercanía a todo."
+  if (cleanBarrio.includes("belen") || cleanBarrio.includes("belén"))
+    return "Tu próximo hogar en un punto ideal."
+  if (cleanBarrio.includes("primavera"))
+    return "Vistas abiertas y excelente ubicación."
+  return `${property.type} con gran iluminación en ${property.neighborhood || property.city}.`
+}
+
+const propertiesForMap = visible.map((p) => {
+  let lat = p.latitude || 0
+  let lng = p.longitude || 0
+
+  const isRealGps = lat > 3 && lat < 13 && lng < -70 && lng > -80
+
+  if (!isRealGps) {
+    const cleanBarrio = normalize(p.neighborhood)
+    const cleanCity = normalize(p.city)
+    const barrioCoord = Object.entries(BARRIO_COORDINATES).find(([k]) =>
+      cleanBarrio.includes(k),
+    )
+    const cityCoord = Object.entries(CITY_COORDINATES).find(([k]) =>
+      cleanCity.includes(k),
+    )
+    const base = barrioCoord
+      ? barrioCoord[1]
+      : cityCoord
+        ? cityCoord[1]
+        : [6.2442, -75.5812]
+    const num = toNumber(p.code) || 1
+    lat = base[0] + ((num % 17) - 8) * 0.0018
+    lng = base[1] + ((num % 19) - 9) * 0.0018
+  }
+
+  return {
+    code: p.code,
+    price: p.price,
+    formattedPrice: `$ ${currency.format(p.price)}`,
+    type: p.type,
+    city: p.city,
+    neighborhood: p.neighborhood,
+    photo: photoUrl(p.photo),
+    headline: getCardHeadline(p),
+    lat,
+    lng,
+    isRealGps,
+    mode: p.mode,
+  }
+})
+
+const countLabel =
+  favoriteCodes.length > 0
+    ? total === 1
+      ? "favorito"
+      : "favoritos"
+    : total === 1
+      ? "inmueble"
+      : "inmuebles"
+Astro.response.headers.set(
+  "Cache-Control",
+  "public, max-age=60, s-maxage=300, stale-while-revalidate=600",
+)
+---
+
+<Layout
+  title="Inmuebles en Arriendo y Venta - Portada Inmobiliaria"
+  description="Busca apartamentos, casas, locales y más inmuebles en arriendo y venta en Medellín, Envigado, Sabaneta y toda el área metropolitana."
+  showFooter={true}
+>
+  <Fragment slot="head">
+    <link
+      rel="preconnect"
+      href="https://lh3.googleusercontent.com"
+      crossorigin
+    />
+    <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      crossorigin=""
+    />
+  </Fragment>
+  <Navbar />
+
+  <style is:global>
+    .results-page,
+    .results-page * {
+      font-family: "Poppins", sans-serif;
+    }
+    @media (min-width: 1024px) {
+      .results-page {
+        zoom: var(--escala, 1);
+      }
+    }
+    .leaflet-container {
+      background: #eef0e4;
+      font-family: "Poppins", sans-serif;
+    }
+    .leaflet-tile-pane {
+      filter: saturate(0.5) sepia(0.22) brightness(1.05) contrast(0.9);
+    }
+    .leaflet-control-zoom {
+      border: none !important;
+      border-radius: 14px !important;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(42, 42, 51, 0.14) !important;
+    }
+    .leaflet-control-zoom a {
+      width: 36px !important;
+      height: 36px !important;
+      line-height: 36px !important;
+      color: #2a2a33 !important;
+      background: #ffffff !important;
+      border-bottom: 1px solid #ece8e0 !important;
+    }
+    .leaflet-control-attribution {
+      background: rgba(252, 251, 248, 0.88) !important;
+      font-size: 10px !important;
+      color: #6b6b75 !important;
+    }
+    .custom-price-marker {
+      background: transparent !important;
+      border: none !important;
+    }
+    .map-price-pill {
+      font-family: "Poppins", sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      background: #ffffff;
+      color: #2a2a33;
+      padding: 9px 18px;
+      border-radius: 9999px;
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.12),
+        0 1px 3px rgba(0, 0, 0, 0.08);
+      border: 1px solid #ece8e0;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease-in-out;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      pointer-events: auto;
+    }
+    .map-price-pill:hover,
+    .map-price-pill.active {
+      background: #2a2a33 !important;
+      color: #ffffff !important;
+      border-color: #2a2a33 !important;
+      transform: scale(1.08);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+      z-index: 99999 !important;
+    }
+    .leaflet-popup-content-wrapper {
+      border-radius: 18px !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18) !important;
+    }
+    .leaflet-popup-content {
+      margin: 0 !important;
+      line-height: 1.4 !important;
+    }
+  </style>
+
+  <main
+    class="results-page w-full bg-[#fcfbf8] text-[#2a2a33]"
+    style="--escala: 0.8"
+  >
+    <div class="mx-auto w-full max-w-[1424px] px-5 pb-20 pt-10 sm:px-8">
+      <nav
+        aria-label="Ruta de navegación"
+        class="flex items-center gap-3 text-[13px] text-[#5e5e68]"
+      >
+        <a href="/" class="hover:underline">
+          Inicio
+        </a>
+        <span aria-hidden="true">/</span>
+        <span>Presentación Portada</span>
+      </nav>
+
+      <div class="mt-6 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-[11px] font-medium uppercase tracking-[0.25em] text-[#6b6b75]">
+            {favoriteCodes.length > 0 ? "Mis favoritos" : "Encuentra tu lugar"}
+          </p>
+          <h1 class="mt-5 text-[length:clamp(32px,3.6vw,48px)] font-normal leading-[1.1] tracking-[-0.03em] text-[#2a2a33]">
+            {favoriteCodes.length > 0
+              ? "Tus inmuebles favoritos."
+              : "Aquí comienza tu próximo hogar."}
+          </h1>
+          <p class="mt-5 text-[15px] font-light text-[#5e5e68]">
+            {favoriteCodes.length > 0
+              ? "Inmuebles que has guardado usando el corazón."
+              : "Explora espacios, guarda los que te gustan y conoce cada detalle."}
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-4">
+          {favoriteCodes.length > 0 ? (
+            <a
+              href={`/search?mode=${mode}`}
+              class="flex h-14 items-center justify-center rounded-xl border border-[#e6e2da] bg-white px-6 text-[14px] font-medium text-[#2a2a33] transition-colors hover:border-[#e0dcd3] hover:bg-[#faf8f4]"
+            >
+              ← Volver a todos los inmuebles
+            </a>
+          ) : (
+            <>
+              <button
+                type="button"
+                class="flex h-14 items-center justify-center rounded-xl border border-[#e6e2da] bg-white px-6 text-[14px] font-medium text-[#2a2a33] transition-colors hover:border-[#e0dcd3] hover:bg-[#faf8f4]"
+              >
+                Guardar búsqueda
+              </button>
+              <button
+                type="button"
+                id="view-favorites"
+                class="flex cursor-pointer items-center gap-2 text-[14px] font-medium text-[#2a2a33] hover:underline"
+              >
+                Mis favoritos
+                <svg
+                  class="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+
+      <form
+        id="results-form"
+        method="get"
+        action="/search"
+        class="mt-9 block rounded-[28px] border border-[#e6e2da] bg-white p-6 shadow-sm sm:p-7"
+      >
+        {code && <input type="hidden" name="code" value={code} />}
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-[200px_minmax(0,1fr)_270px_300px_auto] lg:items-end">
+          <div>
+            <label for="f-mode" class={labelClass}>
+              Quiero
+            </label>
+            <select
+              id="f-mode"
+              name="mode"
+              class={`${fieldClass} cursor-pointer`}
+            >
+              <option value="rent" selected={mode === "rent"}>
+                Arrendar
+              </option>
+              <option value="sale" selected={mode === "sale"}>
+                Comprar
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label for="f-city" class={labelClass}>
+              Ciudad o barrio
+            </label>
+            <input
+              id="f-city"
+              type="text"
+              name="city"
+              value={city}
+              list="places-list"
+              autocomplete="off"
+              placeholder="¿Dónde quieres vivir?"
+              class={fieldClass}
+            />
+            <datalist id="places-list">
+              {places.map((place) => (
+                <option value={place} />
+              ))}
+            </datalist>
+          </div>
+
+          <div>
+            <label for="f-type" class={labelClass}>
+              Tipo
+            </label>
+            <select
+              id="f-type"
+              name="type"
+              class={`${fieldClass} cursor-pointer`}
+            >
+              <option value="">Todos</option>
+              {propertyTypes.map((item) => (
+                <option value={item} selected={item === propertyType}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label for="f-budget" class={labelClass}>
+              Presupuesto máximo · COP
+            </label>
+            <input
+              id="f-budget"
+              type="text"
+              name="budget"
+              value={budget ? currency.format(budget) : ""}
+              inputmode="numeric"
+              autocomplete="off"
+              placeholder="Sin límite"
+              class={fieldClass}
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="flex h-14 cursor-pointer items-center justify-center gap-2.5 rounded-xl bg-[#f7a59b] px-8 text-[15px] font-medium text-[#2a2a33] transition-colors hover:bg-[#f39589]"
+          >
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            Buscar
+          </button>
+        </div>
+
+        <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[#e6e2da] pt-5">
+          <label class="flex items-center gap-3 text-[13px] text-[#4a4a55]">
+            Alcobas
+            <select name="bedrooms" class={smallSelectClass}>
+              {bedroomOptions.map((option) => (
+                <option
+                  value={option.value}
+                  selected={
+                    option.value === (bedrooms > 0 ? String(bedrooms) : "")
+                  }
+                >
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label class="flex items-center gap-3 text-[13px] text-[#4a4a55]">
+            Lo que buscas
+            <select name="feature" class={smallSelectClass}>
+              {featureOptions.map((option) => (
+                <option
+                  value={option.value}
+                  selected={option.value === feature}
+                >
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label class="flex items-center gap-3 text-[13px] text-[#4a4a55]">
+            Ordenar
+            <select name="sort" class={smallSelectClass}>
+              {sortOptions.map((option) => (
+                <option value={option.value} selected={option.value === sort}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <a
+            href={`/search?mode=${mode}`}
+            class="ml-auto text-[13px] text-[#2a2a33] hover:underline"
+          >
+            Limpiar filtros
+          </a>
+        </div>
+      </form>
+
+      <div class="mt-10 flex flex-wrap items-center justify-between gap-3">
+        {!loadFailed && (
+          <div class="flex items-center gap-2">
+            <p class="text-[14px] text-[#2a2a33]">
+              <span class="font-medium">
+                {total} {countLabel}
+              </span>
+              {favoriteCodes.length > 0 && (
+                <a
+                  href="/search"
+                  class="ml-3 text-[13px] text-[#5e5e68] underline"
+                >
+                  Ver todos los inmuebles
+                </a>
+              )}
+            </p>
+          </div>
+        )}
+
+        <div class="inline-flex rounded-xl bg-[#eeebe5] p-1 text-[13px]">
+          <button
+            type="button"
+            id="view-list-btn"
+            onclick="window.switchView && window.switchView('list')"
+            class={`cursor-pointer rounded-lg px-4 py-1.5 outline-none transition-all focus-visible:ring-2 focus-visible:ring-[#f8a29a] ${
+              !isMapView
+                ? "bg-white font-medium text-[#2a2a33] shadow-sm"
+                : "text-[#5e5e68] hover:text-[#2a2a33]"
+            }`}
+          >
+            Lista
+          </button>
+          <button
+            type="button"
+            id="view-map-btn"
+            onclick="window.switchView && window.switchView('map')"
+            class={`cursor-pointer rounded-lg px-4 py-1.5 outline-none transition-all focus-visible:ring-2 focus-visible:ring-[#f8a29a] ${
+              isMapView
+                ? "bg-white font-medium text-[#2a2a33] shadow-sm"
+                : "text-[#5e5e68] hover:text-[#2a2a33]"
+            }`}
+          >
+            Mapa
+          </button>
+        </div>
+      </div>
+
+      {loadFailed && (
+        <div class="mt-6 rounded-[24px] border border-[#e6e2da] bg-white px-6 py-14 text-center">
+          <p class="text-[18px] font-light text-[#2a2a33]">
+            No pudimos cargar los inmuebles en este momento.
+          </p>
+          <a
+            href={Astro.url.pathname + Astro.url.search}
+            class="mt-4 inline-block text-[14px] text-[#2a2a33] underline"
+          >
+            Intentar de nuevo
+          </a>
+        </div>
+      )}
+
+      {!loadFailed && visible.length === 0 && (
+        <div class="mt-6 rounded-[24px] border border-[#e6e2da] bg-white px-6 py-14 text-center">
+          <p class="text-[18px] font-light text-[#2a2a33]">
+            {favoriteCodes.length > 0
+              ? "No se encontraron inmuebles en tus favoritos o ya no están disponibles."
+              : "No encontramos inmuebles con esos filtros."}
+          </p>
+          <a
+            href={`/search?mode=${mode}`}
+            class="mt-4 inline-block text-[14px] text-[#2a2a33] underline"
+          >
+            {favoriteCodes.length > 0
+              ? "Explorar todos los inmuebles"
+              : "Limpiar filtros"}
+          </a>
+        </div>
+      )}
+
+      {visible.length > 0 && (
+        <>
+          <div id="grid-view-container" class={isMapView ? "hidden" : "block"}>
+            <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {visible.map((property, idx) => (
+                <article class="overflow-hidden rounded-[22px] border border-[#e6e2da] bg-white transition-all hover:shadow-md">
+                  <div class="relative aspect-[4/3] bg-[#f1eee7]">
+                    <a
+                      href={`/property/${property.code}`}
+                      aria-label={`${property.type} en ${property.neighborhood}`}
+                    >
+                      {property.photo ? (
+                        <img
+                          src={photoUrl(property.photo)}
+                          alt={`${property.type} en ${property.neighborhood}, ${property.city}`}
+                          loading={idx < 2 ? "eager" : "lazy"}
+                          fetchpriority={idx === 0 ? "high" : "auto"}
+                          decoding={idx < 2 ? "sync" : "async"}
+                          width="400"
+                          height="300"
+                          class="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div class="flex h-full w-full items-center justify-center bg-[#f1eee7] text-[#8a8a94] text-xs">
+                          Sin foto
+                        </div>
+                      )}
+                    </a>
+                    <button
+                      type="button"
+                      data-favorite={property.code}
+                      aria-pressed="false"
+                      aria-label="Guardar en favoritos"
+                      class="group absolute right-3 top-3 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white/95 text-[#2a2a33] shadow-sm transition-colors hover:bg-white"
+                    >
+                      <svg
+                        class="h-5 w-5 group-aria-pressed:fill-[#ef6f6f] group-aria-pressed:text-[#ef6f6f]"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <a href={`/property/${property.code}`} class="block p-5">
+                    <p class="text-[22px] font-medium text-[#2a2a33]">
+                      $ {currency.format(property.price)}
+                      {property.mode === "rent" && (
+                        <span class="text-[13px] font-normal text-[#6b6b75]">
+                          {" "}
+                          / mes
+                        </span>
+                      )}
+                    </p>
+                    <h2 class="mt-2 text-[16px] font-normal text-[#2a2a33]">
+                      {property.type} en {property.neighborhood}
+                    </h2>
+                    <p class="mt-1 text-[13px] text-[#5e5e68]">
+                      {property.neighborhood}, {property.city}
+                    </p>
+                    <ul class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-[#4a4a55]">
+                      {property.bedrooms > 0 && (
+                        <li>{property.bedrooms} alcobas</li>
+                      )}
+                      {property.bathrooms > 0 && (
+                        <li>{property.bathrooms} baños</li>
+                      )}
+                      {property.parking > 0 && (
+                        <li>{property.parking} parq.</li>
+                      )}
+                      {property.area > 0 && <li>{property.area} m²</li>}
+                    </ul>
+                    <p class="mt-4 text-[12px] text-[#6b6b75]">
+                      Cód. {property.code}
+                    </p>
+                  </a>
+                </article>
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <nav
+                aria-label="Páginas de resultados"
+                class="mt-12 flex flex-wrap items-center justify-center gap-2"
+              >
+                {currentPage > 1 && (
+                  <a href={pageLink(currentPage - 1)} class={pageButtonClass}>
+                    Anterior
+                  </a>
+                )}
+                {pageNumbers.map((number) => (
+                  <a
+                    href={pageLink(number)}
+                    aria-current={number === currentPage ? "page" : undefined}
+                    class={
+                      number === currentPage
+                        ? activePageButtonClass
+                        : pageButtonClass
+                    }
+                  >
+                    {number}
+                  </a>
+                ))}
+                {currentPage < totalPages && (
+                  <a href={pageLink(currentPage + 1)} class={pageButtonClass}>
+                    Siguiente
+                  </a>
+                )}
+              </nav>
+            )}
+          </div>
+
+          <div id="map-view-container" class={isMapView ? "block" : "hidden"}>
+            <div class="mt-6 grid grid-cols-1 items-start gap-8 lg:grid-cols-2">
+              <div class="sticky top-6 h-[480px] min-h-[480px] w-full overflow-hidden rounded-[28px] border border-[#e6e2da] bg-[#f2efe9] shadow-sm lg:h-[calc((100vh-140px)/var(--escala,1))] lg:max-h-[820px]">
+                <div id="leaflet-map" class="h-full w-full" />
+              </div>
+
+              <div class="flex min-w-0 flex-col gap-5">
+                {visible.map((property) => (
+                  <article
+                    class="property-map-card group flex cursor-pointer flex-col overflow-hidden rounded-[24px] border border-[#e6e2da] bg-white transition-all duration-200 hover:border-[#c9c4b8] hover:shadow-md sm:min-h-[148px] sm:flex-row"
+                    data-code={property.code}
+                  >
+                    <div class="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-[#f1eee7] sm:aspect-auto sm:w-[220px]">
+                      <a
+                        href={`/property/${property.code}`}
+                        class="absolute inset-0 block"
+                        aria-label={`${property.type} en ${property.neighborhood}`}
+                      >
+                        {property.photo ? (
+                          <img
+                            src={photoUrl(property.photo)}
+                            alt={`${property.type} en ${property.neighborhood}, ${property.city}`}
+                            loading="lazy"
+                            decoding="async"
+                            width="220"
+                            height="165"
+                            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div class="flex h-full w-full items-center justify-center bg-[#e9e5dc] text-[#8a8a94] text-xs">
+                            Sin foto
+                          </div>
+                        )}
+                      </a>
+                      <button
+                        type="button"
+                        data-favorite={property.code}
+                        aria-pressed="false"
+                        aria-label="Guardar en favoritos"
+                        class="group/fav absolute right-3 top-3 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white/95 text-[#2a2a33] shadow-sm transition-colors hover:bg-white"
+                      >
+                        <svg
+                          class="h-5 w-5 group-aria-pressed/fav:fill-[#ef6f6f] group-aria-pressed/fav:text-[#ef6f6f]"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <div class="flex min-w-0 flex-1 flex-col justify-between px-4 py-5">
+                      <div>
+                        <p class="truncate text-[13px] font-normal text-[#6b6b75]">
+                          {property.neighborhood} · {property.city}
+                        </p>
+                        <h3 class="mt-1 line-clamp-1 text-[16px] font-medium leading-snug text-[#2a2a33] sm:text-[17px]">
+                          <a
+                            href={`/property/${property.code}`}
+                            class="hover:underline"
+                          >
+                            {getCardHeadline(property)}
+                          </a>
+                        </h3>
+                        <p class="mt-2 text-[13px] text-[#5e5e68]">
+                          {[
+                            property.area > 0 ? `${property.area} m²` : null,
+                            property.bedrooms > 0
+                              ? `${property.bedrooms} alc.`
+                              : null,
+                            property.bathrooms > 0
+                              ? `${property.bathrooms} baños`
+                              : null,
+                            property.parking > 0
+                              ? `${property.parking} parq.`
+                              : null,
+                          ]
+                            .filter(Boolean)
+                            .join(" · ")}
+                        </p>
+                      </div>
+
+                      <div class="mt-4 flex items-baseline gap-1.5">
+                        <span class="text-[20px] font-semibold text-[#2a2a33]">
+                          $ {currency.format(property.price)}
+                        </span>
+                        {property.mode === "rent" && (
+                          <span class="text-[13px] font-normal text-[#6b6b75]">
+                            / mes
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+
+                {totalPages > 1 && (
+                  <nav
+                    aria-label="Páginas de resultados"
+                    class="mt-6 flex flex-wrap items-center justify-center gap-2 border-t border-[#e6e2da] pt-6"
+                  >
+                    {currentPage > 1 && (
+                      <a
+                        href={pageLink(currentPage - 1)}
+                        class={pageButtonClass}
+                      >
+                        Anterior
+                      </a>
+                    )}
+                    {pageNumbers.map((number) => (
+                      <a
+                        href={pageLink(number)}
+                        aria-current={
+                          number === currentPage ? "page" : undefined
+                        }
+                        class={
+                          number === currentPage
+                            ? activePageButtonClass
+                            : pageButtonClass
+                        }
+                      >
+                        {number}
+                      </a>
+                    ))}
+                    {currentPage < totalPages && (
+                      <a
+                        href={pageLink(currentPage + 1)}
+                        class={pageButtonClass}
+                      >
+                        Siguiente
+                      </a>
+                    )}
+                  </nav>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <script
+            id="map-properties-data"
+            type="application/json"
+            set:html={JSON.stringify(propertiesForMap)}
+          />
+        </>
+      )}
+    </div>
+  </main>
+</Layout>
+
+<script is:inline>
+  const STORAGE_KEY = "portada-favorites"
+
+  const readFavorites = function () {
+    try {
+      var data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]")
+      return Array.isArray(data) ? data : []
+    } catch (e) {
+      return []
+    }
+  }
+
+  const saveFavorites = function (list) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list))
+    } catch (e) {}
+  }
+
+  var leafletPromise = null
+  function loadLeaflet() {
+    if (window.L) return Promise.resolve(window.L)
+    if (leafletPromise) return leafletPromise
+
+    if (!document.querySelector('link[rel="stylesheet"][href*="leaflet"]')) {
+      var link = document.createElement("link")
+      link.rel = "stylesheet"
+      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      document.head.appendChild(link)
+    }
+
+    leafletPromise = new Promise(function (resolve, reject) {
+      var script = document.createElement("script")
+      script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      script.crossOrigin = "anonymous"
+      script.onload = function () {
+        resolve(window.L)
+      }
+      script.onerror = function () {
+        var fallback = document.createElement("script")
+        fallback.src =
+          "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"
+        fallback.onload = function () {
+          resolve(window.L)
+        }
+        fallback.onerror = function (err) {
+          reject(err)
+        }
+        document.head.appendChild(fallback)
+      }
+      document.head.appendChild(script)
+    })
+
+    return leafletPromise
+  }
+
+  var mapInstance = null
+  var markersByCode = {}
+
+  async function initMap() {
+    var mapElement = document.getElementById("leaflet-map")
+    if (!mapElement) return
+
+    var L
+    try {
+      L = await loadLeaflet()
+    } catch (e) {
+      console.error("No se pudo cargar Leaflet:", e)
+      return
+    }
+    if (!L) return
+
+    var dataScript = document.getElementById("map-properties-data")
+    var items = dataScript ? JSON.parse(dataScript.textContent || "[]") : []
+
+    if (!mapInstance) {
+      mapInstance = L.map(mapElement, {
+        zoomControl: false,
+        scrollWheelZoom: true,
+      }).setView([6.2442, -75.5812], 12)
+
+      L.control.zoom({ position: "bottomright" }).addTo(mapInstance)
+
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 19,
+      }).addTo(mapInstance)
+    }
+
+    setTimeout(function () {
+      if (mapInstance) mapInstance.invalidateSize()
+    }, 100)
+    setTimeout(function () {
+      if (mapInstance) mapInstance.invalidateSize()
+    }, 400)
+
+    Object.values(markersByCode).forEach(function (m) {
+      m.remove()
+    })
+    markersByCode = {}
+
+    if (items.length === 0) return
+
+    var bounds = []
+
+    items.forEach(function (item) {
+      if (!item.lat || !item.lng) return
+
+      var pillHtml =
+        '<div class="map-price-pill" data-code="' +
+        item.code +
+        '">' +
+        item.formattedPrice +
+        "</div>"
+
+      var customIcon = L.divIcon({
+        className: "custom-price-marker",
+        html: pillHtml,
+        iconSize: [120, 40],
+        iconAnchor: [60, 20],
+      })
+
+      var marker = L.marker([item.lat, item.lng], { icon: customIcon }).addTo(
+        mapInstance,
+      )
+      markersByCode[item.code] = marker
+      bounds.push([item.lat, item.lng])
+
+      marker.on("click", function () {
+        highlightProperty(item.code, true)
+      })
+
+      marker.on("mouseover", function () {
+        highlightProperty(item.code, false)
+      })
+
+      marker.on("mouseout", function () {
+        unhighlightProperty(item.code)
+      })
+    })
+
+    if (bounds.length > 0) {
+      mapInstance.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 })
+    }
+
+    setupCardInteractions()
+  }
+
+  function highlightProperty(code, scrollTo) {
+    document.querySelectorAll(".map-price-pill").forEach(function (el) {
+      if (el.dataset.code === code) el.classList.add("active")
+      else el.classList.remove("active")
+    })
+
+    document.querySelectorAll(".property-map-card").forEach(function (card) {
+      if (card.dataset.code === code) {
+        card.classList.add("ring-2", "ring-[#2a2a33]", "shadow-lg")
+        if (scrollTo) {
+          card.scrollIntoView({ behavior: "smooth", block: "center" })
+        }
+      } else {
+        card.classList.remove("ring-2", "ring-[#2a2a33]", "shadow-lg")
+      }
+    })
+  }
+
+  function unhighlightProperty(code) {
+    var pill = document.querySelector(
+      '.map-price-pill[data-code="' + code + '"]',
+    )
+    pill?.classList.remove("active")
+    var card = document.querySelector(
+      '.property-map-card[data-code="' + code + '"]',
+    )
+    card?.classList.remove("ring-2", "ring-[#2a2a33]", "shadow-lg")
+  }
+
+  function setupCardInteractions() {
+    document.querySelectorAll(".property-map-card").forEach(function (card) {
+      var code = card.dataset.code
+      if (!code) return
+
+      card.addEventListener("mouseenter", function () {
+        var marker = markersByCode[code]
+        if (marker) {
+          var pill = marker.getElement()?.querySelector(".map-price-pill")
+          pill?.classList.add("active")
+        }
+      })
+
+      card.addEventListener("mouseleave", function () {
+        var marker = markersByCode[code]
+        if (marker) {
+          var pill = marker.getElement()?.querySelector(".map-price-pill")
+          pill?.classList.remove("active")
+        }
+      })
+
+      card.addEventListener("click", function (e) {
+        if (e.target.closest("button[data-favorite]") || e.target.closest("a"))
+          return
+        var marker = markersByCode[code]
+        if (marker && mapInstance) {
+          mapInstance.panTo(marker.getLatLng(), { animate: true })
+          var pill = marker.getElement()?.querySelector(".map-price-pill")
+          pill?.classList.add("active")
+        }
+      })
+    })
+  }
+
+  window.switchView = function (view) {
+    var listBtn = document.getElementById("view-list-btn")
+    var mapBtn = document.getElementById("view-map-btn")
+    var gridView = document.getElementById("grid-view-container")
+    var mapView = document.getElementById("map-view-container")
+
+    if (view === "map") {
+      if (listBtn) {
+        listBtn.classList.remove(
+          "bg-white",
+          "font-medium",
+          "text-[#2a2a33]",
+          "shadow-sm",
+        )
+        listBtn.classList.add("text-[#5e5e68]")
+      }
+      if (mapBtn) {
+        mapBtn.classList.add(
+          "bg-white",
+          "font-medium",
+          "text-[#2a2a33]",
+          "shadow-sm",
+        )
+        mapBtn.classList.remove("text-[#5e5e68]")
+      }
+      if (gridView) {
+        gridView.style.display = "none"
+        gridView.classList.add("hidden")
+        gridView.classList.remove("block")
+      }
+      if (mapView) {
+        mapView.style.display = "block"
+        mapView.classList.remove("hidden")
+        mapView.classList.add("block")
+      }
+
+      initMap()
+
+      try {
+        var url = new URL(window.location.href)
+        url.searchParams.set("view", "map")
+        window.history.replaceState({}, "", url.toString())
+      } catch (e) {}
+    } else {
+      if (mapBtn) {
+        mapBtn.classList.remove(
+          "bg-white",
+          "font-medium",
+          "text-[#2a2a33]",
+          "shadow-sm",
+        )
+        mapBtn.classList.add("text-[#5e5e68]")
+      }
+      if (listBtn) {
+        listBtn.classList.add(
+          "bg-white",
+          "font-medium",
+          "text-[#2a2a33]",
+          "shadow-sm",
+        )
+        listBtn.classList.remove("text-[#5e5e68]")
+      }
+      if (mapView) {
+        mapView.style.display = "none"
+        mapView.classList.add("hidden")
+        mapView.classList.remove("block")
+      }
+      if (gridView) {
+        gridView.style.display = "block"
+        gridView.classList.remove("hidden")
+        gridView.classList.add("block")
+      }
+
+      try {
+        var url = new URL(window.location.href)
+        url.searchParams.delete("view")
+        window.history.replaceState({}, "", url.toString())
+      } catch (e) {}
+    }
+  }
+
+  function init() {
+    var listBtn = document.getElementById("view-list-btn")
+    var mapBtn = document.getElementById("view-map-btn")
+    if (listBtn && !listBtn.dataset.bound) {
+      listBtn.dataset.bound = "true"
+      listBtn.addEventListener("click", function () {
+        window.switchView("list")
+      })
+    }
+    if (mapBtn && !mapBtn.dataset.bound) {
+      mapBtn.dataset.bound = "true"
+      mapBtn.addEventListener("click", function () {
+        window.switchView("map")
+      })
+    }
+
+    var currentView = new URL(window.location.href).searchParams.get("view")
+    if (currentView === "map") {
+      window.switchView("map")
+    }
+
+    var form = document.getElementById("results-form")
+    if (form && form.dataset.ready !== "true") {
+      form.dataset.ready = "true"
+
+      form.addEventListener("change", function (event) {
+        var target = event.target
+        if (!(target instanceof HTMLSelectElement)) return
+        if (target.name === "mode") {
+          var budget = form.elements.namedItem("budget")
+          if (budget) budget.value = ""
+        }
+        form.requestSubmit()
+      })
+
+      form.addEventListener("submit", function () {
+        var emptyFields = Array.from(form.elements).filter(function (element) {
+          return (
+            (element instanceof HTMLInputElement ||
+              element instanceof HTMLSelectElement) &&
+            element.name !== "" &&
+            element.value.trim() === ""
+          )
+        })
+        emptyFields.forEach(function (element) {
+          element.disabled = true
+        })
+        setTimeout(function () {
+          emptyFields.forEach(function (element) {
+            element.disabled = false
+          })
+        }, 0)
+      })
+    }
+
+    var favorites = new Set(readFavorites())
+    document
+      .querySelectorAll("button[data-favorite]")
+      .forEach(function (button) {
+        if (button.dataset.bound) return
+        button.dataset.bound = "true"
+        var code = button.dataset.favorite || ""
+        button.setAttribute("aria-pressed", String(favorites.has(code)))
+        button.addEventListener("click", function (e) {
+          e.stopPropagation()
+          if (favorites.has(code)) favorites.delete(code)
+          else favorites.add(code)
+
+          document
+            .querySelectorAll('button[data-favorite="' + code + '"]')
+            .forEach(function (btn) {
+              btn.setAttribute("aria-pressed", String(favorites.has(code)))
+            })
+
+          saveFavorites(Array.from(favorites))
+        })
+      })
+
+    var viewButton = document.getElementById("view-favorites")
+    var notice = document.getElementById("favorites-notice")
+    if (viewButton && !viewButton.dataset.bound) {
+      viewButton.dataset.bound = "true"
+      viewButton.addEventListener("click", function () {
+        var list = readFavorites()
+        if (list.length === 0) {
+          if (notice) notice.textContent = "Aún no tienes inmuebles favoritos."
+          alert(
+            "Aún no tienes inmuebles guardados en favoritos. Haz clic en el corazón de cualquier inmueble para guardarlo.",
+          )
+          return
+        }
+        location.href =
+          "/search?favorites=" + encodeURIComponent(list.join(","))
+      })
+    }
+
+    var urlParams = new URLSearchParams(location.search)
+    if (urlParams.get("favorites") === "all") {
+      var favs = readFavorites()
+      if (favs.length > 0) {
+        location.replace(
+          "/search?favorites=" + encodeURIComponent(favs.join(",")),
+        )
+      }
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true })
+  } else {
+    init()
+  }
+  document.addEventListener("astro:page-load", init)
+</script>

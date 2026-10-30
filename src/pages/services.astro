@@ -1,0 +1,187 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Navbar from "../components/navbar.astro"
+
+const services = [
+  {
+    title: "Pagos con Paloma",
+    description:
+      "Consulta tu cuenta, simula el pago y conserva el comprobante.",
+    href: "/pay-rent",
+    background: "bg-[#fde4de]",
+    icon: [
+      "M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1",
+      "M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4",
+    ],
+  },
+  {
+    title: "Autogestión",
+    description: "Cuentas, contratos y certificados en un solo lugar.",
+    href: "/self-management",
+    background: "bg-[#e4eef6]",
+    icon: [
+      "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2",
+      "M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z",
+    ],
+  },
+  {
+    title: "Mi espacio propietario",
+    description: "Ingresos, descuentos y decisiones de tus inmuebles.",
+    href: "/owners",
+    background: "bg-[#fff0c4]",
+    icon: [
+      "M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8",
+      "M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z",
+    ],
+  },
+  {
+    title: "Mantenimientos",
+    description: "Reporta, sigue la reparación y revisa propuestas.",
+    href: "/maintenance",
+    background: "bg-[#fde4de]",
+    icon: [
+      "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z",
+    ],
+  },
+  {
+    title: "Anticipo de cánones",
+    description: "Evalúa hasta 10 meses con tu inmueble arrendado.",
+    href: "/rent-advance",
+    background: "bg-[#e6f0fb]",
+    icon: [
+      "M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z",
+      "M14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z",
+      "M6 12h.01",
+      "M18 12h.01",
+    ],
+  },
+  {
+    title: "Mis solicitudes",
+    description: "Consulta visitas, estudios, contratos y entregas.",
+    href: "/my-requests",
+    background: "bg-[#e4eef6]",
+    icon: [
+      "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z",
+      "M14 2v4a2 2 0 0 0 2 2h4",
+      "M10 9H8",
+      "M16 13H8",
+      "M16 17H8",
+    ],
+  },
+  {
+    title: "Peticiones y reclamos",
+    description: "Cuéntanos qué necesitas y sigue la respuesta.",
+    href: "/pqrs",
+    background: "bg-[#fde4de]",
+    icon: ["M7.9 20A9 9 0 1 0 4 16.1L2 22Z", "M8 10h8", "M8 14h5"],
+  },
+  {
+    title: "Financiación",
+    description: "Explora alternativas para comprar vivienda.",
+    href: "/financing",
+    background: "bg-[#fff0c4]",
+    icon: [
+      "m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4",
+      "m21 2-9.6 9.6",
+      "M13 15.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0Z",
+    ],
+  },
+  {
+    title: "Contacto y sedes",
+    description: "Encuentra acompañamiento en cada paso.",
+    href: "/contact",
+    background: "bg-[#fff0c4]",
+    icon: [
+      "M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z",
+      "M15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z",
+    ],
+  },
+]
+---
+
+<Layout
+  title="Servicios - Portada Inmobiliaria"
+  description="Pagos, autogestión, mantenimiento y más servicios de Portada Inmobiliaria para inquilinos y propietarios."
+  showFooter={true}
+>
+  <Navbar />
+
+  <main class="w-full bg-[#fffdf9] text-[#2a2a33] pb-24">
+    <div class="mx-auto w-full px-6 lg:px-0 lg:w-[76vw] max-w-[1600px] pt-7">
+      <nav
+        aria-label="Ruta de navegación"
+        class="flex items-center gap-3 text-[13px] text-[#5e5e68]"
+      >
+        <a href="/" class="hover:underline">
+          Inicio
+        </a>
+        <span aria-hidden="true">/</span>
+        <span>Presentación Portada</span>
+      </nav>
+
+      <p class="mt-[46px] text-[11px] font-medium uppercase tracking-[0.25em] text-[#6b6b75]">
+        Siempre cerca
+      </p>
+
+      <h1 class="mt-4 text-[34px] sm:text-[44px] xl:text-[52px] font-normal leading-[1.1] tracking-[-0.03em] text-[#2a2a33]">
+        ¿Qué necesitas hacer hoy?
+      </h1>
+
+      <p class="mt-5 text-[15px] font-light text-[#5e5e68]">
+        Cada servicio, una experiencia completa dentro de Portada.
+      </p>
+
+      <div class="mt-[62px] grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-[27px]">
+        {services.map((service) => (
+          <article
+            class={`relative flex min-h-[326px] flex-col rounded-[28px] border border-[#ece6df] p-[37px] transition-shadow hover:shadow-md ${service.background}`}
+          >
+            <div class="flex h-[58px] w-[58px] items-center justify-center rounded-[16px] bg-white/70 text-[#2a2a33]">
+              <svg
+                class="h-6 w-6"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                {service.icon.map((d) => (
+                  <path d={d} />
+                ))}
+              </svg>
+            </div>
+
+            <h2 class="mt-8 text-[26px] font-normal leading-[1.2] tracking-[-0.01em] text-[#2a2a33]">
+              {service.title}
+            </h2>
+
+            <p class="mt-4 max-w-[340px] text-[13.5px] leading-[25px] text-[#5c5c5c]">
+              {service.description}
+            </p>
+
+            <a
+              href={service.href}
+              class="mt-auto inline-flex items-center gap-2.5 pt-8 text-[12.5px] font-medium text-[#2a2a33] after:absolute after:inset-0 after:rounded-[28px] hover:underline"
+            >
+              <span>Explorar</span>
+              <svg
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14m-6-6 6 6-6 6" />
+              </svg>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </main>
+</Layout>
