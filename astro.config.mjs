@@ -3,6 +3,7 @@ import vue from "@astrojs/vue"
 import vercel from "@astrojs/vercel"
 import tailwindcss from "@tailwindcss/vite"
 import zlib from "node:zlib"
+import node from "@astrojs/node"
 
 function devOptimizer() {
   return {
@@ -91,7 +92,9 @@ function devOptimizer() {
 export default defineConfig({
   integrations: [vue()],
   output: "server",
-  adapter: vercel(),
+  adapter: node({
+    mode: "standalone",
+  }),
   vite: {
     plugins: [tailwindcss(), devOptimizer()],
     build: {
