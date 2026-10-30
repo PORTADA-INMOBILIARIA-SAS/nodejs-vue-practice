@@ -52,3 +52,14 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+
+## 🔐 Variables de Entorno para el Despliegue
+
+Para que el proyecto funcione en local y en producción (Vercel), se deben configurar las siguientes variables de entorno:
+
+| Variable | Requerida | Ámbito | Descripción |
+| :--- | :---: | :--- | :--- |
+| SECRET_SIMI_API_KEY | **Sí** | Servidor (SSR / APIs) | Token de autenticación de SIMI Inmobiliaria. Permite el funcionamiento de los endpoints /api/property, /api/locations, /api/types y /api/zones. |
+
+Consulta el archivo [.env.example](./.env.example) para ver la plantilla de configuración.
