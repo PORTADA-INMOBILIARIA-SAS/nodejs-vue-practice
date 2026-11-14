@@ -1,0 +1,218 @@
+---
+interface Props {
+  codigo: string
+}
+
+const { codigo } = Astro.props
+---
+
+<section class="pt-12" id="similares-section">
+  <h2 class="text-[28px] font-light leading-[1.2] tracking-[-0.02em] text-[#2b2b2b] mb-6">
+    También podrían gustarte.
+  </h2>
+  <div
+    id="similares-grid"
+    class="grid grid-cols-1 sm:grid-cols-2 gap-5"
+    data-codigo={codigo}
+  >
+    <div class="relative aspect-[4/3] rounded-[22px] bg-[#f2eee8] animate-pulse"></div>
+    <div class="relative aspect-[4/3] rounded-[22px] bg-[#f2eee8] animate-pulse"></div>
+  </div>
+</section>
+
+<script>
+  const esc = (valor: any) =>
+    String(valor ?? "").replace(
+      /[&<>"']/g,
+      (c) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[c] || c,
+    )
+
+  const STORAGE_KEY = "portada-favorites"
+
+  function getFavorites(): string[] {
+    try {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]")
+      return Array.isArray(data) ? data : []
+    } catch {
+      return []
+    }
+  }
+
+  function isFav(code: string): boolean {
+    if (!code) return false
+    return getFavorites().includes(String(code))
+  }
+
+  function toggleFavorite(code: string): boolean {
+    if (!code) return false
+    const sCode = String(code)
+    let list = getFavorites()
+    if (list.includes(sCode)) {
+      list = list.filter((c) => c !== sCode)
+    } else {
+      list.push(sCode)
+    }
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list))
+    } catch {}
+    return list.includes(sCode)
+  }
+
+  const svgHeart = (active: boolean) =>
+    `<svg viewBox="0 0 24 24" fill="${active ? "#ef4444" : "none"}" stroke="${active ? "#ef4444" : "currentColor"}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;pointer-events:none;transition:fill 0.2s, stroke 0.2s"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`
+
+  function updateSimilarFavButtons(targetCode: string, active: boolean) {
+    document
+      .querySelectorAll(`.btn-fav-similar[data-code="${targetCode}"]`)
+      .forEach((btn: any) => {
+        btn.dataset.active = active ? "true" : "false"
+        btn.style.color = active ? "#ef4444" : "#4a4a4a"
+        btn.innerHTML = svgHeart(active)
+      })
+  }
+
+  async function cargarSimilares() {
+    const grid = document.getElementById("similares-grid") as HTMLElement | null
+    if (!grid || grid.dataset.listo === "true") return
+    grid.dataset.listo = "true"
+
+    const codigo = grid.dataset.codigo || ""
+
+    try {
+      const res = await fetch(
+        `/api/similar?excluir=${encodeURIComponent(codigo)}`,
+      )
+      if (!res.ok) return
+      const items = await res.json()
+      if (!Array.isArray(items) || items.length === 0) return
+
+      const fallbackImg = "/img/interior-portada.webp"
+
+      function getHeadline(barri: string) {
+        const b = (barri || "").toLowerCase()
+        if (b.includes("laureles")) return "Un balcón para empezar el día."
+        if (b.includes("esmeraldal")) return "Tu refugio entre verde y ciudad."
+        if (b.includes("poblado"))
+          return "Exclusividad, calma y la mejor vista."
+        if (b.includes("suramerica") || b.includes("suramérica"))
+          return "Modernidad para compartir en familia."
+        if (b.includes("colores")) return "Tranquilidad y cercanía a todo."
+        if (b.includes("belen") || b.includes("belén"))
+          return "Tu próximo hogar en un punto ideal."
+        if (b.includes("primavera"))
+          return "Vistas abiertas y excelente ubicación."
+        if (b.includes("centro")) return "En el corazón de la ciudad."
+        if (b.includes("envigado")) return "Calidad de vida en Envigado."
+        if (b.includes("sabaneta")) return "Confort y tranquilidad en Sabaneta."
+        return "Pequeño espacio, grandes planes."
+      }
+
+      function getBadge(barri: string, tipo: string) {
+        const b = (barri || "").toLowerCase()
+        const t = (tipo || "").toLowerCase()
+        if (b.includes("esmeraldal") || b.includes("primavera"))
+          return "Con zonas verdes"
+        if (b.includes("poblado")) return "Zona premium"
+        if (b.includes("laureles")) return "Para tu primer hogar"
+        if (t.includes("casa")) return "Casa independiente"
+        return "Para tu primer hogar"
+      }
+
+      grid.innerHTML = items
+        .slice(0, 2)
+        .map((item: any) => {
+          const img = esc(item.imagen || fallbackImg)
+          const precio = esc(item.precio || "")
+          const barri = esc(item.barrio || "")
+          const ciud = esc(item.ciudad || "")
+          const tip = esc(item.tipo || "Inmueble")
+          const rawCod = String(item.codigo || "").trim()
+          const cod = encodeURIComponent(rawCod)
+          const areaTxt = item.area > 0 ? `${Number(item.area)} m²` : ""
+          const habTxt = item.hab > 0 ? `${Number(item.hab)} alc.` : ""
+          const banoTxt = item.banos > 0 ? `${Number(item.banos)} baños` : ""
+          const parqTxt = item.parq > 0 ? `${Number(item.parq)} parq.` : ""
+          const metaParts = [areaTxt, habTxt, banoTxt, parqTxt].filter(Boolean)
+          const headline = getHeadline(barri)
+          const badge = getBadge(barri, tip)
+          const active = isFav(rawCod)
+
+          return `
+          <a href="/property/${cod}" style="display:block;text-decoration:none;color:inherit">
+            <div style="position:relative;aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:#f2eee8;margin-bottom:14px">
+              <img src="${img}" alt="${tip} en ${barri || ciud}" loading="lazy" decoding="async"
+                style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s"
+                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+                onerror="this.src='${fallbackImg}'"
+              />
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.45) 0%,transparent 55%);pointer-events:none"></div>
+              <div style="position:absolute;bottom:12px;left:14px;background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.25)">${badge}</div>
+              <button type="button" aria-label="Guardar como favorito" class="btn-fav-similar" data-code="${esc(rawCod)}"
+                data-active="${active ? "true" : "false"}"
+                style="position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.92);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;color:${active ? "#ef4444" : "#4a4a4a"};border:none;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.12);transition:all 0.2s;z-index:10"
+              >${svgHeart(active)}</button>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:#a39c94;margin-bottom:3px;letter-spacing:0.01em;gap:8px">
+              <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${barri ? `${barri} · ` : ""}${ciud}</span>
+              ${rawCod && rawCod !== "N/A" ? `<span style="flex-shrink:0;font-weight:500;color:#6b6b75">Cód. ${esc(rawCod)}</span>` : ""}
+            </div>
+            <div style="font-size:16px;font-weight:700;color:#2b2b2b;line-height:1.3;margin-bottom:5px">${headline}</div>
+            ${
+              metaParts.length
+                ? `
+            <div style="display:flex;gap:10px;margin-bottom:8px">
+              ${metaParts.map((m) => `<span style="font-size:12px;color:#8b857e;background:#fffdf9;border:1px solid #ede7df;border-radius:6px;padding:2px 7px">${m}</span>`).join("")}
+            </div>`
+                : ""
+            }
+            ${precio ? `<div style="font-size:16px;font-weight:700;color:#2b2b2b">${precio} <span style="font-size:12px;font-weight:400;color:#a39c94">Canon mensual</span></div>` : ""}
+            <div style="font-size:11px;color:#a39c94;margin-top:3px">Administración incluida</div>
+            ${rawCod && rawCod !== "N/A" ? `<div style="font-size:12px;font-weight:500;color:#6b6b75;margin-top:6px">Cód. ${esc(rawCod)}</div>` : ""}
+          </a>`
+        })
+        .join("")
+
+      grid.querySelectorAll(".btn-fav-similar").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          const targetCode = btn.getAttribute("data-code")
+          if (!targetCode) return
+          const isNowFav = toggleFavorite(targetCode)
+          updateSimilarFavButtons(targetCode, isNowFav)
+          if (targetCode === codigo) {
+            window.dispatchEvent(
+              new CustomEvent("portada:fav-changed", {
+                detail: { code: targetCode, active: isNowFav },
+              }),
+            )
+          }
+        })
+        btn.addEventListener("mouseenter", () => {
+          if ((btn as HTMLElement).dataset.active !== "true")
+            (btn as HTMLElement).style.color = "#ef4444"
+        })
+        btn.addEventListener("mouseleave", () => {
+          if ((btn as HTMLElement).dataset.active !== "true")
+            (btn as HTMLElement).style.color = "#4a4a4a"
+        })
+      })
+    } catch {
+      grid.innerHTML = ""
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", cargarSimilares)
+  } else {
+    cargarSimilares()
+  }
+  document.addEventListener("astro:page-load", cargarSimilares)
+</script>

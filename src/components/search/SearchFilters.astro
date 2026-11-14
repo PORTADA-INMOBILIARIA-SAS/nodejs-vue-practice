@@ -1,0 +1,275 @@
+---
+import type { Mode } from "../../lib/propertyCatalog"
+
+interface Props {
+  mode: Mode
+  city: string
+  propertyType: string
+  budget: number
+  code: string
+  bedrooms: number
+  feature: string
+  sort: string
+  favoriteCodes: string[]
+  places: string[]
+  propertyTypes: string[]
+  bedroomOptions: { value: string; label: string }[]
+  featureOptions: { value: string; label: string }[]
+  sortOptions: { value: string; label: string }[]
+}
+
+const {
+  mode,
+  city,
+  propertyType,
+  budget,
+  code,
+  bedrooms,
+  feature,
+  sort,
+  favoriteCodes,
+  places,
+  propertyTypes,
+  bedroomOptions,
+  featureOptions,
+  sortOptions,
+} = Astro.props
+
+const currency = new Intl.NumberFormat("es-CO")
+const labelClass = "mb-2 block text-[14px] font-medium text-[#2a2a33]"
+const fieldClass =
+  "h-14 w-full rounded-xl border border-[#e0dcd3] bg-white px-4 text-[15px] text-[#2a2a33] outline-none placeholder:text-[#8a8a94] focus:border-[#b8b3a6] transition-colors"
+const smallSelectClass =
+  "h-10 cursor-pointer rounded-xl border border-[#e0dcd3] bg-[#f7f5f0] px-3.5 text-[13px] text-[#2a2a33] outline-none focus:border-[#b8b3a6]"
+---
+
+<nav
+  aria-label="Ruta de navegación"
+  class="flex items-center gap-3 text-[13px] text-[#5e5e68]"
+>
+  <a href="/" class="hover:underline">
+    Inicio
+  </a>
+  <span aria-hidden="true">/</span>
+  <span>Presentación Portada</span>
+</nav>
+
+<div class="mt-6 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+  <div>
+    <p class="text-[11px] font-medium uppercase tracking-[0.25em] text-[#6b6b75]">
+      {favoriteCodes.length > 0 ? "Mis favoritos" : "Encuentra tu lugar"}
+    </p>
+    <h1 class="mt-5 text-[length:clamp(32px,3.6vw,48px)] font-normal leading-[1.1] tracking-[-0.03em] text-[#2a2a33]">
+      {favoriteCodes.length > 0
+        ? "Tus inmuebles favoritos."
+        : "Aquí comienza tu próximo hogar."}
+    </h1>
+    <p class="mt-5 text-[15px] font-light text-[#5e5e68]">
+      {favoriteCodes.length > 0
+        ? "Inmuebles que has guardado usando el corazón."
+        : "Explora espacios, guarda los que te gustan y conoce cada detalle."}
+    </p>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-4">
+    {favoriteCodes.length > 0 ? (
+      <a
+        href={`/search?mode=${mode}`}
+        class="flex h-14 items-center justify-center rounded-xl border border-[#e6e2da] bg-white px-6 text-[14px] font-medium text-[#2a2a33] transition-colors hover:border-[#e0dcd3] hover:bg-[#faf8f4]"
+      >
+        ← Volver a todos los inmuebles
+      </a>
+    ) : (
+      <>
+        <button
+          type="button"
+          class="flex h-14 items-center justify-center rounded-xl border border-[#e6e2da] bg-white px-6 text-[14px] font-medium text-[#2a2a33] transition-colors hover:border-[#e0dcd3] hover:bg-[#faf8f4]"
+        >
+          Guardar búsqueda
+        </button>
+        <button
+          type="button"
+          id="view-favorites"
+          class="flex cursor-pointer items-center gap-2 text-[14px] font-medium text-[#2a2a33] hover:underline"
+        >
+          Mis favoritos
+          <svg
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </button>
+      </>
+    )}
+  </div>
+</div>
+
+<form
+  id="results-form"
+  method="get"
+  action="/search"
+  class="mt-9 block rounded-[28px] border border-[#e6e2da] bg-white p-6 shadow-sm sm:p-7"
+>
+  {code && <input type="hidden" name="code" value={code} />}
+
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-[200px_minmax(0,1fr)_270px_300px_auto] lg:items-end">
+    <div>
+      <label for="f-mode" class={labelClass}>
+        Quiero
+      </label>
+      <select id="f-mode" name="mode" class={`${fieldClass} cursor-pointer`}>
+        <option value="rent" selected={mode === "rent"}>
+          Arrendar
+        </option>
+        <option value="sale" selected={mode === "sale"}>
+          Comprar
+        </option>
+      </select>
+    </div>
+
+    <div>
+      <label for="f-city" class={labelClass}>
+        Ciudad o barrio
+      </label>
+      <input
+        id="f-city"
+        type="text"
+        name="city"
+        value={city}
+        list="places-list"
+        autocomplete="off"
+        placeholder="¿Dónde quieres vivir?"
+        class={fieldClass}
+      />
+      <datalist id="places-list">
+        {places.map((place) => (
+          <option value={place} />
+        ))}
+      </datalist>
+    </div>
+
+    <div>
+      <label for="f-type" class={labelClass}>
+        Tipo
+      </label>
+      <select id="f-type" name="type" class={`${fieldClass} cursor-pointer`}>
+        <option value="">Todos</option>
+        {propertyTypes.map((item) => (
+          <option value={item} selected={item === propertyType}>
+            {item}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div>
+      <label for="f-budget" class={labelClass}>
+        Presupuesto máximo · COP
+      </label>
+      <input
+        id="f-budget"
+        type="text"
+        name="budget"
+        value={budget ? currency.format(budget) : ""}
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="Sin límite"
+        class={fieldClass}
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="flex h-14 cursor-pointer items-center justify-center gap-2.5 rounded-xl bg-[#f7a59b] px-8 text-[15px] font-medium text-[#2a2a33] transition-colors hover:bg-[#f39589]"
+    >
+      <svg
+        class="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.3-4.3"></path>
+      </svg>
+      Buscar
+    </button>
+  </div>
+
+  <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[#e6e2da] pt-5">
+    <label class="flex items-center gap-3 text-[13px] text-[#4a4a55]">
+      Alcobas
+      <select name="bedrooms" class={smallSelectClass}>
+        {bedroomOptions.map((option) => (
+          <option
+            value={option.value}
+            selected={option.value === (bedrooms > 0 ? String(bedrooms) : "")}
+          >
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+
+    <label class="flex items-center gap-3 text-[13px] text-[#4a4a55]">
+      Lo que buscas
+      <select name="feature" class={smallSelectClass}>
+        {featureOptions.map((option) => (
+          <option value={option.value} selected={option.value === feature}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+
+    <label class="flex items-center gap-3 text-[13px] text-[#4a4a55]">
+      Ordenar
+      <select name="sort" class={smallSelectClass}>
+        {sortOptions.map((option) => (
+          <option value={option.value} selected={option.value === sort}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+
+    <button
+      type="button"
+      id="btn-open-general-map"
+      class="flex items-center gap-2 h-10 px-4 rounded-xl bg-[#2a2a33] text-white font-medium text-[13px] shadow-md hover:bg-black transition-all transform hover:scale-[1.02] cursor-pointer"
+    >
+      <svg
+        class="w-4 h-4 text-[#ffaaa0]"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+        />
+      </svg>
+      <span>Ver en mapa</span>
+    </button>
+
+    <a
+      href={`/search?mode=${mode}`}
+      class="ml-auto text-[13px] text-[#2a2a33] hover:underline"
+    >
+      Limpiar filtros
+    </a>
+  </div>
+</form>

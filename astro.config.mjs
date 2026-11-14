@@ -96,7 +96,7 @@ export default defineConfig({
     mode: "standalone",
   }),
   vite: {
-    plugins: [tailwindcss(), devOptimizer()],
+    plugins: [tailwindcss()],
     build: {
       cssCodeSplit: false,
       chunkSizeWarningLimit: 1000,

@@ -1,0 +1,81 @@
+---
+import type { Property } from "../../lib/propertyCatalog"
+
+interface Props {
+  property: Property
+  idx: number
+}
+
+const { property, idx } = Astro.props
+
+const photoUrl = (url: string) => (url ? url.replace(/=s\d+$/, "=s640") : "")
+const currency = new Intl.NumberFormat("es-CO")
+---
+
+<article class="overflow-hidden rounded-[22px] border border-[#e6e2da] bg-white transition-all hover:shadow-md">
+  <div class="relative aspect-[4/3] bg-[#f1eee7]">
+    <a
+      href={`/property/${property.code}`}
+      aria-label={`${property.type} en ${property.neighborhood}`}
+    >
+      {property.photo ? (
+        <img
+          src={photoUrl(property.photo)}
+          alt={`${property.type} en ${property.neighborhood}, ${property.city}`}
+          loading={idx < 2 ? "eager" : "lazy"}
+          fetchpriority={idx === 0 ? "high" : "auto"}
+          decoding={idx < 2 ? "sync" : "async"}
+          width="400"
+          height="300"
+          class="h-full w-full object-cover"
+        />
+      ) : (
+        <div class="flex h-full w-full items-center justify-center bg-[#f1eee7] text-[#8a8a94] text-xs">
+          Sin foto
+        </div>
+      )}
+    </a>
+    <button
+      type="button"
+      data-favorite={property.code}
+      aria-pressed="false"
+      aria-label="Guardar en favoritos"
+      class="group absolute right-3 top-3 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white/95 text-[#2a2a33] shadow-sm transition-colors hover:bg-white"
+    >
+      <svg
+        class="h-5 w-5 group-aria-pressed:fill-[#ef6f6f] group-aria-pressed:text-[#ef6f6f]"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+      </svg>
+    </button>
+  </div>
+
+  <a href={`/property/${property.code}`} class="block p-5">
+    <p class="text-[22px] font-medium text-[#2a2a33]">
+      $ {currency.format(property.price)}
+      {property.mode === "rent" && (
+        <span class="text-[13px] font-normal text-[#6b6b75]"> / mes</span>
+      )}
+    </p>
+    <h2 class="mt-2 text-[16px] font-normal text-[#2a2a33]">
+      {property.type} en {property.neighborhood}
+    </h2>
+    <p class="mt-1 text-[13px] text-[#5e5e68]">
+      {property.neighborhood}, {property.city}
+    </p>
+    <ul class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-[#4a4a55]">
+      {property.bedrooms > 0 && <li>{property.bedrooms} alcobas</li>}
+      {property.bathrooms > 0 && <li>{property.bathrooms} baños</li>}
+      {property.parking > 0 && <li>{property.parking} parq.</li>}
+      {property.area > 0 && <li>{property.area} m²</li>}
+    </ul>
+    <p class="mt-4 text-[12px] text-[#6b6b75]">Cód. {property.code}</p>
+  </a>
+</article>

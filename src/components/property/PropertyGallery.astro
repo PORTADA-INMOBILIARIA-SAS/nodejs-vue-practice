@@ -1,0 +1,195 @@
+---
+interface Props {
+  galeria: string[]
+  displayPhotos: string[]
+  tipo: string
+  barrio: string
+  ciudad: string
+  codigo: string
+}
+
+const { galeria, displayPhotos, tipo, barrio, ciudad, codigo } = Astro.props
+
+const altFoto = (i: number) => `${tipo} en ${barrio || ciudad} - foto ${i + 1}`
+---
+
+<div class="mx-auto w-full px-6 lg:px-0 lg:w-[76vw] max-w-[1600px]">
+  <div
+    id="property-gallery-grid"
+    class="flex flex-col md:flex-row gap-[9px] h-auto md:h-[clamp(420px,32.5vw,620px)] overflow-hidden rounded-[24px]"
+  >
+    <div
+      class="gallery-tile relative md:flex-[2_1_0%] h-[260px] md:h-auto min-h-0 overflow-hidden group cursor-pointer bg-[#f2eee8]"
+      data-index="0"
+    >
+      <img
+        src={displayPhotos[0]}
+        alt={altFoto(0)}
+        class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
+    <div class="md:flex-1 grid grid-cols-2 md:grid-cols-1 md:grid-rows-2 gap-[9px] h-[160px] md:h-auto min-h-0">
+      <div
+        class="gallery-tile relative h-full min-h-0 overflow-hidden group cursor-pointer bg-[#f2eee8]"
+        data-index="1"
+      >
+        <img
+          src={displayPhotos[1]}
+          alt={altFoto(1)}
+          class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <div
+        class="gallery-tile relative h-full min-h-0 overflow-hidden group cursor-pointer bg-[#f2eee8]"
+        data-index="2"
+      >
+        <img
+          src={displayPhotos[2]}
+          alt={altFoto(2)}
+          class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    </div>
+
+    <div class="md:flex-1 grid grid-cols-2 md:grid-cols-1 md:grid-rows-2 gap-[9px] h-[160px] md:h-auto min-h-0">
+      <div
+        class="gallery-tile relative h-full min-h-0 overflow-hidden group cursor-pointer bg-[#f2eee8]"
+        data-index="3"
+      >
+        <img
+          src={displayPhotos[3]}
+          alt={altFoto(3)}
+          class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <div
+        class="gallery-tile relative h-full min-h-0 overflow-hidden group cursor-pointer bg-[#f2eee8]"
+        data-index="4"
+      >
+        <img
+          src={displayPhotos[4]}
+          alt={altFoto(4)}
+          class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          loading="lazy"
+          decoding="async"
+        />
+
+        <button
+          type="button"
+          id="btn-ver-todas-fotos"
+          class="absolute bottom-[22px] right-[23px] z-10 inline-flex h-[45px] items-center gap-[6px] rounded-full bg-white px-[22px] text-[13px] font-medium leading-none text-[#333333] shadow-[0_1px_3px_rgba(0,0,0,0.14)] transition-colors hover:bg-[#fdfbf8] cursor-pointer"
+          aria-label="Ver todas las fotos"
+        >
+          <span>Ver las {galeria.length} fotos</span>
+          <svg
+            class="h-3.5 w-3.5 shrink-0 text-[#333333]"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M7 17L17 7M17 7H8M17 7V16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p class="mt-3 text-[13px] leading-[20px] text-[#8b857e]">
+    Inmueble {codigo}
+  </p>
+</div>
+
+<!-- Modal Visor de fotos (Lightbox) -->
+<div
+  id="lightbox-modal"
+  class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Visor de fotos en pantalla completa"
+>
+  <div class="absolute top-0 inset-x-0 p-5 flex justify-between items-center z-50 text-white">
+    <span
+      id="lightbox-counter"
+      class="text-xs sm:text-sm font-medium tracking-wide bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15"
+    >
+      1 / {galeria.length}
+    </span>
+
+    <button
+      id="close-lightbox"
+      class="text-white hover:text-red-400 transition-colors cursor-pointer p-2 rounded-full hover:bg-white/10"
+      aria-label="Cerrar visor"
+    >
+      <svg
+        class="h-6 w-6"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M18 6L6 18M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
+
+  <button
+    id="lightbox-prev"
+    class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 text-white/90 hover:text-white bg-black/40 hover:bg-black/70 p-3 rounded-full cursor-pointer z-50 transition-all hover:scale-110"
+    aria-label="Anterior foto"
+  >
+    <svg
+      class="h-6 w-6"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M15 18l-6-6 6-6"></path>
+    </svg>
+  </button>
+
+  <div class="w-full h-full max-w-6xl max-h-[85vh] p-4 flex items-center justify-center relative">
+    <img
+      id="lightbox-img"
+      src=""
+      alt="Foto ampliada del inmueble"
+      class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl transition-transform duration-200 select-none"
+    />
+  </div>
+
+  <button
+    id="lightbox-next"
+    class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 text-white/90 hover:text-white bg-black/40 hover:bg-black/70 p-3 rounded-full cursor-pointer z-50 transition-all hover:scale-110"
+    aria-label="Siguiente foto"
+  >
+    <svg
+      class="h-6 w-6"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M9 18l6-6-6-6"></path>
+    </svg>
+  </button>
+</div>

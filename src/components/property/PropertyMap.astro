@@ -1,0 +1,212 @@
+---
+interface Props {
+  latitud: number
+  longitud: number
+  tipo: string
+  barrio: string
+  ciudad: string
+}
+
+const { latitud, longitud, tipo, barrio, ciudad } = Astro.props
+const tieneCoords = latitud !== 0 && longitud !== 0
+---
+
+<section id="ubicacion" class="pt-10 scroll-mt-28">
+  <h2 class="text-[28px] font-light leading-[1.2] tracking-[-0.02em] text-[#2b2b2b]">
+    Conoce el entorno.
+  </h2>
+
+  {tieneCoords ? (
+    <div class="mt-5 w-full h-[320px] sm:h-[380px] rounded-[24px] overflow-hidden relative border border-[#ede7df] shadow-sm bg-[#e5e3df]">
+      <div
+        id="property-map"
+        class="w-full h-full"
+        data-lat={latitud}
+        data-lng={longitud}
+        data-title={`${tipo} en ${barrio || ciudad}`}
+        data-neighborhood={barrio || ""}
+        data-city={ciudad || ""}
+        data-api-key={
+          import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY ||
+          "AIzaSyAi_z_AaYF8F08wzDeqPd4UYS9iQzWpxXk"
+        }
+      />
+      <a
+        href={`https://www.google.com/maps/search/?api=1&query=${latitud},${longitud}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="absolute bottom-3 right-3 inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-sm text-[#4a4a4a] text-[11px] font-medium px-3 py-1.5 rounded-full border border-[#ede7df] shadow-sm hover:bg-white transition-colors z-10"
+      >
+        <svg
+          class="w-3.5 h-3.5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M7 17L17 7M17 7H8M17 7V16" />
+        </svg>
+        <span>Ver en Google Maps</span>
+      </a>
+    </div>
+  ) : (
+    <div class="mt-5 w-full h-[220px] sm:h-[260px] rounded-[24px] overflow-hidden relative border border-[#f0ebe4] bg-[#f4efe8] flex items-center justify-center">
+      <span class="text-[#8b857e] text-[13px]">
+        Coordenadas no disponibles para este inmueble.
+      </span>
+    </div>
+  )}
+
+  <p class="mt-3 text-[12px] sm:text-[13px] text-[#8b857e]">
+    Mapa del inmueble y lugares cercanos verificados.
+  </p>
+</section>
+
+<script>
+  import { setOptions, importLibrary } from "@googlemaps/js-api-loader"
+
+  async function initPropertyMap() {
+    const el = document.getElementById("property-map") as HTMLElement | null
+    if (!el || el.dataset.loaded === "true") return
+
+    const lat = Number(el.dataset.lat)
+    const lng = Number(el.dataset.lng)
+    if (!lat || !lng || isNaN(lat) || isNaN(lng)) return
+
+    const key = el.dataset.apiKey || "AIzaSyAi_z_AaYF8F08wzDeqPd4UYS9iQzWpxXk"
+    const title = el.dataset.title || "Ubicación del inmueble"
+    const neighborhood = el.dataset.neighborhood || ""
+    const city = el.dataset.city || ""
+
+    el.dataset.loaded = "true"
+
+    try {
+      setOptions({ key })
+
+      const { Map, InfoWindow } = (await importLibrary("maps")) as any
+
+      const position = { lat, lng }
+      const map = new Map(el, {
+        center: position,
+        zoom: 16,
+        mapId: "DEMO_MAP_ID",
+        clickableIcons: false,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: false,
+        zoomControl: true,
+      })
+
+      let resolvedAddress = neighborhood ? `${neighborhood}, ${city}` : title
+      const infoWindow = new InfoWindow({
+        content: `
+          <div style="font-family:'Poppins',sans-serif;padding:6px 12px;color:#2a2a33;font-size:12px;font-weight:500;line-height:1.4;">
+            <span id="prop-map-addr-text">${resolvedAddress}</span>
+          </div>
+        `,
+        disableAutoPan: true,
+      })
+
+      try {
+        const geocodingLib = (await importLibrary("geocoding")) as any
+        if (geocodingLib?.Geocoder) {
+          const geocoder = new geocodingLib.Geocoder()
+          geocoder.geocode(
+            { location: position },
+            (results: any[], status: string) => {
+              if (status === "OK" && results && results[0]) {
+                resolvedAddress = results[0].formatted_address
+                const addrEl = document.getElementById("prop-map-addr-text")
+                if (addrEl) addrEl.textContent = resolvedAddress
+                infoWindow.setContent(`
+                <div style="font-family:'Poppins',sans-serif;padding:6px 12px;color:#2a2a33;font-size:12px;font-weight:500;line-height:1.4;">
+                  <span>${resolvedAddress}</span>
+                </div>
+              `)
+              }
+            },
+          )
+        }
+      } catch (geoErr) {}
+
+      const pinEl = document.createElement("div")
+      pinEl.style.cssText = [
+        "position: relative",
+        "width: 38px",
+        "height: 38px",
+        "background: #ff4757",
+        "border: 3px solid #ffffff",
+        "border-radius: 50% 50% 50% 0",
+        "transform: rotate(-45deg)",
+        "box-shadow: 0 6px 16px rgba(255, 71, 87, 0.4)",
+        "cursor: pointer",
+        "display: flex",
+        "align-items: center",
+        "justify-content: center",
+      ].join(";")
+
+      let markerInstance: any = null
+
+      try {
+        const markerLib = (await importLibrary("marker")) as any
+        if (markerLib?.AdvancedMarkerElement) {
+          markerInstance = new markerLib.AdvancedMarkerElement({
+            map,
+            position,
+            title,
+            content: pinEl,
+          })
+
+          pinEl.addEventListener("mouseenter", () => {
+            infoWindow.open({
+              anchor: markerInstance,
+              map,
+            })
+          })
+
+          pinEl.addEventListener("mouseleave", () => {
+            infoWindow.close()
+          })
+        } else {
+          throw new Error("no AdvancedMarkerElement")
+        }
+      } catch {
+        const googleObj = (window as any).google
+        if (googleObj?.maps?.Marker) {
+          markerInstance = new googleObj.maps.Marker({
+            map,
+            position,
+            title,
+            icon: {
+              path: googleObj.maps.SymbolPath.CIRCLE,
+              scale: 10,
+              fillColor: "#ff6b6b",
+              fillOpacity: 1,
+              strokeColor: "#ffffff",
+              strokeWeight: 2,
+            },
+          })
+
+          markerInstance.addListener("mouseover", () => {
+            infoWindow.open({
+              anchor: markerInstance,
+              map,
+            })
+          })
+
+          markerInstance.addListener("mouseout", () => {
+            infoWindow.close()
+          })
+        }
+      }
+    } catch (err) {
+      console.error("Error Google Maps:", err)
+    }
+  }
+
+  initPropertyMap()
+  document.addEventListener("DOMContentLoaded", initPropertyMap)
+  document.addEventListener("astro:page-load", initPropertyMap)
+</script>
