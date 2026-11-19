@@ -1,35 +1,99 @@
 ---
-import LocationField from "./LocationField.astro"
 const RUTA_BUSQUEDA = "/search"
 const RUTA_PUBLICAR = "/promote-property"
 
-const modalidadInicial = "arriendo"
-
-const tabs = [
-  { id: "arriendo", texto: "Arrendar" },
-  { id: "venta", texto: "Comprar" },
-  { id: "publicar", texto: "Publica tu inmueble" },
-]
-
-const tipos = [
-  "Apartamento",
-  "Casa",
-  "Local",
-  "Oficina",
-  "Bodega",
-  "Lote",
-  "Finca",
+const ciudadesConBarrios = [
+  {
+    nombre: "Medellín",
+    barrios: [
+      "El Poblado",
+      "Laureles",
+      "Belén",
+      "Conquistadores",
+      "Los Colores",
+      "Estadio",
+      "Calasanz",
+      "Robledo",
+      "Buenos Aires",
+      "Boston",
+      "Castilla",
+      "Guayabal",
+      "San Javier",
+      "La América",
+      "Prado",
+    ],
+  },
+  {
+    nombre: "Envigado",
+    barrios: [
+      "La Magnolia",
+      "Zúñiga",
+      "Las Orquídeas",
+      "San Marcos",
+      "Jardines",
+      "Pontevedra",
+      "El Esmeraldal",
+      "Loma del Chocho",
+      "Loma de las Brujas",
+      "El Dorado",
+    ],
+  },
+  {
+    nombre: "Bello",
+    barrios: [
+      "Cabañas",
+      "Cabañitas",
+      "Niquía",
+      "Amazonia",
+      "Barrio Mesa",
+      "El Trapiche",
+      "Santa Ana",
+    ],
+  },
+  {
+    nombre: "Sabaneta",
+    barrios: [
+      "Aves María",
+      "Calle Larga",
+      "Calle del Banco",
+      "Carmelo",
+      "Doctor Changa",
+      "La Florida",
+      "San José",
+    ],
+  },
+  {
+    nombre: "Itagüí",
+    barrios: [
+      "Santa María",
+      "Ditaires",
+      "San Fernando",
+      "La Glorieta",
+      "La Finca",
+      "San Pío",
+    ],
+  },
+  {
+    nombre: "Rionegro",
+    barrios: ["San Antonio de Pereira", "El Porvenir", "Llanogrande"],
+  },
+  {
+    nombre: "Bogotá",
+    barrios: ["Chapinero", "Usaquén", "Cedritos", "Suba", "Teusaquillo"],
+  },
 ]
 
 const presupuestos: Record<string, { valor: string; texto: string }[]> = {
-  arriendo: [
-    { valor: "1000000", texto: "Hasta $ 1.000.000" },
-    { valor: "2000000", texto: "Hasta $ 2.000.000" },
-    { valor: "3000000", texto: "Hasta $ 3.000.000" },
+  rent: [
+    { valor: "", texto: "Sin límite" },
+    { valor: "1500000", texto: "Hasta $ 1.500.000" },
+    { valor: "2500000", texto: "Hasta $ 2.500.000" },
+    { valor: "3500000", texto: "Hasta $ 3.500.000" },
     { valor: "5000000", texto: "Hasta $ 5.000.000" },
     { valor: "8000000", texto: "Hasta $ 8.000.000" },
   ],
-  venta: [
+  sale: [
+    { valor: "", texto: "Sin límite" },
     { valor: "200000000", texto: "Hasta $ 200.000.000" },
     { valor: "400000000", texto: "Hasta $ 400.000.000" },
     { valor: "600000000", texto: "Hasta $ 600.000.000" },
@@ -37,14 +101,11 @@ const presupuestos: Record<string, { valor: string; texto: string }[]> = {
     { valor: "2000000000", texto: "Hasta $ 2.000.000.000" },
   ],
 }
-
-const campo =
-  "flex h-[clamp(52px,7.4vh,76px)] items-center gap-4 rounded-xl border border-slate-200 bg-white px-5 focus-within:border-slate-400"
 ---
 
 <section
   id="hero-section"
-  class="relative flex min-h-[calc(100svh-88px)] w-full items-center overflow-hidden bg-slate-200 lg:h-[calc(100svh-88px)] lg:min-h-[560px]"
+  class="relative flex min-h-[calc(100svh-88px)] w-full items-center overflow-hidden bg-slate-200 lg:h-[calc(100svh-88px)] lg:min-h-[640px]"
   style="contain:layout style"
 >
   <picture class="absolute inset-0 h-full w-full">
@@ -67,333 +128,367 @@ const campo =
     />
   </picture>
 
-  <div class="relative z-10 w-full px-4 py-6 sm:px-8 lg:px-0 lg:py-0">
-    <div class="w-full max-w-[632px] rounded-[28px] bg-white/95 px-6 py-[clamp(18px,3.4vh,36px)] shadow-xl sm:px-9 lg:ml-[8%] lg:w-[33.4vw] lg:min-w-[440px]">
-      <h1 class="text-[length:clamp(30px,min(5.4vh,8vw),54px)] font-normal leading-[1.08] tracking-tight text-slate-900">
-        Abre la puerta a<br />
-        nuevos momentos.
-      </h1>
-
-      <p class="mt-2.5 text-[15px] text-slate-600">
-        Arrienda, compra o publica tu inmueble.
-      </p>
-
-      <div
-        role="group"
-        aria-label="Tipo de búsqueda"
-        class="mt-6 flex flex-wrap items-center gap-x-8 gap-y-2 border-b border-slate-200"
-      >
-        {tabs.map((tab) => (
-          <button
-            type="button"
-            data-modalidad={tab.id}
-            aria-pressed={tab.id === modalidadInicial ? "true" : "false"}
-            class="-mb-px cursor-pointer border-b-2 border-transparent pb-2.5 text-base text-slate-500 transition-colors hover:text-slate-800 aria-pressed:border-[#d9534f] aria-pressed:font-medium aria-pressed:text-slate-900"
-          >
-            {tab.texto}
-          </button>
-        ))}
-      </div>
-
-      <div
-        id="panel-publicar"
-        style="display: none"
-        class="mt-[clamp(10px,2vh,24px)] flex flex-col items-start gap-[clamp(8px,1.6vh,16px)]"
-      >
-        <span class="flex h-14 w-14 items-center justify-center rounded-full bg-[#fde4e4]">
-          <svg
-            class="h-6 w-6 text-slate-800"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <circle cx="7.5" cy="8.5" r="5.5"></circle>
-            <path d="m21 22-9.6-9.6"></path>
-            <path d="m15.5 16.5 3-3L22 17l-3 3"></path>
-          </svg>
-        </span>
-
-        <h2 class="text-[length:clamp(22px,min(4.2vh,7vw),40px)] font-light leading-[1.1] tracking-tight text-slate-900">
-          Tu inmueble, el próximo hogar de alguien.
-        </h2>
-
-        <p class="text-[15px] leading-relaxed text-slate-600">
-          Cuéntanos qué quieres arrendar o vender. Te acompañamos en el
-          siguiente paso.
-        </p>
+  <!-- Tarjeta de Búsqueda Flotante -->
+  <div class="relative z-10 w-full px-4 py-8 sm:px-8 lg:px-0 lg:py-0">
+    <div class="w-full max-w-[540px] rounded-[32px] bg-white px-7 py-8 shadow-2xl sm:px-10 sm:py-9 lg:ml-[8%]">
+      <!-- Pestañas Superiores (Nivel 1): Buscar inmuebles / Publicar mi inmueble -->
+      <div class="flex items-center gap-7 border-b border-[#f0ece5]">
+        <button
+          type="button"
+          id="tab-top-buscar"
+          class="relative pb-3 text-[15px] font-medium text-[#1e1e24] transition-colors"
+        >
+          Buscar inmuebles
+          <span class="absolute bottom-0 left-0 h-[2.5px] w-full rounded-full bg-[#f4a39d]"></span>
+        </button>
 
         <a
           href={RUTA_PUBLICAR}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="mt-1 flex h-[clamp(48px,6.6vh,65px)] w-full items-center justify-center gap-3 rounded-xl bg-[#2e3040] text-base font-semibold text-white transition-colors hover:bg-[#1f212d]"
+          id="tab-top-publicar"
+          class="pb-3 text-[15px] font-normal text-[#75716b] transition-colors hover:text-[#1e1e24]"
         >
-          Empezar mi publicación
-          <svg
-            class="h-5 w-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M5 12h14"></path>
-            <path d="m12 5 7 7-7 7"></path>
-          </svg>
+          Publicar mi inmueble
         </a>
-
-        <p class="w-full text-center text-xs leading-tight text-slate-500">
-          Registra tu inmueble en el formulario de Portada.
-        </p>
       </div>
 
+      <!-- Título Dinámico -->
+      <h1
+        id="hero-search-title"
+        class="mt-7 text-[length:clamp(32px,3.2vw,44px)] font-light leading-[1.12] tracking-tight text-[#1e1e24]"
+      >
+        Arrienda un hogar para llamar tuyo
+      </h1>
+
+      <!-- Pestañas de Modalidad (Nivel 2): Arrendar / Comprar -->
+      <div class="mt-6 flex items-center gap-6 border-b border-[#f0ece5]">
+        <button
+          type="button"
+          data-mode="rent"
+          class="mode-btn relative pb-2 text-[14px] font-medium text-[#1e1e24] transition-colors"
+        >
+          Arrendar
+          <span class="mode-indicator absolute bottom-0 left-0 h-[2px] w-full rounded-full bg-[#f4a39d]"></span>
+        </button>
+        <button
+          type="button"
+          data-mode="sale"
+          class="mode-btn relative pb-2 text-[14px] font-normal text-[#75716b] transition-colors hover:text-[#1e1e24]"
+        >
+          Comprar
+          <span class="mode-indicator absolute bottom-0 left-0 hidden h-[2px] w-full rounded-full bg-[#f4a39d]"></span>
+        </button>
+      </div>
+
+      <!-- Formulario de Búsqueda -->
       <form
         id="form-busqueda"
         action={RUTA_BUSQUEDA}
         method="get"
-        class="mt-[clamp(10px,2vh,24px)] flex flex-col gap-[clamp(8px,1.3vh,12px)]"
+        class="mt-6 flex flex-col gap-4"
+        data-ciudades={JSON.stringify(ciudadesConBarrios)}
         data-presupuestos={JSON.stringify(presupuestos)}
       >
-        <input type="hidden" name="modalidad" value={modalidadInicial} />
+        <input type="hidden" name="mode" id="input-mode" value="rent" />
 
-        <LocationField class={campo} />
-
-        <div class="grid grid-cols-1 gap-[clamp(8px,1.3vh,12px)] sm:grid-cols-2">
-          <label class={`${campo} cursor-pointer`}>
-            <svg
-              class="h-6 w-6 shrink-0 text-slate-700"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
+        <!-- Fila 1: Ciudad y Barrio -->
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <!-- Campo Ciudad -->
+          <div class="flex flex-col justify-center rounded-2xl border border-[#e8e4dc] bg-white px-4 py-2.5 transition-colors focus-within:border-[#1e1e24]">
+            <label
+              for="select-ciudad"
+              class="text-[11.5px] font-normal text-[#75716b]"
             >
-              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-              <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-            <span class="relative flex min-w-0 flex-1 flex-col gap-0.5">
-              <span class="text-[13px] text-slate-700">Tipo de inmueble</span>
+              Ciudad
+            </label>
+            <div class="relative flex items-center">
               <select
-                name="tipo"
-                class="w-full cursor-pointer appearance-none bg-transparent pr-6 text-[15px] text-slate-900 outline-none"
+                id="select-ciudad"
+                name="city"
+                class="w-full appearance-none bg-transparent pr-6 text-[14.5px] font-normal text-[#1e1e24] outline-none cursor-pointer"
               >
-                <option value="">Todos los tipos</option>
-                {tipos.map((tipo) => (
-                  <option value={tipo}>{tipo}</option>
+                {ciudadesConBarrios.map((c) => (
+                  <option value={c.nombre}>{c.nombre}</option>
                 ))}
               </select>
               <svg
-                class="pointer-events-none absolute bottom-0.5 right-0 h-4 w-4 text-slate-700"
+                class="pointer-events-none absolute right-0 h-4 w-4 text-[#75716b]"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
               >
-                <path d="m6 9 6 6 6-6"></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m6 9 6 6 6-6"
+                />
               </svg>
-            </span>
-          </label>
+            </div>
+          </div>
 
-          <label class={`${campo} cursor-pointer`}>
-            <svg
-              class="h-6 w-6 shrink-0 text-slate-700"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
+          <!-- Campo Barrio -->
+          <div class="flex flex-col justify-center rounded-2xl border border-[#e8e4dc] bg-white px-4 py-2.5 transition-colors focus-within:border-[#1e1e24]">
+            <label
+              for="select-barrio"
+              class="text-[11.5px] font-normal text-[#75716b]"
             >
-              <rect width="20" height="12" x="2" y="6" rx="2"></rect>
-              <circle cx="12" cy="12" r="2"></circle>
-              <path d="M6 12h.01M18 12h.01"></path>
-            </svg>
-            <span class="relative flex min-w-0 flex-1 flex-col gap-0.5">
-              <span class="text-[13px] text-slate-700">Presupuesto máximo</span>
+              Barrio
+            </label>
+            <div class="relative flex items-center">
               <select
-                name="presupuesto"
-                class="w-full cursor-pointer appearance-none bg-transparent pr-6 text-[15px] text-slate-900 outline-none"
+                id="select-barrio"
+                name="barrio"
+                class="w-full appearance-none bg-transparent pr-6 text-[14.5px] font-normal text-[#1e1e24] outline-none cursor-pointer"
               >
-                <option value="">Sin límite</option>
-                {presupuestos[modalidadInicial].map((opcion) => (
-                  <option value={opcion.valor}>{opcion.texto}</option>
+                <option value="">Todos los barrios</option>
+                {ciudadesConBarrios[0].barrios.map((b) => (
+                  <option value={b}>{b}</option>
                 ))}
               </select>
               <svg
-                class="pointer-events-none absolute bottom-0.5 right-0 h-4 w-4 text-slate-700"
+                class="pointer-events-none absolute right-0 h-4 w-4 text-[#75716b]"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
               >
-                <path d="m6 9 6 6 6-6"></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m6 9 6 6 6-6"
+                />
               </svg>
-            </span>
-          </label>
+            </div>
+          </div>
         </div>
 
-        <label class={`${campo} cursor-text`}>
-          <svg
-            class="h-6 w-6 shrink-0 text-slate-700"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path>
-            <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle>
-          </svg>
-          <span class="flex min-w-0 flex-1 flex-col gap-0.5">
-            <span class="text-[13px] text-slate-700">
-              Código del inmueble
-              <span class="text-[11px] text-slate-400">· opcional</span>
-            </span>
-            <input
-              type="text"
-              name="codigo"
-              autocomplete="off"
-              placeholder="Ingresa el código"
-              class="w-full bg-transparent text-[15px] text-slate-900 outline-none placeholder:text-slate-400"
-            />
-          </span>
-        </label>
+        <!-- Fila 2: Valor máximo y Habitaciones -->
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <!-- Campo Valor Máximo -->
+          <div class="flex flex-col justify-center rounded-2xl border border-[#e8e4dc] bg-white px-4 py-2.5 transition-colors focus-within:border-[#1e1e24]">
+            <label
+              for="select-presupuesto"
+              class="text-[11.5px] font-normal text-[#75716b]"
+            >
+              Valor máximo
+            </label>
+            <div class="relative flex items-center">
+              <select
+                id="select-presupuesto"
+                name="budget"
+                class="w-full appearance-none bg-transparent pr-6 text-[14.5px] font-normal text-[#1e1e24] outline-none cursor-pointer"
+              >
+                {presupuestos.rent.map((p) => (
+                  <option value={p.valor}>{p.texto}</option>
+                ))}
+              </select>
+              <svg
+                class="pointer-events-none absolute right-0 h-4 w-4 text-[#75716b]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m6 9 6 6 6-6"
+                />
+              </svg>
+            </div>
+          </div>
 
+          <!-- Campo Habitaciones -->
+          <div class="flex flex-col justify-center rounded-2xl border border-[#e8e4dc] bg-white px-4 py-2.5 transition-colors focus-within:border-[#1e1e24]">
+            <label
+              for="select-habitaciones"
+              class="text-[11.5px] font-normal text-[#75716b]"
+            >
+              Habitaciones
+            </label>
+            <div class="relative flex items-center">
+              <select
+                id="select-habitaciones"
+                name="bedrooms"
+                class="w-full appearance-none bg-transparent pr-6 text-[14.5px] font-normal text-[#1e1e24] outline-none cursor-pointer"
+              >
+                <option value="">Cualquiera</option>
+                <option value="1">1+</option>
+                <option value="2">2+</option>
+                <option value="3">3+</option>
+                <option value="4">4+</option>
+              </select>
+              <svg
+                class="pointer-events-none absolute right-0 h-4 w-4 text-[#75716b]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m6 9 6 6 6-6"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón Principal -->
         <button
           type="submit"
-          class="mt-1 flex h-[clamp(48px,6.6vh,65px)] w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-[#2e3040] text-lg font-semibold text-white transition-colors hover:bg-[#1f212d]"
+          class="mt-2 flex h-[54px] w-full cursor-pointer items-center justify-center rounded-2xl bg-[#2e3040] text-[15px] font-medium text-white transition-colors hover:bg-[#1f212d]"
         >
-          <svg
-            class="h-6 w-6"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <circle cx="11" cy="11" r="8"></circle>
-            <path d="m21 21-4.3-4.3"></path>
-          </svg>
-          Buscar inmueble
+          Buscar inmuebles
         </button>
 
-        <p class="text-center text-xs leading-tight text-slate-500">
-          Explora inmuebles de ejemplo para esta presentación.
-        </p>
+        <!-- Acordeón / Enlace para buscar por código -->
+        <div class="mt-2">
+          <button
+            type="button"
+            id="toggle-codigo"
+            class="inline-flex items-center gap-1.5 text-[12.5px] text-[#75716b] hover:text-[#1e1e24] transition-colors"
+          >
+            <span
+              id="toggle-codigo-arrow"
+              class="text-[10px] transition-transform"
+            >
+              ▶
+            </span>
+            <span>¿Tienes el código del inmueble? Búscalo aquí</span>
+          </button>
 
-        <a
-          href="/search?mode=sale"
-          class="mt-1 flex w-full items-center justify-center rounded-xl bg-[#fef2c9] px-5 py-3 text-center text-[13px] font-medium text-[#73581c] transition-colors hover:bg-[#faeab5]"
-        >
-          ¿Qué vivienda puedo comprar con mi presupuesto? →
-        </a>
+          <div id="box-codigo" class="mt-2 hidden">
+            <input
+              type="text"
+              name="code"
+              placeholder="Ingresa el código (ej. P-101)"
+              class="w-full rounded-xl border border-[#e8e4dc] bg-white px-3.5 py-2 text-[13px] text-[#1e1e24] outline-none placeholder:text-[#9c9890] focus:border-[#1e1e24]"
+            />
+          </div>
+        </div>
       </form>
     </div>
   </div>
 </section>
 
 <script is:inline>
-  function iniciarBusqueda() {
+  function setupHeroSearch() {
     var form = document.getElementById("form-busqueda")
-    if (!form || form.dataset.listo === "true") return
-    form.dataset.listo = "true"
+    if (!form || form.dataset.ready === "true") return
+    form.dataset.ready = "true"
 
+    var ciudades = JSON.parse(form.dataset.ciudades || "[]")
     var presupuestos = JSON.parse(form.dataset.presupuestos || "{}")
-    var modalidad = form.elements.namedItem("modalidad")
-    var presupuesto = form.elements.namedItem("presupuesto")
-    var panelPublicar = document.getElementById("panel-publicar")
-    var tabs = Array.from(document.querySelectorAll("button[data-modalidad]"))
+    var selectCiudad = document.getElementById("select-ciudad")
+    var selectBarrio = document.getElementById("select-barrio")
+    var selectPresupuesto = document.getElementById("select-presupuesto")
+    var inputMode = document.getElementById("input-mode")
+    var title = document.getElementById("hero-search-title")
+    var modeBtns = Array.from(document.querySelectorAll(".mode-btn"))
 
-    var aplicar = function (valor) {
-      tabs.forEach(function (tab) {
-        tab.setAttribute(
-          "aria-pressed",
-          String(tab.dataset.modalidad === valor),
-        )
-      })
-
-      var esPublicar = valor === "publicar"
-      form.style.display = esPublicar ? "none" : ""
-      if (panelPublicar) panelPublicar.style.display = esPublicar ? "" : "none"
-      if (esPublicar) return
-
-      if (modalidad) modalidad.value = valor
-      var opciones = presupuestos[valor] || []
-      if (presupuesto) {
-        presupuesto.innerHTML = ""
-        var defOpt = document.createElement("option")
-        defOpt.value = ""
-        defOpt.textContent = "Sin límite"
-        presupuesto.appendChild(defOpt)
-        opciones.forEach(function (o) {
-          var opt = document.createElement("option")
-          opt.value = o.valor
-          opt.textContent = o.texto
-          presupuesto.appendChild(opt)
+    // Cambio de Ciudad -> actualiza lista de Barrios
+    if (selectCiudad && selectBarrio) {
+      selectCiudad.addEventListener("change", function () {
+        var ciudadSel = selectCiudad.value
+        var match = ciudades.find(function (c) {
+          return c.nombre.toLowerCase() === ciudadSel.toLowerCase()
         })
-      }
+        selectBarrio.innerHTML = '<option value="">Todos los barrios</option>'
+        if (match && match.barrios) {
+          match.barrios.forEach(function (b) {
+            var opt = document.createElement("option")
+            opt.value = b
+            opt.textContent = b
+            selectBarrio.appendChild(opt)
+          })
+        }
+      })
     }
 
-    tabs.forEach(function (tab) {
-      tab.addEventListener("click", function () {
-        aplicar(tab.dataset.modalidad || "")
+    // Cambio de Modalidad: Arrendar / Comprar
+    modeBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var mode = btn.dataset.mode
+        if (!mode) return
+
+        modeBtns.forEach(function (b) {
+          var isCurrent = b === btn
+          b.classList.toggle("font-medium", isCurrent)
+          b.classList.toggle("text-[#1e1e24]", isCurrent)
+          b.classList.toggle("font-normal", !isCurrent)
+          b.classList.toggle("text-[#75716b]", !isCurrent)
+          var indicator = b.querySelector(".mode-indicator")
+          if (indicator) {
+            indicator.classList.toggle("hidden", !isCurrent)
+          }
+        })
+
+        if (inputMode) inputMode.value = mode
+
+        // Actualizar título
+        if (title) {
+          title.textContent =
+            mode === "rent"
+              ? "Arrienda un hogar para llamar tuyo"
+              : "Compra el hogar que siempre soñaste"
+        }
+
+        // Actualizar opciones de presupuesto
+        if (selectPresupuesto && presupuestos[mode]) {
+          selectPresupuesto.innerHTML = ""
+          presupuestos[mode].forEach(function (p) {
+            var opt = document.createElement("option")
+            opt.value = p.valor
+            opt.textContent = p.texto
+            selectPresupuesto.appendChild(opt)
+          })
+        }
       })
     })
 
-    form.addEventListener("submit", function () {
-      var campos = Array.from(form.elements).filter(function (el) {
-        return (
-          (el instanceof HTMLInputElement || el instanceof HTMLSelectElement) &&
-          el.name !== "" &&
-          el.value.trim() === ""
-        )
+    // Toggle para desplegar campo de código
+    var toggleCodigo = document.getElementById("toggle-codigo")
+    var boxCodigo = document.getElementById("box-codigo")
+    var toggleArrow = document.getElementById("toggle-codigo-arrow")
+    if (toggleCodigo && boxCodigo) {
+      toggleCodigo.addEventListener("click", function () {
+        var isHidden = boxCodigo.classList.contains("hidden")
+        boxCodigo.classList.toggle("hidden", !isHidden)
+        if (toggleArrow) {
+          toggleArrow.style.transform = isHidden ? "rotate(90deg)" : ""
+          toggleArrow.style.display = "inline-block"
+        }
       })
-      campos.forEach(function (el) {
-        el.disabled = true
+    }
+
+    // Limpieza antes de submit: si seleccionó un barrio, enviarlo como parte de la búsqueda
+    form.addEventListener("submit", function () {
+      var ciudad = selectCiudad ? selectCiudad.value : ""
+      var barrio = selectBarrio ? selectBarrio.value : ""
+      if (barrio && selectCiudad) {
+        selectCiudad.value = barrio + ", " + ciudad
+      }
+
+      // Desactivar campos vacíos para que no ensucien la URL
+      var inputs = Array.from(form.elements)
+      inputs.forEach(function (el) {
+        if ((el.tagName === "INPUT" || el.tagName === "SELECT") && !el.value) {
+          el.disabled = true
+        }
       })
       setTimeout(function () {
-        campos.forEach(function (el) {
+        inputs.forEach(function (el) {
           el.disabled = false
         })
-      }, 0)
+      }, 100)
     })
   }
 
-  function initOnInteraction() {
-    iniciarBusqueda()
-    window.removeEventListener("pointerdown", initOnInteraction)
-    window.removeEventListener("focusin", initOnInteraction)
-  }
-  window.addEventListener("pointerdown", initOnInteraction, {
-    passive: true,
-    once: true,
-  })
-  window.addEventListener("focusin", initOnInteraction, {
-    passive: true,
-    once: true,
-  })
-  if ("requestIdleCallback" in window) {
-    requestIdleCallback(iniciarBusqueda, { timeout: 2000 })
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupHeroSearch)
   } else {
-    setTimeout(iniciarBusqueda, 100)
+    setupHeroSearch()
   }
 </script>

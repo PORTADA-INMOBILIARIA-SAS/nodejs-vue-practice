@@ -70,7 +70,10 @@ const sortWithPhotosFirst = (list: Property[]) =>
     return bHas - aHas
   })
 
-export async function getSearchResults(query: URLSearchParams) {
+export async function getSearchResults(
+  query: URLSearchParams,
+  isMapView: boolean = false,
+) {
   const read = (name: string, legacyName: string) =>
     query.get(name) ?? query.get(legacyName) ?? ""
 
@@ -223,10 +226,10 @@ export async function getSearchResults(query: URLSearchParams) {
     loadFailed = true
   }
 
-  // Carga para los mapas
+  // Carga para los mapas (solo si la vista actual es mapa, para no ralentizar la lista normal)
   let allItemsForMap: Property[] = visible
   try {
-    if (!favoriteCodes.length && !code) {
+    if (isMapView && !favoriteCodes.length && !code) {
       const loc = resolveLocation(city)
       const typeId = resolvePropertyTypeId(propertyType)
       const hasUnresolvedText = Boolean(city && loc.cityId === 0)
@@ -249,7 +252,7 @@ export async function getSearchResults(query: URLSearchParams) {
         if (!first || first.items.length === 0) return []
 
         let items = [...first.items]
-        const pages = Math.min(first.totalPages, 10)
+        const pages = Math.min(first.totalPages, 3)
 
         if (pages > 1) {
           const extraPages = Array.from({ length: pages - 1 }, (_, i) => i + 2)
