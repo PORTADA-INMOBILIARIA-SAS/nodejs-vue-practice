@@ -47,16 +47,17 @@ const enlaceEtapas = { texto: "Quiero conocerlas", href: "/pqrs" }
 
 <section
   aria-labelledby="titulo-proceso"
-  class="seccion-puertas mx-auto w-full max-w-[1760px] bg-white px-5 pb-[clamp(48px,9vh,100px)] sm:px-8 lg:px-[8.2%]"
+  class="seccion-proceso mx-auto w-full max-w-[1580px] bg-white px-5 pb-16 sm:px-8 lg:px-0 lg:pb-[100px]"
+  style="--escala: 0.8"
 >
   <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
     <div>
-      <p class="text-[10px] font-medium uppercase tracking-[0.25em] text-slate-500">
+      <p class="text-[11px] font-medium uppercase tracking-[0.25em] text-[#6b6b75]">
         Paso a paso, contigo
       </p>
       <h2
         id="titulo-proceso"
-        class="mt-4 text-[length:clamp(24px,2.5vw,36px)] font-light leading-[1.15] tracking-tight text-slate-800"
+        class="mt-5 text-[28px] font-normal leading-[1.15] tracking-[-0.03em] text-[#1e1e24] sm:text-[34px] lg:text-[42px]"
       >
         Del primer clic a tus nuevas llaves.
       </h2>
@@ -64,50 +65,59 @@ const enlaceEtapas = { texto: "Quiero conocerlas", href: "/pqrs" }
 
     <a
       href={enlaceEncabezado.href}
-      class="shrink-0 text-[13px] text-slate-900 hover:underline sm:pt-8"
+      class="shrink-0 text-[15px] text-[#1e1e24] hover:underline sm:pt-9"
     >
       {enlaceEncabezado.texto} →
     </a>
   </div>
 
-  <ol class="mt-12 grid grid-cols-1 gap-x-[18px] gap-y-8 sm:grid-cols-2 lg:grid-cols-5">
+  <ol class="mt-14 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-5">
     {pasos.map((paso) => (
-      <li class={`border-t-2 pt-8 ${paso.linea}`}>
-        <span class="text-[13px] text-slate-500">{paso.numero}</span>
-        <h3 class="mt-7 text-[17px] font-normal text-slate-900">
+      <li class={`border-t-2 pt-9 ${paso.linea}`}>
+        <span class="text-[15px] text-[#6b6b75]">{paso.numero}</span>
+        <h3 class="mt-8 text-[20px] font-normal text-[#1e1e24]">
           {paso.titulo}
         </h3>
-        <p class="mt-4 text-[13px] leading-[1.7] text-slate-500">
+        <p class="mt-4 text-[15px] leading-[26px] text-[#55555e]">
           {paso.texto}
         </p>
       </li>
     ))}
   </ol>
 
-  <div class="mt-[clamp(48px,8vh,80px)] rounded-[28px] border border-slate-200 bg-white px-6 py-10 text-center">
-    <p class="text-[10px] font-medium uppercase tracking-[0.25em] text-slate-500">
+  <div class="mt-20 border-t border-[#ece6dc] pb-6 pt-14 text-center">
+    <p class="text-[11.5px] font-medium uppercase tracking-[0.25em] text-[#6b6b75]">
       Contigo en cada etapa
     </p>
 
-    <div class="mt-7 flex flex-wrap items-center justify-center gap-x-[clamp(32px,5vw,72px)] gap-y-3">
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:gap-x-12 lg:gap-x-[72px]">
       {etapas.map((etapa) => (
-        <a
-          href={etapa.href}
-          class="text-[length:clamp(20px,1.8vw,26px)] font-normal text-slate-800 transition-colors hover:text-red-600"
-        >
+        <span class="text-[26px] font-normal tracking-[-0.02em] text-[#1e1e24] sm:text-[32px] lg:text-[40px]">
           {etapa.texto}
-        </a>
+        </span>
       ))}
     </div>
 
-    <p class="mt-7 text-[12.5px] text-slate-500">
-      Explora el diseño de las alternativas para tu inmueble.
+    <p class="mt-8 text-[14px] text-[#55555e]">
+      Explora el diseño de las alternativas para tu inmueble.{" "}
       <a
         href={enlaceEtapas.href}
-        class="text-slate-700 underline underline-offset-2"
+        class="text-[#1e1e24] underline decoration-[#cfcac0] underline-offset-4 transition-colors hover:decoration-[#1e1e24]"
       >
         {enlaceEtapas.texto} →
       </a>
     </p>
   </div>
 </section>
+
+<style is:global>
+  .seccion-proceso,
+  .seccion-proceso * {
+    font-family: "Poppins", sans-serif;
+  }
+  @media (min-width: 1024px) {
+    .seccion-proceso {
+      zoom: var(--escala, 1);
+    }
+  }
+</style>

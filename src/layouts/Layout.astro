@@ -1,6 +1,7 @@
 ---
 import Footer from "../components/Footer.astro"
 import "../styles/global.css"
+import "@fontsource/poppins/200.css"
 
 interface Props {
   title: string
@@ -24,20 +25,6 @@ const {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <slot name="head" />
-    <link
-      rel="preload"
-      href="/font/RobotoCondensed-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/font/poppins-400.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
     <title>{title}</title>
   </head>
   <body class="min-h-screen 2xl:text-lg bg-white">
@@ -120,11 +107,14 @@ const {
       }
 
       * {
-        font-family: "RobotoCondensed-Regular", sans-serif;
+        font-family: "Poppins", sans-serif;
       }
 
       body {
+        font-family: "Poppins", sans-serif;
+        font-weight: 300;
         background-color: #ffffff;
+        color: #2a2a33;
       }
 
       select {

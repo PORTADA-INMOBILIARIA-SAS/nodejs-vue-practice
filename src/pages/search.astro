@@ -21,7 +21,10 @@ import "../styles/searchMap.css"
 
 export const prerender = false
 
-const searchData = await getSearchResults(Astro.url.searchParams)
+const isMapView =
+  (Astro.url.searchParams.get("view") || "list").toLowerCase() === "map"
+
+const searchData = await getSearchResults(Astro.url.searchParams, isMapView)
 const {
   mode,
   city,
@@ -54,9 +57,6 @@ const pageLink = (page: number) => {
   params.set("page", String(page))
   return `/search?${params.toString()}`
 }
-
-const isMapView =
-  (Astro.url.searchParams.get("view") || "list").toLowerCase() === "map"
 
 Astro.response.headers.set(
   "Cache-Control",
@@ -216,6 +216,24 @@ Astro.response.headers.set(
           </>
         )}
       </div>
+    </div>
+
+    <!-- Barra flotante inferior de comparación -->
+    <div
+      id="floating-compare-bar"
+      class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 hidden w-[90%] max-w-[480px] items-center justify-between gap-4 rounded-full bg-[#fdf8e6] border border-[#e8dfc5] px-6 py-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all animate-bounce-subtle"
+    >
+      <div class="flex items-center gap-2 text-[14px] font-normal text-[#1e1e24]">
+        <span id="compare-count-text">Comparando 1 de 3 inmuebles</span>
+      </div>
+      <a
+        href="/compare"
+        id="btn-go-compare"
+        class="inline-flex items-center gap-2 rounded-full bg-[#ffaaa0] px-5 py-2 text-[13.5px] font-medium text-[#1e1e24] shadow-sm transition-all hover:bg-[#ff958a]"
+      >
+        <span>Ver comparación</span>
+        <span aria-hidden="true">→</span>
+      </a>
     </div>
   </main>
 </Layout>

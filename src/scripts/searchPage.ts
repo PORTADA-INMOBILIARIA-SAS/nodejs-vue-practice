@@ -25,7 +25,9 @@ async function initMap() {
   if (!mapElement) return
 
   const apiKey =
-    mapElement.dataset.apiKey || "AIzaSyAi_z_AaYF8F08wzDeqPd4UYS9iQzWpxXk"
+    mapElement.dataset.apiKey ||
+    (import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY as string) ||
+    ""
 
   let Map: any, LatLngBounds: any, AdvancedMarker: any
   try {
@@ -598,6 +600,109 @@ export function initSearchPage() {
       )
     }
   }
+
+  // ─── Manejo de Comparación de Inmuebles ─────────────────────────────────────
+  const COMPARE_KEY = "portada-compare-list"
+
+  function getCompareList(): any[] {
+    try {
+      const data = JSON.parse(localStorage.getItem(COMPARE_KEY) || "[]")
+      return Array.isArray(data) ? data : []
+    } catch {
+      return []
+    }
+  }
+
+  function saveCompareList(list: any[]) {
+    try {
+      localStorage.setItem(COMPARE_KEY, JSON.stringify(list))
+    } catch {}
+  }
+
+  function updateCompareUI() {
+    const list = getCompareList()
+    const codes = new Set(list.map((item) => String(item.code)))
+
+    document.querySelectorAll<HTMLElement>(".btn-compare").forEach((btn) => {
+      const code = btn.dataset.compare || ""
+      const isComparing = codes.has(code)
+
+      const iconSpan = btn.querySelector(".compare-icon")
+      const textSpan = btn.querySelector(".compare-text")
+
+      if (isComparing) {
+        btn.classList.add("text-[#b9382c]", "font-medium")
+        btn.classList.remove("text-[#5e5e68]")
+        if (iconSpan) iconSpan.textContent = "✓"
+        if (textSpan) textSpan.textContent = "Comparando"
+      } else {
+        btn.classList.remove("text-[#b9382c]", "font-medium")
+        btn.classList.add("text-[#5e5e68]")
+        if (iconSpan) iconSpan.textContent = "+"
+        if (textSpan) textSpan.textContent = "Comparar"
+      }
+    })
+
+    const floatingBar = document.getElementById("floating-compare-bar")
+    const countText = document.getElementById("compare-count-text")
+    const goCompareBtn = document.getElementById(
+      "btn-go-compare",
+    ) as HTMLAnchorElement | null
+
+    if (floatingBar && countText) {
+      if (list.length > 0) {
+        floatingBar.classList.remove("hidden")
+        floatingBar.classList.add("flex")
+        countText.textContent = `Comparando ${list.length} de 3 inmuebles`
+        if (goCompareBtn) {
+          const codesParam = list.map((i) => i.code).join(",")
+          goCompareBtn.href = `/compare?codes=${encodeURIComponent(codesParam)}`
+        }
+      } else {
+        floatingBar.classList.add("hidden")
+        floatingBar.classList.remove("flex")
+      }
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>(".btn-compare").forEach((btn) => {
+    if (btn.dataset.compareBound === "true") return
+    btn.dataset.compareBound = "true"
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+
+      const code = btn.dataset.compare || ""
+      if (!code) return
+
+      let list = getCompareList()
+      const existingIdx = list.findIndex((item) => String(item.code) === code)
+
+      if (existingIdx >= 0) {
+        list.splice(existingIdx, 1)
+      } else {
+        if (list.length >= 3) {
+          alert(
+            "Puedes comparar hasta 3 inmuebles al mismo tiempo. Quita uno para agregar este.",
+          )
+          return
+        }
+        let dataObj: any = { code }
+        try {
+          if (btn.dataset.compareData) {
+            dataObj = JSON.parse(btn.dataset.compareData)
+          }
+        } catch {}
+        list.push(dataObj)
+      }
+
+      saveCompareList(list)
+      updateCompareUI()
+    })
+  })
+
+  updateCompareUI()
 }
 
 if (document.readyState === "loading") {

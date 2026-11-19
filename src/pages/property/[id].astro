@@ -16,6 +16,11 @@ const { id } = Astro.params
 let inmueble: any = null
 inmueble = await fetchPropertyDetailCached(id || "")
 
+Astro.response.headers.set(
+  "Cache-Control",
+  "public, max-age=180, s-maxage=600, stale-while-revalidate=1200",
+)
+
 const galeria = extraerFotos(inmueble)
 
 const displayPhotos: string[] = []

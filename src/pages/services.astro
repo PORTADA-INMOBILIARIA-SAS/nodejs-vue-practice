@@ -2,115 +2,82 @@
 import Layout from "../layouts/Layout.astro"
 import Navbar from "../components/navbar.astro"
 
-const services = [
+const servicios = [
   {
-    title: "Pagos con Paloma",
-    description:
-      "Consulta tu cuenta, simula el pago y conserva el comprobante.",
-    href: "/pay-rent",
-    background: "bg-[#fde4de]",
-    icon: [
-      "M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1",
-      "M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4",
-    ],
+    titulo: "Arrendamientos",
+    descripcion:
+      "Arrienda o pon en arriendo tu inmueble con acompañamiento de principio a fin.",
+    href: "/search?mode=rent",
+    fondo: "bg-[#e5eef6]",
+    boton: "",
+    icono: "home",
   },
   {
-    title: "Autogestión",
-    description: "Cuentas, contratos y certificados en un solo lugar.",
-    href: "/self-management",
-    background: "bg-[#e4eef6]",
-    icon: [
-      "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2",
-      "M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z",
-    ],
+    titulo: "Ventas",
+    descripcion: "Compra o vende tu inmueble con asesoría.",
+    href: "/search?mode=sale",
+    fondo: "bg-[#fff0c9]",
+    boton: "",
+    icono: "key",
   },
   {
-    title: "Mi espacio propietario",
-    description: "Ingresos, descuentos y decisiones de tus inmuebles.",
-    href: "/owners",
-    background: "bg-[#fff0c4]",
-    icon: [
-      "M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8",
-      "M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z",
-    ],
-  },
-  {
-    title: "Mantenimientos",
-    description: "Reporta, sigue la reparación y revisa propuestas.",
-    href: "/maintenance",
-    background: "bg-[#fde4de]",
-    icon: [
-      "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z",
-    ],
-  },
-  {
-    title: "Anticipo de cánones",
-    description: "Evalúa hasta 10 meses con tu inmueble arrendado.",
-    href: "/rent-advance",
-    background: "bg-[#e6f0fb]",
-    icon: [
-      "M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z",
-      "M14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z",
-      "M6 12h.01",
-      "M18 12h.01",
-    ],
-  },
-  {
-    title: "Mis solicitudes",
-    description: "Consulta visitas, estudios, contratos y entregas.",
-    href: "/my-requests",
-    background: "bg-[#e4eef6]",
-    icon: [
-      "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z",
-      "M14 2v4a2 2 0 0 0 2 2h4",
-      "M10 9H8",
-      "M16 13H8",
-      "M16 17H8",
-    ],
-  },
-  {
-    title: "Peticiones y reclamos",
-    description: "Cuéntanos qué necesitas y sigue la respuesta.",
+    titulo: "Mantenimientos",
+    descripcion: "Cuidamos tu inmueble con reparaciones y mantenimientos.",
     href: "/pqrs",
-    background: "bg-[#fde4de]",
-    icon: ["M7.9 20A9 9 0 1 0 4 16.1L2 22Z", "M8 10h8", "M8 14h5"],
+    fondo: "bg-[#fee4df]",
+    boton: "",
+    icono: "wrench",
   },
   {
-    title: "Financiación",
-    description: "Explora alternativas para comprar vivienda.",
-    href: "/financing",
-    background: "bg-[#fff0c4]",
-    icon: [
-      "m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4",
-      "m21 2-9.6 9.6",
-      "M13 15.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0Z",
-    ],
-  },
-  {
-    title: "Contacto y sedes",
-    description: "Encuentra acompañamiento en cada paso.",
+    titulo: "Avalúos",
+    descripcion: "Conoce el valor real de tu inmueble.",
     href: "/contact",
-    background: "bg-[#fff0c4]",
-    icon: [
-      "M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z",
-      "M15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z",
-    ],
+    fondo: "bg-[#e5eef6]",
+    boton: "",
+    icono: "tag",
+  },
+  {
+    titulo: "Anticipos",
+    descripcion: "Recibe hasta 10 meses de canon de tu inmueble arrendado.",
+    href: "/self-management",
+    fondo: "bg-[#fff0c9]",
+    boton: "!border-transparent !bg-[#e5eef6] !text-[#1f4e79]",
+    icono: "cash",
+  },
+  {
+    titulo: "Financiación",
+    descripcion: "Financia tu primer canon o tu vivienda con Más Cowork.",
+    href: "/financing",
+    fondo: "bg-[#e5eef6]",
+    boton: "!border-transparent !bg-[#fff0c9] !text-[#7a5c0a]",
+    icono: "wallet",
   },
 ]
 ---
 
 <Layout
-  title="Servicios - Portada Inmobiliaria"
-  description="Pagos, autogestión, mantenimiento y más servicios de Portada Inmobiliaria para inquilinos y propietarios."
+  title="Nosotros y servicios - Portada Inmobiliaria"
+  description="Detrás de cada puerta, una historia. Acompañamos a quienes buscan un lugar y a quienes confían su inmueble."
   showFooter={true}
 >
-  <Navbar />
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+    />
+  </Fragment>
+  <Navbar active="servicios" />
 
-  <main class="w-full bg-[#fffdf9] text-[#2a2a33] pb-24">
-    <div class="mx-auto w-full px-6 lg:px-0 lg:w-[76vw] max-w-[1600px] pt-7">
+  <main
+    class="pagina-servicios min-h-screen w-full bg-[#fdfcf9] pb-28 text-[#1e1e24]"
+    style="--escala: 0.8"
+  >
+    <div class="contenido-servicios mx-auto w-full max-w-[1580px] px-6 pt-8 sm:px-10 lg:px-0 lg:pt-6">
       <nav
         aria-label="Ruta de navegación"
-        class="flex items-center gap-3 text-[13px] text-[#5e5e68]"
+        class="mb-10 flex items-center gap-4 text-[14px] text-[#55555e] lg:mb-[47px]"
       >
         <a href="/" class="hover:underline">
           Inicio
@@ -119,69 +86,249 @@ const services = [
         <span>Presentación Portada</span>
       </nav>
 
-      <p class="mt-[46px] text-[11px] font-medium uppercase tracking-[0.25em] text-[#6b6b75]">
-        Siempre cerca
-      </p>
+      <section class="mb-14">
+        <p class="mb-6 text-[11px] font-medium uppercase tracking-[0.25em] text-[#6b6b75]">
+          Somos Portada
+        </p>
+        <h1 class="text-[34px] sm:text-[42px] lg:text-[50px] font-normal leading-[1.1] tracking-[-0.03em] text-[#1e1e24]">
+          Detrás de cada puerta, una historia.
+        </h1>
+        <p class="mt-[26px] text-[17.5px] text-[#4a4a55]">
+          Acompañamos a quienes buscan un lugar y a quienes confían su inmueble.
+        </p>
 
-      <h1 class="mt-4 text-[34px] sm:text-[44px] xl:text-[52px] font-normal leading-[1.1] tracking-[-0.03em] text-[#2a2a33]">
-        ¿Qué necesitas hacer hoy?
-      </h1>
+        <div class="mt-[42px] grid grid-cols-1 overflow-hidden rounded-[36px] border border-[#eee9df] bg-[#f4f0e8] lg:grid-cols-[809fr_771fr]">
+          <div class="relative min-h-[380px] w-full overflow-hidden sm:min-h-[460px] lg:min-h-[526px]">
+            <img
+              src="/img/familia-mesa.jpg"
+              alt="Personas, espacios y nuevos comienzos"
+              class="h-full w-full object-cover"
+              loading="eager"
+            />
+          </div>
 
-      <p class="mt-5 text-[15px] font-light text-[#5e5e68]">
-        Cada servicio, una experiencia completa dentro de Portada.
-      </p>
-
-      <div class="mt-[62px] grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-[27px]">
-        {services.map((service) => (
-          <article
-            class={`relative flex min-h-[326px] flex-col rounded-[28px] border border-[#ece6df] p-[37px] transition-shadow hover:shadow-md ${service.background}`}
-          >
-            <div class="flex h-[58px] w-[58px] items-center justify-center rounded-[16px] bg-white/70 text-[#2a2a33]">
-              <svg
-                class="h-6 w-6"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                {service.icon.map((d) => (
-                  <path d={d} />
-                ))}
-              </svg>
-            </div>
-
-            <h2 class="mt-8 text-[26px] font-normal leading-[1.2] tracking-[-0.01em] text-[#2a2a33]">
-              {service.title}
-            </h2>
-
-            <p class="mt-4 max-w-[340px] text-[13.5px] leading-[25px] text-[#5c5c5c]">
-              {service.description}
+          <div class="flex flex-col justify-center p-8 sm:p-12 lg:p-[52px]">
+            <p class="text-[11px] font-medium uppercase tracking-[0.22em] text-[#787884]">
+              Profesionales en vivir mejor
             </p>
-
-            <a
-              href={service.href}
-              class="mt-auto inline-flex items-center gap-2.5 pt-8 text-[12.5px] font-medium text-[#2a2a33] after:absolute after:inset-0 after:rounded-[28px] hover:underline"
-            >
-              <span>Explorar</span>
-              <svg
-                class="h-4 w-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
+            <h2 class="mt-[22px] text-[32px] sm:text-[40px] lg:text-[44px] font-normal leading-[1.3] lg:leading-[58px] tracking-[-0.02em] text-[#1e1e24]">
+              Personas, espacios
+              <br />y nuevos comienzos.
+            </h2>
+            <p class="mt-6 max-w-[520px] text-[16.5px] leading-[31px] text-[#55555e]">
+              Una experiencia cercana para encontrar, habitar y cuidar un
+              inmueble.
+            </p>
+            <div class="mt-[46px]">
+              <a
+                href="https://wa.me/573000000000?text=Hola,%20deseo%20conocer%20las%20sedes%20de%20Portada%20Inmobiliaria"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-3 text-[15px] font-medium text-[#1e1e24] hover:underline"
               >
-                <path d="M5 12h14m-6-6 6 6-6 6" />
-              </svg>
-            </a>
-          </article>
-        ))}
-      </div>
+                <span>Encuentra tu sede</span>
+                <svg
+                  class="h-[18px] w-[18px]"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5 12h14m-6-6 6 6-6 6"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-20">
+        <h2 class="text-[30px] sm:text-[38px] lg:text-[40px] font-normal leading-[1.15] tracking-[-0.02em] text-[#1e1e24]">
+          Nuestros servicios
+        </h2>
+
+        <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+          {servicios.map((s) => (
+            <article
+              class={`flex min-h-[330px] flex-col rounded-[36px] p-8 transition-all hover:shadow-md lg:min-h-[362px] lg:p-10 ${s.fondo}`}
+            >
+              <div class="flex h-[65px] w-[65px] items-center justify-center rounded-[18px] bg-white/70 text-[#2a2a33]">
+                {s.icono === "home" && (
+                  <svg
+                    class="h-[30px] w-[30px]"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m3 12 2-2m0 0 7-7 7 7M5 10v10a1 1 0 0 0 1 1h3m10-11 2 2m-2-2v10a1 1 0 0 1-1 1h-3m-6 0a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1m-6 0h6"
+                    />
+                  </svg>
+                )}
+                {s.icono === "key" && (
+                  <svg
+                    class="h-[30px] w-[30px]"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="7.5" cy="8.5" r="5.5" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m21 22-9.6-9.6"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m15.5 16.5 3-3L22 17l-3 3"
+                    />
+                  </svg>
+                )}
+                {s.icono === "wrench" && (
+                  <svg
+                    class="h-[30px] w-[30px]"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
+                    />
+                  </svg>
+                )}
+                {s.icono === "tag" && (
+                  <svg
+                    class="h-[30px] w-[30px]"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6 6h.008v.008H6V6Z"
+                    />
+                  </svg>
+                )}
+                {s.icono === "cash" && (
+                  <svg
+                    class="h-[30px] w-[30px]"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    viewBox="0 0 24 24"
+                  >
+                    <rect
+                      width="20"
+                      height="14"
+                      x="2"
+                      y="5"
+                      rx="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6 12h.01M18 12h.01"
+                    />
+                  </svg>
+                )}
+                {s.icono === "wallet" && (
+                  <svg
+                    class="h-[30px] w-[30px]"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"
+                    />
+                  </svg>
+                )}
+              </div>
+
+              <h3 class="mt-[31px] text-[22px] font-medium leading-[30px] text-[#1e1e24]">
+                {s.titulo}
+              </h3>
+
+              <p class="text-[15px] font-normal leading-[28px] text-[#55555e]">
+                {s.descripcion}
+              </p>
+
+              <div class="mt-auto pt-7">
+                <a
+                  href={s.href}
+                  class={`inline-flex h-[60px] w-full items-center justify-center gap-3 rounded-[18px] border border-[#e8e2d8] bg-[#fffdfa] text-[16px] font-medium text-[#1e1e24] transition-all hover:brightness-[0.98] ${s.boton}`}
+                >
+                  <span>Conocer más</span>
+                  <svg
+                    class="h-[18px] w-[18px]"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M5 12h14m-6-6 6 6-6 6"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
   </main>
 </Layout>
+
+<style is:global>
+  .pagina-servicios,
+  .pagina-servicios * {
+    font-family: "Poppins", sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+  @media (min-width: 1024px) {
+    .pagina-servicios .contenido-servicios {
+      zoom: var(--escala, 1);
+    }
+  }
+</style>

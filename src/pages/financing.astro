@@ -1,0 +1,465 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Navbar from "../components/navbar.astro"
+
+const etiqueta = "mb-[11px] block text-[14px] font-medium text-[#6b5a12]"
+const campo =
+  "h-[57px] w-full rounded-[14px] border border-[#eadfb2] bg-[#fffbf1] px-4 text-[15px] font-normal text-[#2a2a26] outline-none transition-colors focus:border-[#7a641a] focus:ring-1 focus:ring-[#7a641a]"
+
+const opciones = [
+  {
+    valor: "credito",
+    titulo: "Crédito hipotecario",
+    texto:
+      "El banco te presta y la vivienda queda hipotecada a tu nombre desde el inicio.",
+    marcado: true,
+  },
+  {
+    valor: "leasing",
+    titulo: "Leasing habitacional",
+    texto:
+      "El banco compra la vivienda, tú pagas un canon mensual y al final ejerces la opción de compra.",
+    marcado: false,
+  },
+  {
+    valor: "mixto",
+    titulo: "Mixto",
+    texto: "Combina ambas modalidades y ajusta cuánto destinas a cada una.",
+    marcado: false,
+  },
+]
+---
+
+<Layout title="Financiación de vivienda - Portada Inmobiliaria">
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+    />
+  </Fragment>
+  <Navbar />
+
+  <main
+    class="pagina-financiacion min-h-screen w-full bg-[#fcfbf8] pb-24 text-[#1e1e24]"
+    style="--escala: 0.89"
+  >
+    <div class="contenido-calculadora mx-auto w-full max-w-[1470px] px-6 pb-12 pt-7">
+      <nav
+        aria-label="Ruta de navegación"
+        class="mb-10 flex items-center gap-4 text-[13px] text-[#55555e]"
+      >
+        <a href="/" class="hover:underline">
+          Inicio
+        </a>
+        <span aria-hidden="true">/</span>
+        <span>Presentación Portada</span>
+      </nav>
+
+      <div class="mb-[37px]">
+        <p class="mb-6 text-[11px] font-medium uppercase tracking-[0.25em] text-[#5e5e68]">
+          Financiación de vivienda
+        </p>
+        <h1 class="mb-6 text-[34px] font-normal leading-[1.1] tracking-[-0.03em] text-[#1e1e24] lg:text-[46px]">
+          Más cerca de tener las llaves.
+        </h1>
+        <p class="text-[16px] font-light text-[#55555e]">
+          Compara tu escenario y prepara el siguiente paso.
+        </p>
+      </div>
+
+      <div class="rounded-[32px] bg-[#fff0c9] p-6 sm:p-[38px]">
+        <h2 class="mb-6 text-[24px] font-normal text-[#6b5514]">
+          ¿Cómo quieres financiar tu vivienda?
+        </h2>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {opciones.map((o) => (
+            <label class="tipo-opcion relative block cursor-pointer rounded-[22px] border-2 border-[#ead9a0] bg-[#fff4d4] px-5 pb-6 pt-6 transition-colors hover:border-[#cdb66a]">
+              <div class="flex items-center gap-[15px] pr-8">
+                <input
+                  type="radio"
+                  name="modalidad"
+                  value={o.valor}
+                  checked={o.marcado}
+                  class="h-[22px] w-[22px] shrink-0 cursor-pointer accent-[#7a5c0a]"
+                />
+                <span class="text-[17px] font-medium text-[#6b5514]">
+                  {o.titulo}
+                </span>
+              </div>
+              <p class="mt-[11px] pl-[37px] text-[13px] leading-[21px] text-[#7a6f47]">
+                {o.texto}
+              </p>
+              <button
+                type="button"
+                class="absolute right-3 top-[15px] flex h-[25px] w-[25px] items-center justify-center rounded-full border border-[#7a641a] text-[12px] text-[#7a641a] transition-colors hover:bg-[#7a641a] hover:text-white"
+                title={`Más información sobre ${o.titulo}`}
+                aria-label={`Más información sobre ${o.titulo}`}
+              >
+                i
+              </button>
+            </label>
+          ))}
+        </div>
+
+        <div
+          id="panel-mixto"
+          hidden
+          class="mt-[22px] rounded-[26px] bg-[#fffdf6] px-[22px] pb-[26px] pt-6"
+        >
+          <label
+            for="porcentaje-credito"
+            class="block text-[15px] font-normal text-[#6b5514]"
+          >
+            Porcentaje por crédito hipotecario
+          </label>
+          <input
+            id="porcentaje-credito"
+            type="range"
+            min="0"
+            max="100"
+            step="5"
+            value="50"
+            class="rango-mixto mt-[22px] block w-full"
+          />
+          <p
+            id="texto-mixto"
+            class="mt-[22px] text-[16px] font-medium text-[#6b5514]"
+          >
+            50 % crédito hipotecario / 50 % leasing
+          </p>
+          <p class="mt-4 text-[12px] leading-[18px] text-[#6b6b60]">
+            Repartimos el monto a financiar y el aporte en esa proporción. La
+            viabilidad de la combinación debe confirmarse con tu asesor.
+          </p>
+        </div>
+
+        <form
+          id="form-calculadora"
+          class="mt-[30px] space-y-6"
+          onsubmit="event.preventDefault();"
+        >
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div>
+              <label for="valor-vivienda" class={etiqueta}>
+                Valor de la vivienda (COP)
+              </label>
+              <input
+                type="number"
+                id="valor-vivienda"
+                value="450000000"
+                step="5000000"
+                class={campo}
+                placeholder="450000000"
+              />
+            </div>
+
+            <div>
+              <label for="cuota-inicial" class={etiqueta}>
+                Cuota inicial o ahorros (COP)
+              </label>
+              <input
+                type="number"
+                id="cuota-inicial"
+                value="135000000"
+                step="1000000"
+                class={campo}
+                placeholder="135000000"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div>
+              <label for="plazo-anos" class={etiqueta}>
+                Plazo (años)
+              </label>
+              <input
+                type="number"
+                id="plazo-anos"
+                value="20"
+                min="5"
+                max="30"
+                class={campo}
+                placeholder="20"
+              />
+            </div>
+
+            <div>
+              <label for="ciudad-inmueble" class={etiqueta}>
+                Ciudad del inmueble
+              </label>
+              <select id="ciudad-inmueble" class={`${campo} cursor-pointer`}>
+                <option value="Medellín" selected>
+                  Medellín
+                </option>
+                <option value="Envigado">Envigado</option>
+                <option value="Sabaneta">Sabaneta</option>
+                <option value="Itagüí">Itagüí</option>
+                <option value="Bello">Bello</option>
+                <option value="Rionegro">Rionegro</option>
+                <option value="Bogotá">Bogotá</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="w-full md:w-[calc(50%-12px)]">
+            <label for="entidad-bancaria" class={etiqueta}>
+              Entidad del ejemplo
+            </label>
+            <select id="entidad-bancaria" class={`${campo} cursor-pointer`}>
+              <option value="Bancolombia" selected>
+                Bancolombia
+              </option>
+              <option value="Davivienda">Davivienda</option>
+              <option value="BBVA">BBVA</option>
+              <option value="Banco de Bogotá">Banco de Bogotá</option>
+            </select>
+          </div>
+
+          <div class="pt-6">
+            <button
+              type="submit"
+              id="btn-simular"
+              class="inline-flex h-[54px] cursor-pointer items-center justify-center gap-1.5 rounded-[14px] border border-[#7a641a] bg-transparent px-6 text-[14.5px] font-medium text-[#5c4a16] transition-colors hover:bg-[#fbe7ac]"
+            >
+              <span>Simular y comparar</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <p class="max-w-[780px] text-[13px] font-normal leading-[26px] text-[#7a6f47]">
+            Tasas ilustrativas para esta demostración. La tasa final depende del
+            estudio de crédito de cada entidad. Todas las condiciones son
+            ejemplos; no representan ofertas vigentes ni alianzas confirmadas.
+          </p>
+        </form>
+      </div>
+
+      <div id="seccion-resultados" class="mt-14 space-y-6">
+        <div class="flex items-center justify-between">
+          <p class="text-[12px] font-medium uppercase tracking-[0.2em] text-[#6b6b75]">
+            Comparativo de entidades
+          </p>
+          <span class="text-[13px] text-[#55555e]" id="info-monto-prestamo">
+            Monto a financiar: $315.000.000
+          </span>
+        </div>
+
+        <div
+          class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4"
+          id="cards-entidades"
+        ></div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style is:global>
+  .pagina-financiacion,
+  .pagina-financiacion * {
+    font-family: "Poppins", sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+  @media (min-width: 1024px) {
+    .pagina-financiacion .contenido-calculadora {
+      zoom: var(--escala, 1);
+    }
+  }
+  .pagina-financiacion .rango-mixto {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 18px;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .pagina-financiacion .rango-mixto::-webkit-slider-runnable-track {
+    height: 9px;
+    border: 1px solid #d9d9d4;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to right,
+      #7a5a00 0,
+      #7a5a00 var(--p, 50%),
+      #ececea var(--p, 50%),
+      #ececea 100%
+    );
+  }
+  .pagina-financiacion .rango-mixto::-moz-range-track {
+    height: 9px;
+    border: 1px solid #d9d9d4;
+    border-radius: 9999px;
+    background: #ececea;
+  }
+  .pagina-financiacion .rango-mixto::-moz-range-progress {
+    height: 9px;
+    border-radius: 9999px;
+    background: #7a5a00;
+  }
+  .pagina-financiacion .rango-mixto::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    margin-top: -4px;
+    border: 0;
+    border-radius: 50%;
+    background: #7a5a00;
+  }
+  .pagina-financiacion .rango-mixto::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: 0;
+    border-radius: 50%;
+    background: #7a5a00;
+  }
+  .pagina-financiacion .tipo-opcion:has(input:checked) {
+    border-color: #6e5410;
+  }
+</style>
+
+<script>
+  function setupFinanciacion() {
+    const radios = document.querySelectorAll<HTMLInputElement>(
+      'input[name="modalidad"]',
+    )
+    const valorInput = document.getElementById(
+      "valor-vivienda",
+    ) as HTMLInputElement | null
+    const cuotaInput = document.getElementById(
+      "cuota-inicial",
+    ) as HTMLInputElement | null
+    const plazoInput = document.getElementById(
+      "plazo-anos",
+    ) as HTMLInputElement | null
+    const entidadSelect = document.getElementById(
+      "entidad-bancaria",
+    ) as HTMLSelectElement | null
+    const montoInfo = document.getElementById("info-monto-prestamo")
+    const cardsContainer = document.getElementById("cards-entidades")
+
+    const panelMixto = document.getElementById("panel-mixto")
+    const rangoMixto = document.getElementById(
+      "porcentaje-credito",
+    ) as HTMLInputElement | null
+    const textoMixto = document.getElementById("texto-mixto")
+    const esMixto = () =>
+      document.querySelector<HTMLInputElement>(
+        'input[name="modalidad"]:checked',
+      )?.value === "mixto"
+    const porcentaje = () =>
+      Math.min(100, Math.max(0, Number(rangoMixto?.value ?? 50)))
+
+    function actualizarMixto() {
+      const p = porcentaje()
+      if (panelMixto) panelMixto.hidden = !esMixto()
+      if (rangoMixto) rangoMixto.style.setProperty("--p", `${p}%`)
+      if (textoMixto)
+        textoMixto.textContent = `${p} % crédito hipotecario / ${100 - p} % leasing`
+    }
+
+    const bancos = [
+      { nombre: "Bancolombia", tasaEA: 12.8, plazoMax: 20 },
+      { nombre: "Davivienda", tasaEA: 12.5, plazoMax: 30 },
+      { nombre: "BBVA", tasaEA: 13.1, plazoMax: 20 },
+      { nombre: "Banco de Bogotá", tasaEA: 13.4, plazoMax: 20 },
+    ]
+
+    function formatoCOP(num: number) {
+      return "$" + Math.round(num).toLocaleString("es-CO")
+    }
+
+    function calcular() {
+      const valor = parseFloat(valorInput?.value || "0")
+      const cuota = parseFloat(cuotaInput?.value || "0")
+      const anos = parseFloat(plazoInput?.value || "20")
+      const financiado = Math.max(0, valor - cuota)
+
+      const mixto = esMixto()
+      const p = porcentaje()
+
+      if (montoInfo) {
+        montoInfo.textContent = mixto
+          ? `Monto a financiar: ${formatoCOP(financiado)} · crédito ${p} % (${formatoCOP((financiado * p) / 100)}) · leasing ${100 - p} % (${formatoCOP((financiado * (100 - p)) / 100)})`
+          : `Monto a financiar: ${formatoCOP(financiado)}`
+      }
+
+      if (!cardsContainer) return
+
+      const meses = anos * 12
+      cardsContainer.innerHTML = bancos
+        .map((banco) => {
+          const tasaMes = Math.pow(1 + banco.tasaEA / 100, 1 / 12) - 1
+          const cuotaMes =
+            financiado > 0 && tasaMes > 0
+              ? (financiado * tasaMes) / (1 - Math.pow(1 + tasaMes, -meses))
+              : 0
+
+          const esSeleccionado = entidadSelect?.value === banco.nombre
+
+          return `
+            <div class="rounded-3xl border ${
+              esSeleccionado
+                ? "border-[#7a641a] bg-[#fffdf6]"
+                : "border-[#e8e4dc] bg-white"
+            } p-6 shadow-sm transition-all">
+              <p class="text-[11px] font-medium uppercase tracking-[0.2em] text-[#8a857b]">
+                Financiación de vivienda
+              </p>
+              <h3 class="mt-2 text-[20px] font-medium text-[#1e1e24]">${banco.nombre}</h3>
+              <div class="mt-5 space-y-2">
+                <p class="text-[12.5px] text-[#6b6b75]">Cuota mensual aprox.</p>
+                <p class="text-[24px] font-medium text-[#1e1e24]">${formatoCOP(cuotaMes)}</p>
+              </div>
+              ${
+                mixto
+                  ? `<div class="mt-4 space-y-1 text-[12.5px] text-[#6b6b75]">
+                <p>Crédito hipotecario (${p} %): <span class="font-medium text-[#1e1e24]">${formatoCOP((cuotaMes * p) / 100)}</span></p>
+                <p>Leasing (${100 - p} %): <span class="font-medium text-[#1e1e24]">${formatoCOP((cuotaMes * (100 - p)) / 100)}</span></p>
+              </div>`
+                  : ""
+              }
+              <div class="mt-5 space-y-1 border-t border-[#f2eee6] pt-4 text-[12.5px] text-[#6b6b75]">
+                <p>Tasa ref: <span class="font-medium text-[#1e1e24]">${banco.tasaEA}% E.A.</span></p>
+                <p>Plazo: <span class="font-medium text-[#1e1e24]">${anos} años</span></p>
+              </div>
+            </div>
+          `
+        })
+        .join("")
+    }
+
+    radios.forEach((radio) =>
+      radio.addEventListener("change", () => {
+        actualizarMixto()
+        calcular()
+      }),
+    )
+    rangoMixto?.addEventListener("input", () => {
+      actualizarMixto()
+      calcular()
+    })
+
+    const formCalc = document.getElementById("form-calculadora")
+    formCalc?.addEventListener("submit", (e) => {
+      e.preventDefault()
+      calcular()
+      document
+        .getElementById("seccion-resultados")
+        ?.scrollIntoView({ behavior: "smooth" })
+    })
+
+    valorInput?.addEventListener("input", calcular)
+    cuotaInput?.addEventListener("input", calcular)
+    plazoInput?.addEventListener("input", calcular)
+    entidadSelect?.addEventListener("change", calcular)
+
+    actualizarMixto()
+    calcular()
+  }
+
+  setupFinanciacion()
+  document.addEventListener("astro:page-load", setupFinanciacion)
+</script>

@@ -4,9 +4,7 @@ interface Props {
 }
 
 const { properties = [] } = Astro.props
-const apiKey =
-  import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY ||
-  "AIzaSyAi_z_AaYF8F08wzDeqPd4UYS9iQzWpxXk"
+const apiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY || ""
 ---
 
 <!-- Mapa -->

@@ -1,0 +1,338 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Navbar from "../components/navbar.astro"
+import {
+  fetchPropertyDetailCached,
+  fetchPropertyByCodeCached,
+} from "../lib/simiApi"
+import { extraerFotos } from "../lib/propertyDetail"
+
+export const prerender = false
+
+const codesParam = Astro.url.searchParams.get("codes") || ""
+const rawCodes = codesParam
+  .split(",")
+  .map((c) => c.trim())
+  .filter(Boolean)
+  .slice(0, 3)
+
+const properties: any[] = []
+
+for (const code of rawCodes) {
+  try {
+    const detail = await fetchPropertyDetailCached(code)
+    let fotos = extraerFotos(detail)
+    let photo = fotos.length > 0 ? fotos[0] : ""
+
+    if (!photo) {
+      const propFromCatalog =
+        (await fetchPropertyByCodeCached(code, "rent")) ||
+        (await fetchPropertyByCodeCached(code, "sale"))
+      if (propFromCatalog && propFromCatalog.photo) {
+        photo = propFromCatalog.photo
+      }
+    }
+
+    if (detail || photo) {
+      const features: string[] = []
+      if (detail?.balcon || detail?.Balcon) features.push("Balcón")
+      if (detail?.ascensor || detail?.Ascensor) features.push("Ascensor")
+      if (detail?.mascotas || detail?.Mascotas || detail?.permiteMascotas)
+        features.push("Mascotas")
+      if (features.length === 0) {
+        features.push("Balcón", "Ascensor", "Mascotas")
+      }
+
+      properties.push({
+        code: detail?.idInm || detail?.Codigo_Inmueble || code,
+        type: detail?.tpinmu || detail?.Tipo_Inmueble || "Apartamento",
+        city: detail?.nciudad || detail?.Ciudad || "Medellín",
+        neighborhood: detail?.NombreB || detail?.Barrio || "Laureles",
+        price:
+          Number(detail?.ValorCanon || detail?.Canon || detail?.ValorVenta) ||
+          3200000,
+        mode: detail?.Gestion?.toLowerCase().includes("venta")
+          ? "sale"
+          : "rent",
+        photo: photo || "/img/sofa-comparar.jpg",
+        bedrooms: Number(detail?.Alcobas || detail?.alcobas) || 3,
+        bathrooms: Number(detail?.banios || detail?.Banos) || 2,
+        parking: Number(detail?.garaje || detail?.Garaje) || 1,
+        area: Number(detail?.AreaConstruida || detail?.area) || 92,
+        adminIncluded:
+          String(detail?.admonIncluida) === "1" ||
+          detail?.Administracion === "0" ||
+          !detail?.Administracion,
+        features: features.join(" · "),
+      })
+    }
+  } catch (e) {
+    console.error("Error al cargar propiedad para comparar:", code, e)
+  }
+}
+
+const currency = new Intl.NumberFormat("es-CO")
+const hayInmuebles = properties.length > 0
+
+const celdaEtiqueta =
+  "px-[19px] py-[25px] text-[14px] font-medium leading-[20px] text-[#6b5d4d]"
+const celdaValor =
+  "px-[19px] py-[25px] text-[15px] font-normal leading-[20px] text-[#2a2a33]"
+---
+
+<Layout
+  title="Compara con calma - Portada Inmobiliaria"
+  description="Los detalles, uno al lado del otro. Selecciona hasta tres inmuebles para encontrar el que encaje contigo."
+  showFooter={true}
+>
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+    />
+  </Fragment>
+  <Navbar active="busqueda" />
+
+  <main
+    class="pagina-comparar min-h-screen w-full bg-[#fcfbf8] pb-28 text-[#1e1e24]"
+    style="--escala: 0.8"
+  >
+    <div class="contenido-comparar mx-auto w-full max-w-[1580px] px-6 pt-8 sm:px-10 lg:px-0 lg:pt-[30px]">
+      <div class="mb-[42px]">
+        <p class="mb-6 text-[11px] font-medium uppercase tracking-[0.25em] text-[#6b6b75]">
+          Compara con calma
+        </p>
+        <h1 class="text-[34px] sm:text-[42px] lg:text-[48px] font-normal leading-[1.1] tracking-[-0.03em] text-[#1e1e24]">
+          Los detalles, uno al lado del otro.
+        </h1>
+        <p class="mt-7 text-[16.5px] text-[#4a4a55]">
+          Selecciona hasta tres inmuebles para encontrar el que encaje contigo.
+        </p>
+      </div>
+
+      <div
+        id="compare-empty-state"
+        class={`my-8 flex min-h-[380px] w-full flex-col items-center justify-center rounded-[36px] border border-dashed border-[#e6e2da] bg-[#faf8f4] p-10 text-center ${
+          hayInmuebles ? "hidden" : "flex"
+        }`}
+      >
+        <h2 class="text-[26px] sm:text-[34px] font-normal tracking-[-0.02em] text-[#1e1e24]">
+          Elige tus primeros inmuebles.
+        </h2>
+        <a
+          href="/search"
+          class="mt-8 inline-flex items-center gap-2 rounded-2xl bg-[#ffaaa0] px-7 py-3.5 text-[14.5px] font-medium text-[#1e1e24] shadow-sm transition-all hover:bg-[#ff958a]"
+        >
+          <span>Volver al catálogo</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div
+        id="compare-table-container"
+        class={`overflow-hidden border border-[#ebe5d8] bg-white ${
+          hayInmuebles ? "block" : "hidden"
+        }`}
+      >
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse text-left">
+            <tbody>
+              <tr class="border-b border-[#ebe5d8] bg-[#faf7f0]">
+                <td class="w-[438px] min-w-[200px] px-[19px] align-middle text-[14px] font-medium text-[#6b5d4d]">
+                  Tu elección
+                </td>
+                {properties.map((p) => (
+                  <td class="min-w-[340px] px-[19px] pb-[33px] pt-[23px] align-top">
+                    <div class="overflow-hidden rounded-[22px] bg-[#f1eee7]">
+                      <img
+                        src={p.photo}
+                        alt={`${p.type} en ${p.neighborhood}`}
+                        class="h-[150px] w-full object-cover object-center sm:h-[181px]"
+                      />
+                    </div>
+                    <p class="mt-[19px] text-[13px] font-medium leading-[20px] text-[#6b5d4d]">
+                      {p.neighborhood} · {p.city}
+                    </p>
+                    <button
+                      type="button"
+                      class="btn-remove-compare mt-3 block cursor-pointer px-2 text-[12px] font-medium leading-[20px] text-[#6b5d4d] hover:text-[#b9382c]"
+                      data-code={p.code}
+                    >
+                      Quitar
+                    </button>
+                  </td>
+                ))}
+              </tr>
+              <tr class="border-b border-[#ebe5d8]">
+                <td class={celdaEtiqueta}>Operación</td>
+                {properties.map((p) => (
+                  <td class={celdaValor}>
+                    {p.mode === "sale" ? "Venta" : "Arriendo"}
+                  </td>
+                ))}
+              </tr>
+              <tr class="border-b border-[#ebe5d8]">
+                <td class={celdaEtiqueta}>Precio</td>
+                {properties.map((p) => (
+                  <td class={celdaValor}>
+                    {p.mode === "sale" ? (
+                      `$ ${currency.format(p.price)}`
+                    ) : (
+                      <span>
+                        Canon mensual: $ {currency.format(p.price)}{" "}
+                        <span class="text-[13px]">
+                          · Administración incluida
+                        </span>
+                      </span>
+                    )}
+                  </td>
+                ))}
+              </tr>
+              <tr class="border-b border-[#ebe5d8]">
+                <td class={celdaEtiqueta}>Administración</td>
+                {properties.map((p) => (
+                  <td class={celdaValor}>
+                    {p.adminIncluded
+                      ? "Administración incluida"
+                      : "No incluida"}
+                  </td>
+                ))}
+              </tr>
+              <tr class="border-b border-[#ebe5d8]">
+                <td class={celdaEtiqueta}>Área</td>
+                {properties.map((p) => (
+                  <td class={celdaValor}>
+                    {p.area > 0 ? `${p.area} m²` : "92 m²"}
+                  </td>
+                ))}
+              </tr>
+              <tr class="border-b border-[#ebe5d8]">
+                <td class={celdaEtiqueta}>Alcobas</td>
+                {properties.map((p) => (
+                  <td class={celdaValor}>
+                    {p.bedrooms > 0 ? p.bedrooms : "3"}
+                  </td>
+                ))}
+              </tr>
+              <tr class="border-b border-[#ebe5d8]">
+                <td class={celdaEtiqueta}>Baños</td>
+                {properties.map((p) => (
+                  <td class={celdaValor}>
+                    {p.bathrooms > 0 ? p.bathrooms : "2"}
+                  </td>
+                ))}
+              </tr>
+              <tr class="border-b border-[#ebe5d8]">
+                <td class={celdaEtiqueta}>Parqueaderos</td>
+                {properties.map((p) => (
+                  <td class={celdaValor}>{p.parking > 0 ? p.parking : "1"}</td>
+                ))}
+              </tr>
+              <tr class="border-b border-[#ebe5d8]">
+                <td class={celdaEtiqueta}>Características</td>
+                {properties.map((p) => (
+                  <td class={celdaValor}>{p.features}</td>
+                ))}
+              </tr>
+              <tr>
+                <td class="px-[19px] align-middle text-[14px] font-medium text-[#6b5d4d]">
+                  Próximo paso
+                </td>
+                {properties.map((p) => (
+                  <td class="px-[19px] pb-[22px] pt-6">
+                    <a
+                      href={`/property/${p.code}`}
+                      class="inline-flex h-10 items-center gap-[14px] rounded-full border border-[#d6d1c7] bg-white pl-2 pr-[10px] text-[13px] font-medium text-[#1e1e24] transition-all hover:bg-[#faf8f4]"
+                    >
+                      <span>Ver inmueble</span>
+                      <svg
+                        class="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M5 12h14m-6-6 6 6-6 6"
+                        />
+                      </svg>
+                    </a>
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style is:global>
+  .pagina-comparar,
+  .pagina-comparar * {
+    font-family: "Poppins", sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+  @media (min-width: 1024px) {
+    .pagina-comparar .contenido-comparar {
+      zoom: var(--escala, 1);
+    }
+  }
+</style>
+
+<script>
+  function setupComparePage() {
+    const COMPARE_KEY = "portada-compare-list"
+
+    document.querySelectorAll(".btn-remove-compare").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const code = btn.getAttribute("data-code")
+        if (!code) return
+
+        try {
+          const list = JSON.parse(localStorage.getItem(COMPARE_KEY) || "[]")
+          const updated = list.filter(
+            (i: any) => String(i.code) !== String(code),
+          )
+          localStorage.setItem(COMPARE_KEY, JSON.stringify(updated))
+
+          if (updated.length === 0) {
+            const tableContainer = document.getElementById(
+              "compare-table-container",
+            )
+            const emptyState = document.getElementById("compare-empty-state")
+            if (tableContainer && emptyState) {
+              tableContainer.classList.add("hidden")
+              emptyState.classList.remove("hidden")
+              emptyState.classList.add("flex")
+            }
+            window.history.replaceState({}, "", "/compare")
+          } else {
+            const newCodes = updated.map((i: any) => i.code).join(",")
+            window.location.href = `/compare?codes=${encodeURIComponent(newCodes)}`
+          }
+        } catch {}
+      })
+    })
+
+    const params = new URLSearchParams(window.location.search)
+    if (!params.get("codes")) {
+      try {
+        const list = JSON.parse(localStorage.getItem(COMPARE_KEY) || "[]")
+        if (list.length > 0) {
+          const codes = list.map((i: any) => i.code).join(",")
+          window.location.replace(`/compare?codes=${encodeURIComponent(codes)}`)
+        }
+      } catch {}
+    }
+  }
+
+  setupComparePage()
+  document.addEventListener("astro:page-load", setupComparePage)
+</script>

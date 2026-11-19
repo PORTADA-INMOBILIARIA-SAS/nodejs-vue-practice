@@ -76,6 +76,33 @@ const currency = new Intl.NumberFormat("es-CO")
       {property.parking > 0 && <li>{property.parking} parq.</li>}
       {property.area > 0 && <li>{property.area} m²</li>}
     </ul>
-    <p class="mt-4 text-[12px] text-[#6b6b75]">Cód. {property.code}</p>
+    <div class="mt-5 border-t border-[#f2eee6] pt-3.5 flex items-center justify-between">
+      <span class="text-[12px] font-normal text-[#8a8a94]">
+        Cód. {property.code}
+      </span>
+      <button
+        type="button"
+        class="btn-compare inline-flex items-center gap-1 text-[13px] font-normal text-[#5e5e68] hover:text-[#1e1e24] transition-colors cursor-pointer"
+        data-compare={property.code}
+        data-compare-data={JSON.stringify({
+          code: property.code,
+          type: property.type,
+          city: property.city,
+          neighborhood: property.neighborhood,
+          price: property.price,
+          mode: property.mode,
+          photo: property.photo,
+          bedrooms: property.bedrooms,
+          bathrooms: property.bathrooms,
+          parking: property.parking,
+          area: property.area,
+          adminIncluded: property.adminIncluded,
+        })}
+        onclick="event.preventDefault(); event.stopPropagation();"
+      >
+        <span class="compare-icon">+</span>
+        <span class="compare-text">Comparar</span>
+      </button>
+    </div>
   </a>
 </article>
