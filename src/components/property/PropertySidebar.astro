@@ -1,0 +1,148 @@
+---
+interface Props {
+  canon: string
+  codigo: string
+  barrio: string
+  ciudad: string
+  telefonoAsesor: string
+}
+
+const { canon, codigo, barrio, ciudad, telefonoAsesor } = Astro.props
+
+const iconoFlecha = "M5 12h14m-6-6 6 6-6 6"
+
+function getWhatsAppUrl(texto: string): string {
+  const tel = String(telefonoAsesor || "").replace(/\D/g, "")
+  const telFormateado = tel
+    ? tel.startsWith("57")
+      ? tel
+      : tel.length === 10
+        ? `57${tel}`
+        : tel
+    : ""
+
+  return telFormateado
+    ? `https://wa.me/${telFormateado}?text=${encodeURIComponent(texto)}`
+    : "#"
+}
+---
+
+<aside class="w-full lg:sticky lg:top-[130px]">
+  <div class="w-full rounded-[32px] border border-[#e9e4dd] bg-white px-[30px] pt-8 pb-10">
+    <span class="block text-[11px] uppercase tracking-[0.2em] text-[#6b6b6b]">
+      Tu próximo paso
+    </span>
+
+    <div class="mt-5 text-[32px] leading-[1.1] font-normal tracking-[-0.02em] text-[#2b2b2b]">
+      {canon}
+    </div>
+    <div class="mt-2 text-[12px] text-[#6b6b6b]">Canon mensual</div>
+
+    <div class="mt-5 text-[12px] text-[#6b6b6b]">Administración incluida</div>
+    <p class="mt-[22px] text-[12px] leading-[22px] text-[#6b6b6b]">
+      Servicios públicos y cargos de ingreso, si aplican, se presentan por
+      separado.
+    </p>
+
+    <div class="mt-4 space-y-[13px]">
+      <a
+        href={getWhatsAppUrl(
+          `Hola, quiero agendar una visita para el inmueble ${codigo} en ${barrio || ciudad}.`,
+        )}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex h-[54px] w-full items-center justify-center gap-2.5 rounded-[14px] bg-[#ffaaa0] hover:bg-[#ff958a] text-[14px] font-medium text-[#2b2b2b] transition-colors"
+      >
+        <span>Agendar una visita</span>
+        <svg
+          class="h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d={iconoFlecha}></path>
+        </svg>
+      </a>
+
+      <a
+        href={getWhatsAppUrl(
+          `Hola, quiero iniciar el proceso de arrendamiento para el inmueble ${codigo} en ${barrio || ciudad}.`,
+        )}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex h-[54px] w-full items-center justify-center gap-2.5 rounded-[14px] border border-[#d8d3cb] bg-white hover:bg-[#fdfbf8] text-[14px] font-medium text-[#2b2b2b] transition-colors"
+      >
+        <span>Quiero este inmueble</span>
+        <svg
+          class="h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d={iconoFlecha}></path>
+        </svg>
+      </a>
+    </div>
+
+    <a
+      href="#gastos-ingreso"
+      id="btn-ver-gastos"
+      class="mt-7 flex items-center justify-center gap-2 text-[12px] font-medium text-[#333333] hover:text-black transition-colors"
+    >
+      <span>Ver todos los gastos de ingreso</span>
+      <svg
+        class="h-4 w-4"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d={iconoFlecha}></path>
+      </svg>
+    </a>
+
+    <div class="mt-9 flex items-center gap-3.5 border-t border-[#ece8e2] pt-7">
+      <div class="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-full bg-[#dbeaf0] text-[18px] text-[#6b8794]">
+        P
+      </div>
+      <div>
+        <div class="text-[13px] font-medium text-[#333333]">
+          Tu equipo Portada
+        </div>
+        <div class="mt-1 text-[11px] text-[#8b8b8b]">
+          Te acompañamos en cada paso.
+        </div>
+      </div>
+    </div>
+
+    <a
+      href={getWhatsAppUrl(
+        `Hola, tengo una pregunta sobre el inmueble ${codigo}.`,
+      )}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-6 flex items-center justify-center gap-2 text-[12px] font-medium text-[#333333] hover:text-black transition-colors"
+    >
+      <span>Tengo una pregunta</span>
+      <svg
+        class="h-4 w-4"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d={iconoFlecha}></path>
+      </svg>
+    </a>
+  </div>
+</aside>

@@ -1,0 +1,42 @@
+---
+interface Props {
+  currentPage: number
+  totalPages: number
+  pageNumbers: number[]
+  pageLink: (page: number) => string
+}
+
+const { currentPage, totalPages, pageNumbers, pageLink } = Astro.props
+
+const pageButtonClass =
+  "flex h-11 min-w-11 items-center justify-center rounded-xl border border-[#e6e2da] bg-white px-4 text-[14px] text-[#2a2a33] transition-colors hover:border-[#c9c4b8]"
+const activePageButtonClass =
+  "flex h-11 min-w-11 items-center justify-center rounded-xl border border-[#2e3040] bg-[#2e3040] px-4 text-[14px] text-white"
+---
+
+{totalPages > 1 && (
+  <nav
+    aria-label="Páginas de resultados"
+    class="mt-12 flex flex-wrap items-center justify-center gap-2"
+  >
+    {currentPage > 1 && (
+      <a href={pageLink(currentPage - 1)} class={pageButtonClass}>
+        Anterior
+      </a>
+    )}
+    {pageNumbers.map((number) => (
+      <a
+        href={pageLink(number)}
+        aria-current={number === currentPage ? "page" : undefined}
+        class={number === currentPage ? activePageButtonClass : pageButtonClass}
+      >
+        {number}
+      </a>
+    ))}
+    {currentPage < totalPages && (
+      <a href={pageLink(currentPage + 1)} class={pageButtonClass}>
+        Siguiente
+      </a>
+    )}
+  </nav>
+)}
