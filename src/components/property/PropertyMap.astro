@@ -72,8 +72,7 @@ const tieneCoords = latitud !== 0 && longitud !== 0
     const lng = Number(el.dataset.lng)
     if (!lat || !lng || isNaN(lat) || isNaN(lng)) return
 
-    const key =
-      el.dataset.apiKey || import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY || ""
+    const key = el.dataset.apiKey || import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY
     const title = el.dataset.title || "Ubicación del inmueble"
     const neighborhood = el.dataset.neighborhood || ""
     const city = el.dataset.city || ""
