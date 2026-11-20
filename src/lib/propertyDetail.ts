@@ -28,23 +28,6 @@ export function extraerFotos(item: any): string[] {
   )
 }
 
-export function getCardHeadline(barrioText: string): string {
-  const clean = (barrioText || "").toLowerCase()
-  if (clean.includes("laureles") || !barrioText)
-    return "Un balcón para empezar el día."
-  if (clean.includes("esmeraldal")) return "Tu refugio entre verde y ciudad."
-  if (clean.includes("otra parte")) return "Espacio lleno de luz y confort."
-  if (clean.includes("poblado")) return "Exclusividad, calma y la mejor vista."
-  if (clean.includes("suramerica") || clean.includes("suramérica"))
-    return "Modernidad para compartir en familia."
-  if (clean.includes("colores")) return "Tranquilidad y cercanía a todo."
-  if (clean.includes("belen") || clean.includes("belén"))
-    return "Tu próximo hogar en un punto ideal."
-  if (clean.includes("primavera"))
-    return "Vistas abiertas y excelente ubicación."
-  return "Un balcón para empezar el día."
-}
-
 export function formatWhatsAppUrl(
   telefonoOriginal: string,
   texto: string,

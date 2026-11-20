@@ -24,24 +24,6 @@ const {
 
 const photoUrl = (url: string) => (url ? url.replace(/=s\d+$/, "=s640") : "")
 const currency = new Intl.NumberFormat("es-CO")
-
-function getCardHeadline(property: Property): string {
-  const desc = property.description?.trim() || ""
-  if (desc) {
-    const firstSentence = desc.split(/[.\n!]/)[0]?.trim()
-    if (
-      firstSentence &&
-      firstSentence.length >= 14 &&
-      firstSentence.length <= 60 &&
-      !firstSentence.toLowerCase().startsWith("apartamento en") &&
-      !firstSentence.toLowerCase().startsWith("casa en") &&
-      !firstSentence.toLowerCase().startsWith("inmueble en")
-    ) {
-      return firstSentence.endsWith(".") ? firstSentence : `${firstSentence}.`
-    }
-  }
-  return `${property.type} en ${property.neighborhood || property.city}`
-}
 ---
 
 <div id="map-view-container" class={isMapView ? "block" : "hidden"}>
@@ -123,7 +105,7 @@ function getCardHeadline(property: Property): string {
                     href={`/property/${property.code}`}
                     class="hover:underline property-link-btn"
                   >
-                    {getCardHeadline(property)}
+                    {property.type} en {property.neighborhood || property.city}
                   </a>
                 </h3>
                 <p class="mt-2 text-[13px] text-[#5e5e68]">
