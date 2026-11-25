@@ -39,18 +39,20 @@ const servicios = [
   {
     titulo: "Anticipos",
     descripcion: "Recibe hasta 10 meses de canon de tu inmueble arrendado.",
-    href: "/self-management",
+    href: "https://crm.mascowork.com/solicitud.php",
     fondo: "bg-[#fff0c9]",
     boton: "!border-transparent !bg-[#e5eef6] !text-[#1f4e79]",
     icono: "cash",
+    esModalMascowork: true,
   },
   {
     titulo: "Financiación",
     descripcion: "Financia tu primer canon o tu vivienda con Más Cowork.",
-    href: "/financing",
+    href: "https://crm.mascowork.com/solicitud.php",
     fondo: "bg-[#e5eef6]",
     boton: "!border-transparent !bg-[#fff0c9] !text-[#7a5c0a]",
     icono: "wallet",
+    esModalMascowork: true,
   },
 ]
 ---
@@ -119,30 +121,6 @@ const servicios = [
               Una experiencia cercana para encontrar, habitar y cuidar un
               inmueble.
             </p>
-            <div class="mt-[46px]">
-              <a
-                href="https://wa.me/573000000000?text=Hola,%20deseo%20conocer%20las%20sedes%20de%20Portada%20Inmobiliaria"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-3 text-[15px] font-medium text-[#1e1e24] hover:underline"
-              >
-                <span>Encuentra tu sede</span>
-                <svg
-                  class="h-[18px] w-[18px]"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M5 12h14m-6-6 6 6-6 6"
-                  />
-                </svg>
-              </a>
-            </div>
           </div>
         </div>
       </section>
@@ -293,7 +271,10 @@ const servicios = [
               <div class="mt-auto pt-7">
                 <a
                   href={s.href}
-                  class={`inline-flex h-[60px] w-full items-center justify-center gap-3 rounded-[18px] border border-[#e8e2d8] bg-[#fffdfa] text-[16px] font-medium text-[#1e1e24] transition-all hover:brightness-[0.98] ${s.boton}`}
+                  data-mascowork-modal={s.esModalMascowork ? "true" : undefined}
+                  target={s.esModalMascowork ? "_blank" : undefined}
+                  rel={s.esModalMascowork ? "noopener noreferrer" : undefined}
+                  class={`btn-servicio inline-flex h-[60px] w-full items-center justify-center gap-3 rounded-[18px] border border-[#e8e2d8] bg-[#fffdfa] text-[16px] font-medium text-[#1e1e24] transition-all hover:brightness-[0.98] ${s.boton}`}
                 >
                   <span>Conocer más</span>
                   <svg
@@ -318,7 +299,141 @@ const servicios = [
       </section>
     </div>
   </main>
+
+  <!-- Modal con iframe para solicitud en Más Cowork -->
+  <div
+    id="modal-mascowork"
+    class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 sm:p-6"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-mascowork-title"
+  >
+    <div class="relative flex flex-col w-full max-w-4xl max-h-[92vh] rounded-[28px] border border-[#e8e2d8] bg-white shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <!-- Cabecera del modal -->
+      <div class="flex items-center justify-between border-b border-[#f0ebe3] px-6 py-4 bg-[#fffdfa]">
+        <div class="flex items-center gap-3">
+          <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-[#fff0c9] text-[#7a5c0a]">
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              viewBox="0 0 24 24"
+            >
+              <rect
+                width="20"
+                height="14"
+                x="2"
+                y="5"
+                rx="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </div>
+          <div>
+            <h4
+              id="modal-mascowork-title"
+              class="text-[16px] font-semibold text-[#1e1e24] leading-snug"
+            >
+              Solicitud de Financiación y Anticipos
+            </h4>
+            <p class="text-[12px] text-[#6b6b75]">En alianza con Más Cowork</p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          id="btn-cerrar-modal"
+          aria-label="Cerrar ventana"
+          class="flex h-10 w-10 items-center justify-center rounded-full bg-[#f4efe8] text-[#5e5e68] transition-colors hover:bg-[#e8e1d5] hover:text-[#1e1e24] cursor-pointer"
+        >
+          <svg
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Contenedor del iframe -->
+      <div class="relative w-full flex-1 min-h-[550px] bg-[#fdfcfb]">
+        <iframe
+          id="iframe-mascowork"
+          src=""
+          data-src="https://crm.mascowork.com/solicitud.php"
+          title="Formulario de Solicitud Más Cowork"
+          class="h-full min-h-[550px] w-full border-0"
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+  </div>
 </Layout>
+
+<script>
+  function setupMascoworkModal() {
+    const modal = document.getElementById("modal-mascowork")
+    const btnCerrar = document.getElementById("btn-cerrar-modal")
+    const iframe = document.getElementById(
+      "iframe-mascowork",
+    ) as HTMLIFrameElement | null
+    const triggers = document.querySelectorAll('[data-mascowork-modal="true"]')
+
+    if (!modal) return
+
+    function abrirModal(e: Event) {
+      e.preventDefault()
+      if (!modal) return
+
+      // Carga el iframe solo al abrir para optimizar rendimiento
+      if (iframe && iframe.dataset.src && iframe.src !== iframe.dataset.src) {
+        iframe.src = iframe.dataset.src
+      }
+
+      modal.classList.remove("hidden")
+      document.body.style.overflow = "hidden"
+    }
+
+    function cerrarModal() {
+      if (!modal) return
+      modal.classList.add("hidden")
+      document.body.style.overflow = ""
+    }
+
+    triggers.forEach((btn) => {
+      btn.addEventListener("click", abrirModal)
+    })
+
+    btnCerrar?.addEventListener("click", cerrarModal)
+
+    // Cerrar al hacer clic en el backdrop oscuro
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        cerrarModal()
+      }
+    })
+
+    // Cerrar con la tecla Escape
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+        cerrarModal()
+      }
+    })
+  }
+
+  setupMascoworkModal()
+  document.addEventListener("astro:page-load", setupMascoworkModal)
+</script>
 
 <style is:global>
   .pagina-servicios,

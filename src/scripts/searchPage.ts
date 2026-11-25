@@ -1,5 +1,3 @@
-import { setOptions, importLibrary } from "@googlemaps/js-api-loader"
-
 const STORAGE_KEY = "portada-favorites"
 
 export const readFavorites = function (): string[] {
@@ -31,6 +29,8 @@ async function initMap() {
 
   let Map: any, LatLngBounds: any, AdvancedMarker: any
   try {
+    const { setOptions, importLibrary } =
+      await import("@googlemaps/js-api-loader")
     setOptions({ key: apiKey })
     const mapsLib: any = await importLibrary("maps")
     Map = mapsLib.Map

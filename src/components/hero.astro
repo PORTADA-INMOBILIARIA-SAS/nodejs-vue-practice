@@ -108,25 +108,18 @@ const presupuestos: Record<string, { valor: string; texto: string }[]> = {
   class="relative flex min-h-[calc(100svh-88px)] w-full items-center overflow-hidden bg-slate-200 lg:h-[calc(100svh-88px)] lg:min-h-[640px]"
   style="contain:layout style"
 >
-  <picture class="absolute inset-0 h-full w-full">
-    <source
-      media="(max-width: 640px)"
-      srcset="/img/img1-mobile.webp"
-      type="image/webp"
-      width="640"
-      height="427"
-    />
+  <div class="absolute inset-0 h-full w-full">
     <img
       src="/img/img1.webp"
       alt="Familia compartiendo el desayuno en casa"
       class="h-full w-full object-cover object-center"
-      width="1440"
-      height="960"
+      width="720"
+      height="480"
       loading="eager"
       fetchpriority="high"
       decoding="async"
     />
-  </picture>
+  </div>
 
   <!-- Tarjeta de Búsqueda Flotante -->
   <div class="relative z-10 w-full px-4 py-8 sm:px-8 lg:px-0 lg:py-0">

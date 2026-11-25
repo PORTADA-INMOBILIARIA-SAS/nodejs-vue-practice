@@ -1,6 +1,6 @@
 ---
 const RUTA_BUSQUEDA = "/search"
-const RUTA_AUTOGESTION = "/self-management"
+const RUTA_AUTOGESTION = "/Autogestion"
 const RUTA_SERVICIOS = "/services"
 
 const RUTA_FINANCIACION = "/financing"
@@ -43,28 +43,18 @@ const esDetalle = Astro.url.pathname.startsWith("/property")
 
 const contenedor = esDetalle
   ? "mx-auto max-w-[1700px] px-6"
-  : compacto
-    ? "mx-auto max-w-[1470px] px-5"
-    : "px-5 lg:px-12"
-const _logo = esDetalle
-  ? "h-[44px]"
-  : compacto
-    ? "h-[64px]"
-    : "h-[64px] sm:h-[76px]"
+  : "mx-auto max-w-[1470px] px-5"
+const _logo = esDetalle ? "h-[44px]" : "h-[64px]"
 const navegacion = esDetalle
   ? "gap-[17px] text-[14px] text-[#3a3a3a]"
-  : compacto
-    ? "gap-6 text-[14px]"
-    : "gap-10 text-[17px]"
-const grupoBotones = compacto || esDetalle ? "gap-3" : "gap-3"
+  : "gap-6 text-[14px]"
+const grupoBotones = "gap-3"
 const boton = esDetalle
   ? "h-[54px] gap-2.5 px-6 text-[14px]"
   : esAutogestion
     ? "h-[50px] gap-2.5 px-5 text-[14px] rounded-2xl"
-    : compacto
-      ? "h-12 gap-2.5 px-4 text-[13px]"
-      : "h-[52px] gap-3 px-5 text-base"
-const icono = compacto || esDetalle ? "h-[22px] w-[22px]" : "h-6 w-6"
+    : "h-12 gap-2.5 px-4 text-[13px]"
+const icono = "h-[22px] w-[22px]"
 const alturaBarra = esDetalle ? "h-[99px]" : "h-[88px]"
 ---
 
@@ -95,7 +85,7 @@ const alturaBarra = esDetalle ? "h-[99px]" : "h-[88px]"
       class:list={["shrink-0 flex items-center", esDetalle && "w-[220px]"]}
     >
       <img
-        src="/img/logo-portada.webp"
+        src="/img/img31.webp"
         alt="Portada Inmobiliaria"
         class="h-[52px] sm:h-[60px] w-auto object-contain"
         width="400"
@@ -112,6 +102,7 @@ const alturaBarra = esDetalle ? "h-[99px]" : "h-[88px]"
       {enlaces.map((enlace) => (
         <a
           href={enlace.href}
+          data-nav-link={enlace.texto.toLowerCase()}
           aria-current={enlace.activo ? "page" : undefined}
           class:list={[
             "transition-colors hover:text-red-600 font-medium text-[#2d2d34]",
@@ -225,3 +216,59 @@ const alturaBarra = esDetalle ? "h-[99px]" : "h-[88px]"
 </header>
 
 <div class={esDetalle ? "h-[109px]" : "h-[89px]"} aria-hidden="true"></div>
+
+<script>
+  function setupPropietarios() {
+    function updatePropietariosActive() {
+      const isPropietarios = window.location.hash === "#propietarios"
+      const propLinks = document.querySelectorAll(
+        '[data-nav-link="propietarios"]',
+      )
+      const activeClasses = [
+        "text-[#9b3d33]",
+        "underline",
+        "decoration-[#d9534f]",
+        "decoration-1",
+        "underline-offset-[6px]",
+      ]
+
+      propLinks.forEach((link) => {
+        if (isPropietarios) {
+          link.classList.add(...activeClasses)
+          link.setAttribute("aria-current", "page")
+        } else {
+          link.classList.remove(...activeClasses)
+          link.removeAttribute("aria-current")
+        }
+      })
+    }
+
+    window.addEventListener("hashchange", updatePropietariosActive)
+    updatePropietariosActive()
+
+    const seccionProp = document.getElementById("propietarios")
+    if (seccionProp) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              history.replaceState(null, "", "#propietarios")
+              updatePropietariosActive()
+            } else if (window.location.hash === "#propietarios") {
+              history.replaceState(null, "", window.location.pathname)
+              updatePropietariosActive()
+            }
+          })
+        },
+        { rootMargin: "-30% 0px -40% 0px" },
+      )
+      observer.observe(seccionProp)
+    }
+  }
+
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(setupPropietarios)
+  } else {
+    setTimeout(setupPropietarios, 200)
+  }
+</script>

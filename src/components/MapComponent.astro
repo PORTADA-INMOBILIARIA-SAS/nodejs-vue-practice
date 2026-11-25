@@ -459,23 +459,25 @@ const apiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY
 
     const bounds = new _LatLngBounds()
     let hasCoords = false
+    const existingCodes = new Set<string>()
 
-    items.forEach((item: any) => {
+    function addMarkerItem(item: any) {
+      if (!item || !item.code || existingCodes.has(String(item.code))) return
       const lat = Number(item.lat)
       const lng = Number(item.lng)
       if (!lat || !lng || isNaN(lat) || isNaN(lng)) return
 
+      existingCodes.add(String(item.code))
       const pos = { lat, lng }
       bounds.extend(pos)
       hasCoords = true
 
       const label =
         item.formattedPrice || (item.price ? `$ ${item.price}` : "Sin precio")
-      const markerEl = makeMarkerEl(label) // wrapper con píldora + triángulo
+      const markerEl = makeMarkerEl(label)
 
       let marker: any = null
 
-      // — Estrategia 1: AdvancedMarkerElement (HTML con diseño propio) —
       if (_AdvancedMarker) {
         try {
           marker = new _AdvancedMarker({
@@ -490,7 +492,6 @@ const apiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY
         }
       }
 
-      // — Estrategia 2: Marker clásico con precio abreviado ENCIMA del pin —
       if (!marker) {
         const g = (window as any).google.maps
         const shortLabel = abbreviatePrice(label)
@@ -506,9 +507,7 @@ const apiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY
               fillOpacity: 1,
               strokeColor: "#ffffff",
               strokeWeight: 2,
-              // ancla en el centro del círculo
               anchor: new g.Point(0, 0),
-              // origen del label: 28px por encima del centro del pin
               labelOrigin: new g.Point(0, -28),
             },
             label: {
@@ -526,7 +525,48 @@ const apiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY
       }
 
       if (marker) _markers.push(marker)
-    })
+    }
+
+    // Agregar lote inicial rápido
+    items.forEach((item: any) => addMarkerItem(item))
+
+    // Carga progresiva de todos los inmuebles de la API en segundo plano
+    let isFetchingAll = false
+    async function loadAllPropertiesProgressively() {
+      if (isFetchingAll) return
+      isFetchingAll = true
+      let currentPage = 1
+      let totalPages = 1
+      const mode =
+        new URL(window.location.href).searchParams.get("mode") || "rent"
+
+      try {
+        while (currentPage <= totalPages && currentPage <= 15) {
+          // carga hasta 15 páginas progresivas
+          const res = await fetch(
+            `/api/mapProperties?mode=${mode}&page=${currentPage}&perPage=30`,
+          )
+          if (!res.ok) break
+          const data = await res.json()
+          if (!data.items || data.items.length === 0) break
+
+          totalPages = data.totalPages || 1
+          data.items.forEach((item: any) => addMarkerItem(item))
+
+          currentPage++
+          // Pausa suave de 120ms entre tandas para que el navegador no se trabe
+          await new Promise((resolve) => setTimeout(resolve, 120))
+        }
+      } catch (e) {
+        console.warn("Carga progresiva detenida:", e)
+      } finally {
+        isFetchingAll = false
+      }
+    }
+
+    setTimeout(() => {
+      loadAllPropertiesProgressively()
+    }, 400)
 
     // Ajustar viewport a todos los marcadores
     if (hasCoords) {

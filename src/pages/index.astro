@@ -12,18 +12,8 @@ import AboutFaq from "../components/AboutFaq.astro"
   <link
     rel="preload"
     as="image"
-    href="/img/img1-mobile.webp"
-    type="image/webp"
-    media="(max-width: 640px)"
-    fetchpriority="high"
-    slot="head"
-  />
-  <link
-    rel="preload"
-    as="image"
     href="/img/img1.webp"
     type="image/webp"
-    media="(min-width: 641px)"
     fetchpriority="high"
     slot="head"
   />
@@ -32,7 +22,9 @@ import AboutFaq from "../components/AboutFaq.astro"
 
   <main id="inicio" class="w-full min-h-screen bg-white text-slate-900">
     <Hero />
-    <Doors />
+    <div style="content-visibility:auto;contain-intrinsic-size:0 1200px">
+      <Doors />
+    </div>
     <div style="content-visibility:auto;contain-intrinsic-size:0 3000px">
       <AboutFaq />
     </div>
