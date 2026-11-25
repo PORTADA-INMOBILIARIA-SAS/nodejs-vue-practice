@@ -1,13 +1,13 @@
 ---
 const RUTA_BUSQUEDA = "/search"
-const RUTA_AUTOGESTION = "/Autogestion"
+const RUTA_AUTOGESTION = "/Autogestion/"
 const RUTA_SERVICIOS = "/services"
 
 const RUTA_FINANCIACION = "/financing"
 
 const enBusqueda = Astro.url.pathname.startsWith(RUTA_BUSQUEDA)
 const esServicios = Astro.url.pathname.startsWith(RUTA_SERVICIOS)
-const esAutogestion = Astro.url.pathname.startsWith(RUTA_AUTOGESTION)
+const esAutogestion = Astro.url.pathname.startsWith("/Autogestion")
 const esFinanciacionRuta = Astro.url.pathname.startsWith(RUTA_FINANCIACION)
 const currentMode =
   Astro.url.searchParams.get("mode") ||
