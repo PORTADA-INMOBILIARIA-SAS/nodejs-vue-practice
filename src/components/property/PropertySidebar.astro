@@ -5,9 +5,11 @@ interface Props {
   barrio: string
   ciudad: string
   telefonoAsesor: string
+  admonIncluida?: boolean
 }
 
-const { canon, codigo, barrio, ciudad, telefonoAsesor } = Astro.props
+const { canon, codigo, barrio, ciudad, telefonoAsesor, admonIncluida } =
+  Astro.props
 
 const iconoFlecha = "M5 12h14m-6-6 6 6-6 6"
 
@@ -36,9 +38,11 @@ function getWhatsAppUrl(texto: string): string {
     <div class="mt-5 text-[32px] leading-[1.1] font-normal tracking-[-0.02em] text-[#2b2b2b]">
       {canon}
     </div>
-    <div class="mt-2 text-[12px] text-[#6b6b6b]">Canon mensual</div>
+    <div class="mt-5 text-[12px] text-[#6b6b6b]">Canon mensual</div>
 
-    <div class="mt-5 text-[12px] text-[#6b6b6b]">Administración incluida</div>
+    {admonIncluida && (
+      <div class="mt-2 text-[12px] text-[#6b6b6b]">Administración incluida</div>
+    )}
     <p class="mt-[22px] text-[12px] leading-[22px] text-[#6b6b6b]">
       Servicios públicos y cargos de ingreso, si aplican, se presentan por
       separado.

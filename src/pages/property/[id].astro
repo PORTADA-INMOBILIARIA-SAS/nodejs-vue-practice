@@ -2,7 +2,7 @@
 import Layout from "../../layouts/Layout.astro"
 import Navbar from "../../components/navbar.astro"
 import { fetchPropertyDetailCached } from "../../lib/simiApi"
-import { extraerFotos, getCardHeadline } from "../../lib/propertyDetail"
+import { extraerFotos } from "../../lib/propertyDetail"
 
 import PropertyGallery from "../../components/property/PropertyGallery.astro"
 import PropertySidebar from "../../components/property/PropertySidebar.astro"
@@ -107,7 +107,11 @@ const telefonoOriginal =
   inmueble?.telefonoAsesor ||
   ""
 
-const titular = getCardHeadline(barrio)
+const titular = `${tipo} en ${barrio ? `${barrio}, ` : ""}${ciudad}`
+
+const admonIncluida =
+  String(inmueble?.admonIncluida) === "1" ||
+  String(inmueble?.AdmonIncluida) === "1"
 
 const medidas = [
   { label: "Área", value: `${area} m²` },
@@ -347,6 +351,7 @@ const altFoto = (i: number) => `${tipo} en ${barrio || ciudad} - foto ${i + 1}`
           barrio={barrio}
           ciudad={ciudad}
           telefonoAsesor={telefonoOriginal}
+          admonIncluida={admonIncluida}
         />
       </div>
     </div>
