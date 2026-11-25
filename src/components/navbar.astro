@@ -9,8 +9,6 @@ const enBusqueda = Astro.url.pathname.startsWith(RUTA_BUSQUEDA)
 const esServicios = Astro.url.pathname.startsWith(RUTA_SERVICIOS)
 const esAutogestion = Astro.url.pathname.startsWith(RUTA_AUTOGESTION)
 const esFinanciacionRuta = Astro.url.pathname.startsWith(RUTA_FINANCIACION)
-const compacto =
-  enBusqueda || esServicios || esAutogestion || esFinanciacionRuta
 const currentMode =
   Astro.url.searchParams.get("mode") ||
   Astro.url.searchParams.get("modalidad") ||
@@ -44,7 +42,6 @@ const esDetalle = Astro.url.pathname.startsWith("/property")
 const contenedor = esDetalle
   ? "mx-auto max-w-[1700px] px-6"
   : "mx-auto max-w-[1470px] px-5"
-const _logo = esDetalle ? "h-[44px]" : "h-[64px]"
 const navegacion = esDetalle
   ? "gap-[17px] text-[14px] text-[#3a3a3a]"
   : "gap-6 text-[14px]"
