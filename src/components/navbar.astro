@@ -48,9 +48,7 @@ const navegacion = esDetalle
 const grupoBotones = "gap-3"
 const boton = esDetalle
   ? "h-[54px] gap-2.5 px-6 text-[14px]"
-  : esAutogestion
-    ? "h-[50px] gap-2.5 px-5 text-[14px] rounded-2xl"
-    : "h-12 gap-2.5 px-4 text-[13px]"
+  : "h-12 gap-2.5 px-4 text-[13px]"
 const icono = "h-[22px] w-[22px]"
 const alturaBarra = esDetalle ? "h-[99px]" : "h-[88px]"
 ---
@@ -116,11 +114,7 @@ const alturaBarra = esDetalle ? "h-[99px]" : "h-[88px]"
       <a
         href="/pay-rent"
         class:list={[
-          "flex items-center font-medium transition-colors",
-          esAutogestion || esFinanciacionRuta ? "rounded-2xl" : "rounded-xl",
-          esDetalle || esAutogestion || esFinanciacionRuta
-            ? "bg-[#ffaaa0] text-[#2b2b2b] hover:bg-[#ff958a]"
-            : "bg-[#f58f8f] text-[#2e3040] hover:bg-[#f27d7d]",
+          "flex items-center rounded-xl font-medium transition-colors bg-[#ffaaa0] text-[#2b2b2b] hover:bg-[#ff958a]",
           boton,
         ]}
       >
@@ -143,11 +137,7 @@ const alturaBarra = esDetalle ? "h-[99px]" : "h-[88px]"
       <a
         href={RUTA_AUTOGESTION}
         class:list={[
-          "flex items-center transition-colors font-medium",
-          esAutogestion || esFinanciacionRuta ? "rounded-2xl" : "rounded-xl",
-          esDetalle || esAutogestion || esFinanciacionRuta
-            ? "border border-[#cfc9be] bg-[#faf8f5] text-[#2b2b2b] hover:border-[#ded5ca] hover:bg-white"
-            : "border border-slate-200 bg-[#faf8f4] text-slate-800 hover:border-slate-300 hover:bg-slate-50",
+          "flex items-center rounded-xl transition-colors font-medium border border-[#cfc9be] bg-[#faf8f5] text-[#2b2b2b] hover:border-[#ded5ca] hover:bg-white",
           boton,
         ]}
       >
