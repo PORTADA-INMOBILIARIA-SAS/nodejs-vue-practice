@@ -1,0 +1,27 @@
+---
+export const prerender = false
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redirigiendo | Portada Inmobiliaria</title>
+    <script is:inline>
+      const match = window.location.hash.match(
+        /^#\/inmueble\/([^/?#]+)\/?(?:\?.*)?$/,
+      )
+      if (match) {
+        window.location.replace(`/property/${match[1]}`)
+      } else {
+        window.location.replace("/search")
+      }
+    </script>
+  </head>
+  <body>
+    <p>
+      Redirigiendo... <a href="/search">Ir a la búsqueda de inmuebles</a>.
+    </p>
+  </body>
+</html>
